@@ -237,11 +237,55 @@ export default function Fintech() {
             {/* 3D Model Container */}
             <div className="w-full">
               <div className="flex items-center justify-center mb-2">
-                <img 
-                  src="https://static.vecteezy.com/system/resources/previews/009/312/392/non_2x/360-rotate-3d-icon-model-cartoon-style-concept-render-illustration-free-png.png" 
-                  alt="Rotate icon" 
-                  className="w-16 h-16 opacity-70"
-                />
+                <svg 
+                  width="40" 
+                  height="40" 
+                  viewBox="0 0 40 40" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="opacity-75"
+                >
+                  {/* 3D rotation arrows - top right */}
+                  <path 
+                    d="M24 8L28 12L24 16" 
+                    stroke="white" 
+                    strokeWidth="2.5" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    fill="none"
+                  />
+                  <path 
+                    d="M28 12C28 12 30 14 30 20" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                  {/* 3D rotation arrows - bottom left */}
+                  <path 
+                    d="M16 32L12 28L16 24" 
+                    stroke="white" 
+                    strokeWidth="2.5" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    fill="none"
+                  />
+                  <path 
+                    d="M12 28C12 28 10 26 10 20" 
+                    stroke="white" 
+                    strokeWidth="2" 
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                  {/* Center circle */}
+                  <circle 
+                    cx="20" 
+                    cy="20" 
+                    r="3" 
+                    fill="white"
+                    opacity="0.8"
+                  />
+                </svg>
               </div>
               <div className="w-full h-96 md:h-[500px] rounded-lg overflow-hidden">
                 <div ref={containerRef} className="w-full h-full" />

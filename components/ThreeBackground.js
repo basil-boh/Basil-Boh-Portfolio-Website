@@ -124,6 +124,8 @@ export default function ThreeBackground() {
       mouseY = event.clientY - windowHalfY
       
       if (isMouseDown) {
+        // Prevent text selection while dragging
+        event.preventDefault()
         // Calculate delta for smooth dragging
         const deltaX = (mouseX - previousMouseX) * 0.001
         const deltaY = (mouseY - previousMouseY) * 0.001
@@ -137,6 +139,8 @@ export default function ThreeBackground() {
     }
 
     const handleMouseDown = (event) => {
+      // Prevent text selection
+      event.preventDefault()
       isMouseDown = true
       mouseX = event.clientX - windowHalfX
       mouseY = event.clientY - windowHalfY
@@ -250,6 +254,17 @@ export default function ThreeBackground() {
     }
   }, [])
 
-  return <div id="canvas-container" ref={containerRef} />
+  return (
+    <div 
+      id="canvas-container" 
+      ref={containerRef}
+      style={{ 
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        MozUserSelect: 'none',
+        msUserSelect: 'none'
+      }}
+    />
+  )
 }
 

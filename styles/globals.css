@@ -22,6 +22,10 @@ body {
   z-index: -1;
   opacity: 0; /* Starts hidden for fade-in */
   transition: opacity 1.5s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 /* Custom Scrollbar */

@@ -86,13 +86,13 @@ export default function About() {
             <h3 className="text-xl font-bold mb-4 text-white">Focus Areas</h3>
             <ul className="space-y-2 text-gray-400">
               <li className="flex items-center">
-                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Web Development
+                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Software Development
               </li>
               <li className="flex items-center">
-                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Software Engineering
+                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Data Analytics
               </li>
               <li className="flex items-center">
-                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Data Structures & Algorithms
+                <i className="ph-fill ph-caret-right text-[#4ecdc4] mr-2"></i> Artificial Intelligence
               </li>
             </ul>
           </div>
