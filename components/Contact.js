@@ -18,16 +18,28 @@ export default function Contact() {
         </a>
 
         <div className="mt-20 flex justify-center space-x-8 text-3xl text-gray-400">
-          <a href="#" className="hover:text-[#4ecdc4] transition hover:-translate-y-1">
+          <a 
+            href="https://github.com/basil-boh" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-[#4ecdc4] transition hover:-translate-y-1"
+          >
             <i className="ph ph-github-logo"></i>
           </a>
-          <a href="#" className="hover:text-[#4ecdc4] transition hover:-translate-y-1">
+          <a 
+            href="https://www.linkedin.com/in/basil-boh-81933b18b/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-[#4ecdc4] transition hover:-translate-y-1"
+          >
             <i className="ph ph-linkedin-logo"></i>
           </a>
-          <a href="#" className="hover:text-[#4ecdc4] transition hover:-translate-y-1">
-            <i className="ph ph-twitter-logo"></i>
-          </a>
-          <a href="#" className="hover:text-[#4ecdc4] transition hover:-translate-y-1">
+          <a 
+            href="https://www.instagram.com/ba3zel/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-[#4ecdc4] transition hover:-translate-y-1"
+          >
             <i className="ph ph-instagram-logo"></i>
           </a>
         </div>
