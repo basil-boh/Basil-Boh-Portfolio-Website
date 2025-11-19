@@ -177,11 +177,17 @@ export default function About() {
           <h3 className="text-xl font-bold mb-6 text-white">Programmes</h3>
           <div className="space-y-6">
             {/* Harvard Business School */}
-            <div className="flex gap-4">
-              <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
-                <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-gray-400 text-xs">
-                  Logo
-                </div>
+            <div className="flex gap-0 items-start -ml-6">
+              <div className="w-24 h-24 flex-shrink-0 flex items-center justify-center">
+                <img 
+                  src="https://1000logos.net/wp-content/uploads/2024/09/Harvard-Business-School-Logo.png" 
+                  alt="Harvard Business School Logo" 
+                  className="w-full h-full object-contain rounded"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Harvard_Business_School_logo.svg/200px-Harvard_Business_School_logo.svg.png';
+                  }}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
@@ -196,11 +202,17 @@ export default function About() {
             </div>
 
             {/* Orbital Programme */}
-            <div className="flex gap-4">
-              <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
-                <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-gray-400 text-xs">
-                  Logo
-                </div>
+            <div className="flex gap-5 items-start">
+              <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center -ml-1">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/NUS_coat_of_arms.svg/200px-NUS_coat_of_arms.svg.png" 
+                  alt="NUS Logo" 
+                  className="w-full h-full object-contain rounded"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://www.nus.edu.sg/images/default-source/base/logo.png';
+                  }}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
@@ -215,11 +227,17 @@ export default function About() {
             </div>
 
             {/* PayPal Pathways */}
-            <div className="flex gap-4">
-              <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
-                <div className="w-full h-full bg-gray-700 rounded flex items-center justify-center text-gray-400 text-xs">
-                  Logo
-                </div>
+            <div className="flex gap-5 items-start">
+              <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center -ml-1">
+                <img 
+                  src="https://cdn-icons-png.flaticon.com/512/174/174861.png" 
+                  alt="PayPal Logo" 
+                  className="w-full h-full object-contain rounded"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@v9/icons/paypal.svg';
+                  }}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
