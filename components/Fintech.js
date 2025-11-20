@@ -19,7 +19,8 @@ export default function Fintech() {
   
   const models = [
     { path: '/credit_card.glb', name: 'Credit Card' },
-    { path: '/bitcoin-2.glb', name: 'Bitcoin' }
+    { path: '/bitcoin-2.glb', name: 'Bitcoin' },
+    { path: '/payment_terminal_test.glb', name: 'Payment Terminal' }
   ]
 
   // 1. INITIAL SCENE SETUP
@@ -199,6 +200,11 @@ export default function Fintech() {
                   }
 
                   child.material.needsUpdate = true
+                } else if (currentModelIndex === 2) {
+                  // Payment Terminal - standard properties
+                  child.material.metalness = 0.3
+                  child.material.roughness = 0.4
+                  if(child.material.emissive) child.material.emissiveIntensity = 0
                 } else {
                   // Credit card - standard properties
                   child.material.metalness = 0.3
@@ -225,8 +231,8 @@ export default function Fintech() {
         const cameraZ = camera.position.z
         const visibleHeight = 2 * Math.tan(fov / 2) * cameraZ
         const visibleWidth = visibleHeight * (container.clientWidth / container.clientHeight)
-        // Different scale for bitcoin (smaller) vs credit card
-        const scaleMultiplier = currentModelIndex === 1 ? 0.6 : 0.9
+        // Different scale for each model
+        const scaleMultiplier = currentModelIndex === 1 ? 0.6 : currentModelIndex === 2 ? 0.7 : 0.9
         const scale = Math.min(visibleWidth, visibleHeight) / maxDim * scaleMultiplier
         
         model.scale.set(scale, scale, scale)
@@ -238,10 +244,14 @@ export default function Fintech() {
         if (currentModelIndex === 0) {
           pivotGroup.rotation.y = (-70 * Math.PI) / 180 
           pivotGroup.rotation.x = (-28 * Math.PI) / 180 
-        } else {
+        } else if (currentModelIndex === 1) {
           // Bitcoin - show from the front
           pivotGroup.rotation.y = 5.15
           pivotGroup.rotation.x = -0.2
+        } else {
+          // Payment Terminal - show from the front (convert degrees to radians)
+          pivotGroup.rotation.y = (-130 * Math.PI) / 180
+          pivotGroup.rotation.x = (50 * Math.PI) / 180
         }
         
         scene.add(pivotGroup)
@@ -249,6 +259,9 @@ export default function Fintech() {
         
         // Camera Position
         if (currentModelIndex === 1) {
+          camera.position.set(0, 0, 50)
+          camera.lookAt(0, 0, 0)
+        } else if (currentModelIndex === 2) {
           camera.position.set(0, 0, 50)
           camera.lookAt(0, 0, 0)
         } else {
@@ -290,6 +303,35 @@ export default function Fintech() {
               // Increased cyan light for more fill
               if (child.type === 'DirectionalLight' && child.color.getHex() === 0x4ecdc4) child.intensity = 1.0
             })
+
+        } else if (currentModelIndex === 2) {
+          // PAYMENT TERMINAL LIGHTING - Increased brightness
+          
+          // 1. Bright point lights for additional illumination
+          const pointLight1 = new THREE.PointLight(0xffffff, 2.0, 100)
+          pointLight1.position.set(15, 15, 20)
+          scene.add(pointLight1)
+          pointLightRef.current = pointLight1
+          
+          // 2. Bright fill light
+          const pointLight2 = new THREE.PointLight(0xffffff, 1.5, 100)
+          pointLight2.position.set(-15, -10, 15)
+          scene.add(pointLight2)
+          pointLight2Ref.current = pointLight2
+          
+          // 3. Additional top light for overall brightness
+          const pointLight3 = new THREE.PointLight(0xffffff, 1.2, 100)
+          pointLight3.position.set(0, 20, 10)
+          scene.add(pointLight3)
+          
+          // 4. Increased Ambient and Directional lights
+          scene.children.forEach((child) => {
+            if (child.type === 'AmbientLight') child.intensity = 1.5 // Increased from 0.6
+            // Stronger white directional light
+            if (child.type === 'DirectionalLight' && child.color.getHex() === 0xffffff) child.intensity = 1.5 // Increased from 0.8
+            // Increased cyan light for more fill
+            if (child.type === 'DirectionalLight' && child.color.getHex() === 0x4ecdc4) child.intensity = 0.6 // Increased from 0.4
+          })
 
         } else {
           // CREDIT CARD LIGHTING (Reset)
