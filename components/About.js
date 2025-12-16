@@ -75,7 +75,7 @@ export default function About() {
                 <p className="text-gray-400 text-sm">Graduated: 2021</p>
               </div>
               <img 
-                src="https://scontent.fsin15-1.fna.fbcdn.net/v/t39.30808-6/555061028_1226858106153644_7678778612606033291_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=8uLXSWz2eAQQ7kNvwGc5ksp&_nc_oc=AdlP8_bzx0qOSsREW8PkQpnuhdPsnY0Dl_YOQB7famOEGzf2_xtRuODEyJIyiM6eVnw&_nc_zt=23&_nc_ht=scontent.fsin15-1.fna&_nc_gid=kxxg2wD0Vy4bNSVMaYJjfg&oh=00_AfjmMhcofSa6eGBAVmMx2qZ1b9SXs28Djr9s9EceiSLb1Q&oe=69232FBE" 
+                src="/tp_logo.jpg" 
                 alt="Temasek Polytechnic Logo" 
                 className="w-12 h-12 object-contain flex-shrink-0"
               />
@@ -109,7 +109,7 @@ export default function About() {
             <div className="flex gap-4">
               <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
                 <img 
-                  src="https://media.licdn.com/dms/image/v2/D560BAQH7SKrGOFS43g/company-logo_100_100/B56Zg2F0_UG0AU-/0/1753254155154/biohackk_logo?e=1765411200&v=beta&t=PMYRxeTbpjiB1bwTYb8VelrjoMhH8W0tUEy2J6-Wax0" 
+                  src="/biohackk_logo.jpeg" 
                   alt="Biohackk Logo" 
                   className="w-full h-full object-contain rounded"
                 />
@@ -151,7 +151,7 @@ export default function About() {
             <div className="flex gap-4">
               <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
                 <img 
-                  src="https://media.licdn.com/dms/image/v2/C560BAQGJShr9Y5R4eA/company-logo_100_100/company-logo_100_100/0/1630568709770/camtech_innovations_limited_logo?e=1765411200&v=beta&t=ZWYvvXwsZE6H0sfz-3A9E5F_Xikxm5isWPTJx2pM9_g" 
+                  src="/camtech_logo.jpeg" 
                   alt="Camtech Logo" 
                   className="w-full h-full object-contain rounded"
                 />
