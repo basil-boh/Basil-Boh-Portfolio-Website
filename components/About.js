@@ -6,7 +6,7 @@ export default function About() {
         <div className="flex flex-col gap-6">
           <div className="flex justify-center">
             <img 
-              src="https://media.licdn.com/dms/image/v2/D5603AQF2PPoGRvJS4w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1725555850583?e=1765411200&v=beta&t=H9071AZYEzDZ2wFg0nmcfUWxyZ_URcExC6dbtyQwUbc" 
+              src="/profile.jpeg" 
               alt="Basil Boh" 
               className="w-48 h-48 object-cover rounded-full border-2 border-[#4ecdc4]/30"
             />
