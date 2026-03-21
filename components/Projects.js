@@ -3,18 +3,6 @@ import { useState } from 'react'
 const projects = [
   {
     id: 1,
-    title: 'E-Commerce Platform',
-    description:
-      'A full-stack e-commerce platform with user authentication, product management, and payment integration.',
-    mediaType: 'placeholder',
-    image: null,
-    category: 'web',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
-    github: 'https://github.com/yourusername/project1',
-    demo: 'https://project1-demo.netlify.app',
-  },
-  {
-    id: 2,
     title: 'Data Visualization Dashboard',
     description:
       'Interactive dashboard for visualizing complex datasets with filtering and export capabilities.',
@@ -26,7 +14,7 @@ const projects = [
     demo: 'https://basil-data-visualization.netlify.app',
   },
   {
-    id: 3,
+    id: 2,
     title: 'Object Motion Detection',
     description:
       'An application for detecting and tracking moving objects, providing real-time monitoring and improved security.',
@@ -38,7 +26,7 @@ const projects = [
     demo: 'https://project3-demo.netlify.app',
   },
   {
-    id: 4,
+    id: 3,
     title: 'Stock Price Prediction Model',
     description:
       'A machine learning model for predicting stock prices using historical data and sentiment analysis.',
@@ -50,7 +38,7 @@ const projects = [
     demo: 'https://project4-demo.netlify.app',
   },
   {
-    id: 5,
+    id: 4,
     title: 'Social Media Platform',
     description:
       'A social media platform with real-time messaging, post sharing, and user profiles.',
@@ -62,7 +50,7 @@ const projects = [
     demo: 'https://project5-demo.netlify.app',
   },
   {
-    id: 6,
+    id: 5,
     title: 'Resume Analyzer',
     description:
       'An AI-powered web application designed to optimize resumes by tailoring them to specific job roles.',
