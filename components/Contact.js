@@ -11,7 +11,7 @@ export default function Contact() {
           </p>
         </div>
         <a
-          href="mailto:hello@example.com"
+          href="mailto:basil.boh001@gmail.com"
           className="inline-block px-10 py-5 border-2 border-[#4ecdc4] text-[#4ecdc4] font-bold rounded text-lg hover:bg-[#4ecdc4]/10 transition"
         >
           Say Hello
