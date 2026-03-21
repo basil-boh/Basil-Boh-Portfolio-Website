@@ -321,11 +321,11 @@ export default function About() {
                     Show credential
                     <i className="ph ph-arrow-square-out text-base" aria-hidden />
                   </a>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-start gap-3">
                     <img
                       src="/orbital-certificate-thumb.png"
                       alt="Orbital certificate thumbnail"
-                      className="w-[4.5rem] h-[3.25rem] sm:w-20 sm:h-14 object-cover rounded-md border border-white/10 flex-shrink-0 bg-white/5"
+                      className="h-auto max-h-40 sm:max-h-48 w-auto max-w-[10.5rem] sm:max-w-[12rem] object-contain rounded-md border border-white/10 flex-shrink-0 bg-white/5"
                     />
                     <div className="min-w-0">
                       <p className="font-bold text-white text-sm leading-snug">
@@ -429,7 +429,7 @@ export default function About() {
                     <h4 className="text-white font-semibold mb-1">Mentee</h4>
                     <p className="text-[#4ecdc4] text-sm mb-1">Harvard Business School Club of Singapore</p>
                   </div>
-                  <p className="text-gray-400 text-sm text-right">April 2019 - July 2019</p>
+                  <p className="text-gray-400 text-sm text-right">August 2019 - May 2020</p>
                 </div>
                 <div className="text-gray-400 text-sm mb-4 space-y-3">
                   <p>
@@ -438,6 +438,39 @@ export default function About() {
                     experienced industry mentors to develop insights into problem-solving frameworks,
                     career development, and cross-functional collaboration.
                   </p>
+                </div>
+
+                {/* LinkedIn-style credential (PDF: public/HBSCS.pdf; thumb: assets/image-31.png → public/hbscs-certificate-thumb.png) */}
+                <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
+                  <a
+                    href="/HBSCS.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/20 bg-white/[0.04] text-sm font-bold text-white hover:border-[#4ecdc4]/60 hover:text-[#4ecdc4] transition-colors"
+                  >
+                    Show credential
+                    <i className="ph ph-arrow-square-out text-base" aria-hidden />
+                  </a>
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                    <div className="w-fit max-w-full shrink-0 rounded-md border border-white/10 bg-white/5 overflow-hidden">
+                    <img
+                      src="/hbscs-certificate-thumb.png"
+                      alt="Harvard Business School certificate thumbnail"
+                      width={1844}
+                      height={1266}
+                      // Changed max-h from 56 to 32 and max-w from 36rem to 14rem
+                      className="block h-auto w-auto max-h-32 sm:max-h-40 md:max-h-48 max-w-[14rem] object-contain"
+                    />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-bold text-white text-sm leading-snug">
+                        Mentorship Programme Certificate
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Harvard Business School Club of Singapore · August 2019 - May 2020
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
