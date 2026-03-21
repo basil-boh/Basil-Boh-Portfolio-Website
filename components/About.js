@@ -141,7 +141,30 @@ export default function About() {
                   </div>
                   <p className="text-gray-400 text-sm">Jan 2026 - Present</p>
                 </div>
-                <p className="text-gray-400 text-sm">Details about the role and responsibilities...</p>
+                <p className="text-gray-400 text-sm">
+                <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                    Developed and deployed a full-stack mobile health-tech application, integrating secure authentication systems (Singpass OAuth, Google OAuth) with robust implementations of state, nonce, and token validation to ensure end-to-end authentication security.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                    Designed and optimised backend services and data pipelines using Supabase and GCP, resolving critical data inconsistencies and implementing scalable database schemas for user metrics, streaks, leaderboards, and health tracking.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                    Integrated Apple HealthKit and third-party IoT/biometric SDKs (e.g., Omron, smart scales, Visbody) to enable real-time ingestion, synchronization, and bidirectional write-back of health data across multiple sources.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    Built advanced product features such as AI-powered nutritional analysis (OCR + LLM APIs), biometric authentication, push notifications, and dynamic data visualisation dashboards.
+                  </li>
+                </p>
               </div>
             </div>
 
