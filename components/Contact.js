@@ -2,7 +2,7 @@ export default function Contact() {
   return (
     <section id="contact" className="min-h-screen flex flex-col justify-center items-center px-6 py-20">
       <div className="max-w-2xl text-center fade-in-section">
-        <p className="text-[#4ecdc4] font-mono mb-4">03. What's Next?</p>
+        <p className="text-[#4ecdc4] font-mono mb-4">08. What&apos;s Next?</p>
         <h2 className="text-5xl font-bold mb-6">Get In Touch</h2>
         <div className="glass-panel p-6 rounded-2xl mb-10">
           <p className="text-gray-400 text-lg leading-relaxed">

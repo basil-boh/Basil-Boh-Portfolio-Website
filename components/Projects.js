@@ -119,7 +119,7 @@ export default function Projects() {
     <section id="projects" className="min-h-screen py-20 px-6">
       <div className="max-w-6xl mx-auto fade-in-section">
         <h2 className="text-4xl font-bold mb-8 flex items-center">
-          <span className="text-[#4ecdc4] text-2xl mr-4">02.</span> My Projects
+          <span className="text-[#4ecdc4] text-2xl mr-4">05.</span> My Projects
         </h2>
 
         <div className="flex flex-wrap justify-center gap-3 mb-12">

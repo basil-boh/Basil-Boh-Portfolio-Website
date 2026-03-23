@@ -120,9 +120,14 @@ export default function About() {
       </div>
 
       {/* Experience Section */}
-      <div className="max-w-6xl w-full fade-in-section mt-16">
+      <div
+        id="experience"
+        className="max-w-6xl w-full fade-in-section mt-16 scroll-mt-24"
+      >
         <div className="glass-panel p-8 rounded-2xl">
-          <h3 className="text-xl font-bold mb-6 text-white">Experience</h3>
+          <h2 className="text-4xl font-bold mb-8 flex items-center">
+            <span className="text-[#4ecdc4] text-2xl mr-4">02.</span> Experience
+          </h2>
           <div className="space-y-6">
             {/* Biohackk */}
             <div className="flex gap-4">
@@ -270,7 +275,9 @@ export default function About() {
       {/* Programmes Section */}
       <div className="max-w-6xl w-full fade-in-section mt-8">
         <div className="glass-panel p-8 rounded-2xl">
-          <h3 className="text-xl font-bold mb-6 text-white">Programmes</h3>
+          <h2 className="text-4xl font-bold mb-8 flex items-center">
+            <span className="text-[#4ecdc4] text-2xl mr-4">03.</span> Programmes
+          </h2>
           <div className="space-y-6">
             {/* Orbital Programme */}
             <div className="flex gap-5 items-start">
@@ -374,13 +381,25 @@ export default function About() {
                   </p>
                 </div>
 
-                {/* Programme photos — assets/Paypal1.jpg & Paypal2.jpg → public/ */}
+                {/* Programme photos — Paypal2, Paypal1 (IMG_0888), Paypal3 (IMG_9962) → public/ */}
                 <div className="mt-4 pt-4 border-t border-white/10">
                   <div
-                    className="flex flex-row gap-2 sm:gap-3 max-w-xs sm:max-w-sm w-full"
+                    className="flex flex-row gap-2 sm:gap-3 max-w-md sm:max-w-lg w-full"
                     role="group"
                     aria-label="PayPal Pathways programme photos"
                   >
+                    <button
+                      type="button"
+                      onClick={() => setPaypalLightboxSrc('/Paypal2.jpg')}
+                      className="flex-1 min-w-0 rounded-md overflow-hidden border border-white/10 ring-1 ring-inset ring-white/5 bg-white/5 p-0 cursor-pointer hover:border-[#4ecdc4]/40 hover:ring-[#4ecdc4]/30 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4ecdc4]"
+                      aria-label="Enlarge PayPal Pathways photo"
+                    >
+                      <img
+                        src="/Paypal2.jpg"
+                        alt=""
+                        className="w-full h-28 sm:h-36 object-cover block pointer-events-none"
+                      />
+                    </button>
                     <button
                       type="button"
                       onClick={() => setPaypalLightboxSrc('/Paypal1.jpg')}
@@ -395,12 +414,12 @@ export default function About() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setPaypalLightboxSrc('/Paypal2.jpg')}
+                      onClick={() => setPaypalLightboxSrc('/Paypal3.jpg')}
                       className="flex-1 min-w-0 rounded-md overflow-hidden border border-white/10 ring-1 ring-inset ring-white/5 bg-white/5 p-0 cursor-pointer hover:border-[#4ecdc4]/40 hover:ring-[#4ecdc4]/30 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4ecdc4]"
                       aria-label="Enlarge PayPal Pathways photo"
                     >
                       <img
-                        src="/Paypal2.jpg"
+                        src="/Paypal3.jpg"
                         alt=""
                         className="w-full h-28 sm:h-36 object-cover block pointer-events-none"
                       />
@@ -480,7 +499,9 @@ export default function About() {
 
       <div className="max-w-6xl w-full fade-in-section mt-8">
         <div className="glass-panel p-8 rounded-2xl">
-          <h3 className="text-xl font-bold mb-8 text-white text-center">Tech Stack</h3>
+          <h2 className="text-4xl font-bold mb-8 flex items-center">
+            <span className="text-[#4ecdc4] text-2xl mr-4">04.</span> Tech Stack
+          </h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             {/* Frontend */}

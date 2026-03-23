@@ -12,8 +12,11 @@ export default function Navigation() {
           <a href="#about" className="nav-link hover:text-white transition">
             About
           </a>
+          <a href="#experience" className="nav-link hover:text-white transition">
+            Experience
+          </a>
           <a href="#projects" className="nav-link hover:text-white transition">
-            Work
+            Projects
           </a>
           <a href="#contact" className="nav-link hover:text-white transition">
             Contact

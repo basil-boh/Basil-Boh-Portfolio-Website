@@ -366,7 +366,7 @@ export default function Fintech() {
     <section id="fintech" className="min-h-screen py-20 px-6">
       <div className="max-w-6xl mx-auto fade-in-section">
         <h2 className="text-4xl font-bold mb-8 flex items-center">
-          <span className="text-[#4ecdc4] text-2xl mr-4">04.</span> Fintech
+          <span className="text-[#4ecdc4] text-2xl mr-4">07.</span> Fintech
         </h2>
 
         <div className="glass-panel p-8 rounded-2xl">
