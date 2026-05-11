@@ -1,67 +1,8 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { getAllProjects } from '@/lib/projects'
 
-const projects = [
-  {
-    id: 1,
-    title: 'Data Visualization Dashboard',
-    description:
-      'Interactive dashboard for visualizing complex datasets with filtering and export capabilities.',
-    mediaType: 'image',
-    image: '/projects/Data.jpg',
-    category: 'data',
-    technologies: ['React', 'React Bootstrap', 'Javascript', 'Papa Parse'],
-    github: 'https://github.com/basil-boh/Data-Dashboard',
-    demo: 'https://basil-data-visualization.netlify.app',
-  },
-  {
-    id: 2,
-    title: 'Object Motion Detection',
-    description:
-      'An application for detecting and tracking moving objects, providing real-time monitoring and improved security.',
-    mediaType: 'video',
-    image: '/projects/recording.mp4',
-    category: 'data',
-    technologies: ['Python', 'OpenCV', 'PyTorch', 'NumPy', 'YOLO'],
-    github: 'https://github.com/basil-boh/Object-Detection',
-    demo: 'https://project3-demo.netlify.app',
-  },
-  {
-    id: 3,
-    title: 'Stock Price Prediction Model',
-    description:
-      'A machine learning model for predicting stock prices using historical data and sentiment analysis.',
-    mediaType: 'image',
-    image: '/projects/Stock_Predictor.jpg',
-    category: 'data',
-    technologies: ['Python', 'TensorFlow', 'Pandas', 'Scikit-learn'],
-    github: 'https://github.com/basil-boh/Stock-Predictor',
-    demo: 'https://project4-demo.netlify.app',
-  },
-  {
-    id: 4,
-    title: 'Social Media Platform',
-    description:
-      'A social media platform with real-time messaging, post sharing, and user profiles.',
-    mediaType: 'image',
-    image: '/projects/DoWhat2.jpg',
-    category: 'mobile',
-    technologies: ['React Native', 'Supabase', 'Expo', 'TypeScript'],
-    github: 'https://github.com/yourusername/project5',
-    demo: 'https://project5-demo.netlify.app',
-  },
-  {
-    id: 5,
-    title: 'Resume Analyzer',
-    description:
-      'An AI-powered web application designed to optimize resumes by tailoring them to specific job roles.',
-    mediaType: 'image',
-    image: '/projects/Resume.jpg',
-    category: 'web',
-    technologies: ['Python', 'FastAPI', 'Uvicorn', 'CORS Middleware'],
-    github: 'https://github.com/yourusername/project6',
-    demo: 'https://project6-demo.netlify.app',
-  },
-]
+const projects = getAllProjects()
 
 function ProjectMedia({ project }) {
   const commonClass =
@@ -103,7 +44,10 @@ function ProjectMedia({ project }) {
 }
 
 export default function Projects() {
+  const router = useRouter()
   const [filter, setFilter] = useState('all')
+
+  const goToProject = (slug) => router.push(`/projects/${slug}`)
 
   const filteredProjects =
     filter === 'all' ? projects : projects.filter((p) => p.category === filter)
@@ -143,22 +87,35 @@ export default function Projects() {
           {filteredProjects.map((project) => (
             <article
               key={project.id}
-              className="glass-panel rounded-xl overflow-hidden flex flex-col group hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition duration-300"
+              role="link"
+              tabIndex={0}
+              onClick={() => goToProject(project.slug)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  goToProject(project.slug)
+                }
+              }}
+              aria-label={`${project.title} — view details`}
+              className="relative cursor-pointer glass-panel rounded-xl overflow-hidden flex flex-col group hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)] hover:border-[#4ecdc4]/30 transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4ecdc4]"
             >
               <div className="relative h-52 overflow-hidden group/media border-b border-white/5">
                 <ProjectMedia project={project} />
                 <div
-                  className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300 bg-[#050505]/85 backdrop-blur-sm"
+                  className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300"
                   style={{
                     background:
                       'linear-gradient(135deg, rgba(78,205,196,0.88) 0%, rgba(85,98,112,0.9) 100%)',
                   }}
                 >
+                  {/* stopPropagation so these don't also trigger the card's onClick */}
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#050505] text-[#4ecdc4] text-sm font-semibold hover:bg-white hover:text-[#050505] transition"
+                    aria-label={`${project.title} — GitHub repository`}
                   >
                     <i className="ph ph-github-logo text-lg"></i>
                     Code
@@ -167,7 +124,9 @@ export default function Projects() {
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#050505] text-[#4ecdc4] text-sm font-semibold hover:bg-white hover:text-[#050505] transition"
+                    aria-label={`${project.title} — live demo`}
                   >
                     <i className="ph ph-arrow-square-out text-lg"></i>
                     Demo
@@ -176,7 +135,9 @@ export default function Projects() {
               </div>
 
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold mb-2 text-white">{project.title}</h3>
+                <h3 className="text-xl font-bold mb-2 text-white group-hover:text-[#4ecdc4] transition-colors">
+                  {project.title}
+                </h3>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-grow">
                   {project.description}
                 </p>

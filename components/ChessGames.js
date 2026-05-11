@@ -1,6 +1,68 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Chess } from 'chess.js'
 
+// Hoisted outside the component so the reference is stable across renders.
+// (Declaring this inside the component made `useCallback([..., games])` change
+// identity every render, which re-fired the board-sync effect, which called
+// setChess(new Chess()) — a new object each time — triggering an infinite loop.)
+const games = [
+  {
+    title: 'Bishop\'s Opening',
+    white: 'Basil',
+    whiteRating: 1896,
+    black: 'Boxingcat5',
+    blackRating: 1860,
+    moves: [
+      'e4', 'e5', 'Bc4', 'Nc6', 'Ne2', 'Bc5', 'd3', 'Nf6', 'Be3', 'd6',
+      'Bxc5', 'dxc5', 'O-O', 'b6', 'c3', 'Bg4', 'f3', 'Be6', 'Bb5', 'Bd7',
+      'Qa4', 'Nb8', 'Bxd7+', 'Qxd7', 'Qc2', 'Nc6', 'f4', 'O-O-O', 'fxe5', 'Nxe5',
+      'd4', 'cxd4', 'cxd4', 'Ng6', 'Nbc3', 'Rhe8', 'Rad1', 'Qc6', 'd5', 'Qc5+',
+      'Kh1', 'Nxe4', 'b4', 'Qc4', 'Rd4', 'Qa6', 'Nxe4', 'f5', 'N4c3', 'Re5',
+      'a4', 'Rde8', 'd6', 'Kd7', 'dxc7+', 'Kxc7', 'Nb5+', 'Kb7', 'Qc7+', 'Ka8',
+      'Rfd1', 'Rxe2', 'Rd8+', 'Qc8', 'Rxc8+', 'Rxc8', 'Qxc8#'
+    ]
+  },
+  {
+    title: 'Caro Kann Defense',
+    white: 'Ralyxthefirst',
+    whiteRating: 1824,
+    black: 'Basil',
+    blackRating: 1821,
+    flipBoard: true, // Show from Black's perspective
+    moves: [
+      'd4', 'c6', 'Bf4', 'd5', 'e3', 'Nf6', 'c3', 'Bg4', 'Be2', 'Bxe2',
+      'Nxe2', 'e6', 'Bg3', 'c5', 'O-O', 'cxd4', 'cxd4', 'Nc6', 'a3', 'Be7',
+      'Nd2', 'O-O', 'b4', 'a6', 'Nb3', 'Rc8', 'Nc5', 'Qb6', 'Rc1', 'Rfd8',
+      'Qb3', 'Nd7', 'h3', 'Nxc5', 'dxc5', 'Qa7', 'Rb1', 'Bf6', 'Rfc1', 'Ne5',
+      'Bxe5', 'Bxe5', 'Nd4', 'Qb8', 'a4', 'Qc7', 'Rc2', 'Bh2+', 'Kf1', 'Be5',
+      'Rbc1', 'Bxd4', 'exd4', 'Qf4', 'Qe3', 'Qf5', 'b5', 'axb5', 'axb5', 'f6',
+      'c6', 'bxc6', 'Rxc6', 'Rxc6', 'Rxc6', 'Qb1+', 'Ke2', 'Qxb5+', 'Kf3', 'Qxc6',
+      'Kg3', 'Qd6+', 'f4', 'Rc8', 'Kh2', 'Rc4', 'g3', 'Kf7', 'h4', 'Qc7',
+      'Kh3', 'Rc3', 'Qe2', 'Qxf4', 'Qe1', 'Qf5+', 'Kh2', 'Rc2+', 'Kg1', 'Qh3',
+      'Qd1', 'Qh2+', 'Kf1', 'Qf2#'
+    ]
+  },
+  {
+    title: 'Sicilian Defense',
+    white: 'Basil',
+    whiteRating: 1811,
+    black: 'mugnasskaalzen',
+    blackRating: 1787,
+    moves: [
+      'e4', 'c5', 'Bc4', 'Nc6', 'c3', 'e6', 'd3', 'd5', 'exd5', 'exd5',
+      'Bb5', 'Nf6', 'Ne2', 'Be7', 'O-O', 'Rb8', 'Bg5', 'O-O', 'a3', 'a6',
+      'Ba4', 'b5', 'Bc2', 'Ne5', 'Re1', 'Ng6', 'Ng3', 'Bg4', 'f3', 'Bh5',
+      'Nxh5', 'Nxh5', 'Bxe7', 'Nxe7', 'Nd2', 'Nf6', 'Nf1', 'Ng6', 'Ng3', 'd4',
+      'Ne4', 'dxc3', 'bxc3', 'Nxe4', 'fxe4', 'c4', 'd4', 'Qb6', 'Qf3', 'a5',
+      'e5', 'b4', 'axb4', 'axb4', 'Rab1', 'b3', 'Bd1', 'Qa5', 'Be2', 'Qxc3',
+      'Qxc3', 'Rfc8', 'Rec1', 'Nf4', 'Bf1', 'Nd5', 'Qd2', 'c3', 'Rxc3', 'Nxc3',
+      'Rb2', 'Ne4', 'Qd3', 'Nc3', 'h3', 'Na2', 'Rxb3', 'Rxb3', 'Qxb3', 'Nc1',
+      'Qb7', 'Rf8', 'd5', 'Na2', 'd6', 'Nc3', 'd7', 'Nd1', 'Qc8', 'Ne3',
+      'Qxf8+', 'Kxf8', 'd8=Q#'
+    ]
+  }
+]
+
 export default function ChessGames() {
   const [selectedGameIndex, setSelectedGameIndex] = useState(0)
   const [currentMoveIndex, setCurrentMoveIndex] = useState(0)
@@ -8,65 +70,6 @@ export default function ChessGames() {
   const [isUserInteracting, setIsUserInteracting] = useState(false)
   const autoPlayTimerRef = useRef(null)
   const userInteractionTimerRef = useRef(null)
-
-  // Placeholder chess games in PGN format
-  const games = [
-    {
-      title: 'Bishop\'s Opening',
-      white: 'Basil',
-      whiteRating: 1896,
-      black: 'Boxingcat5',
-      blackRating: 1860,
-      moves: [
-        'e4', 'e5', 'Bc4', 'Nc6', 'Ne2', 'Bc5', 'd3', 'Nf6', 'Be3', 'd6',
-        'Bxc5', 'dxc5', 'O-O', 'b6', 'c3', 'Bg4', 'f3', 'Be6', 'Bb5', 'Bd7',
-        'Qa4', 'Nb8', 'Bxd7+', 'Qxd7', 'Qc2', 'Nc6', 'f4', 'O-O-O', 'fxe5', 'Nxe5',
-        'd4', 'cxd4', 'cxd4', 'Ng6', 'Nbc3', 'Rhe8', 'Rad1', 'Qc6', 'd5', 'Qc5+',
-        'Kh1', 'Nxe4', 'b4', 'Qc4', 'Rd4', 'Qa6', 'Nxe4', 'f5', 'N4c3', 'Re5',
-        'a4', 'Rde8', 'd6', 'Kd7', 'dxc7+', 'Kxc7', 'Nb5+', 'Kb7', 'Qc7+', 'Ka8',
-        'Rfd1', 'Rxe2', 'Rd8+', 'Qc8', 'Rxc8+', 'Rxc8', 'Qxc8#'
-      ]
-    },
-    {
-      title: 'Caro Kann Defense',
-      white: 'Ralyxthefirst',
-      whiteRating: 1824,
-      black: 'Basil',
-      blackRating: 1821,
-      flipBoard: true, // Show from Black's perspective
-      moves: [
-        'd4', 'c6', 'Bf4', 'd5', 'e3', 'Nf6', 'c3', 'Bg4', 'Be2', 'Bxe2',
-        'Nxe2', 'e6', 'Bg3', 'c5', 'O-O', 'cxd4', 'cxd4', 'Nc6', 'a3', 'Be7',
-        'Nd2', 'O-O', 'b4', 'a6', 'Nb3', 'Rc8', 'Nc5', 'Qb6', 'Rc1', 'Rfd8',
-        'Qb3', 'Nd7', 'h3', 'Nxc5', 'dxc5', 'Qa7', 'Rb1', 'Bf6', 'Rfc1', 'Ne5',
-        'Bxe5', 'Bxe5', 'Nd4', 'Qb8', 'a4', 'Qc7', 'Rc2', 'Bh2+', 'Kf1', 'Be5',
-        'Rbc1', 'Bxd4', 'exd4', 'Qf4', 'Qe3', 'Qf5', 'b5', 'axb5', 'axb5', 'f6',
-        'c6', 'bxc6', 'Rxc6', 'Rxc6', 'Rxc6', 'Qb1+', 'Ke2', 'Qxb5+', 'Kf3', 'Qxc6',
-        'Kg3', 'Qd6+', 'f4', 'Rc8', 'Kh2', 'Rc4', 'g3', 'Kf7', 'h4', 'Qc7',
-        'Kh3', 'Rc3', 'Qe2', 'Qxf4', 'Qe1', 'Qf5+', 'Kh2', 'Rc2+', 'Kg1', 'Qh3',
-        'Qd1', 'Qh2+', 'Kf1', 'Qf2#'
-      ]
-    },
-    {
-      title: 'Sicilian Defense',
-      white: 'Basil',
-      whiteRating: 1811,
-      black: 'mugnasskaalzen',
-      blackRating: 1787,
-      moves: [
-        'e4', 'c5', 'Bc4', 'Nc6', 'c3', 'e6', 'd3', 'd5', 'exd5', 'exd5',
-        'Bb5', 'Nf6', 'Ne2', 'Be7', 'O-O', 'Rb8', 'Bg5', 'O-O', 'a3', 'a6',
-        'Ba4', 'b5', 'Bc2', 'Ne5', 'Re1', 'Ng6', 'Ng3', 'Bg4', 'f3', 'Bh5',
-        'Nxh5', 'Nxh5', 'Bxe7', 'Nxe7', 'Nd2', 'Nf6', 'Nf1', 'Ng6', 'Ng3', 'd4',
-        'Ne4', 'dxc3', 'bxc3', 'Nxe4', 'fxe4', 'c4', 'd4', 'Qb6', 'Qf3', 'a5',
-        'e5', 'b4', 'axb4', 'axb4', 'Rab1', 'b3', 'Bd1', 'Qa5', 'Be2', 'Qxc3',
-        'Qxc3', 'Rfc8', 'Rec1', 'Nf4', 'Bf1', 'Nd5', 'Qd2', 'c3', 'Rxc3', 'Nxc3',
-        'Rb2', 'Ne4', 'Qd3', 'Nc3', 'h3', 'Na2', 'Rxb3', 'Rxb3', 'Qxb3', 'Nc1',
-        'Qb7', 'Rf8', 'd5', 'Na2', 'd6', 'Nc3', 'd7', 'Nd1', 'Qc8', 'Ne3',
-        'Qxf8+', 'Kxf8', 'd8=Q#'
-      ]
-    }
-  ]
 
   const [chess, setChess] = useState(new Chess())
   const [board, setBoard] = useState(chess.board())
@@ -101,7 +104,7 @@ export default function ChessGames() {
     } catch (error) {
       console.error('Error updating board:', error, 'at move index:', moveIndex)
     }
-  }, [selectedGameIndex, games])
+  }, [selectedGameIndex])
 
   // Update board when move index or selected game changes
   useEffect(() => {

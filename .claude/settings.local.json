@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s http://127.0.0.1:4848/)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://127.0.0.1:4848/projects/dataforge)",
+      "Bash(curl -s http://127.0.0.1:4848/projects/dataforge)",
+      "Bash(kill 71339)",
+      "Bash(rm -f '/tmp/portfolio-shots/*.jpg')",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --hide-scrollbars --window-size=1440,900 --virtual-time-budget=8000 --screenshot=/tmp/portfolio-shots/01-home-hero.jpg http://127.0.0.1:4848/)",
+      "Bash(/usr/bin/curl -s http://127.0.0.1:4848/ -o /tmp/home.html)",
+      "Read(//tmp/**)",
+      "Bash(/usr/bin/grep -oE 'data-text=\"[^\"]*\"' /tmp/home.html)",
+      "Bash(/usr/bin/grep -c 'fade-in-section' /tmp/home.html)",
+      "Bash(/usr/bin/grep -c 'is-visible' /tmp/home.html)",
+      "Bash(/usr/bin/head -c 2000 /tmp/home.html)",
+      "Bash(/usr/bin/grep -oE 'error|Error|exception' /tmp/home.html)",
+      "Bash(git restore *)",
+      "Bash(gh api *)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --no-sandbox --hide-scrollbars --window-size=1440,900 --virtual-time-budget=8000 --screenshot=/Users/basil/Desktop/Basil-New-Portfolio/public/projects/dataforge/hero.png https://dataforge-eosin.vercel.app)",
+      "Bash(sips -s format jpeg /Users/basil/Desktop/Basil-New-Portfolio/public/projects/dataforge/hero.png --out /Users/basil/Desktop/Basil-New-Portfolio/public/projects/dataforge/hero.jpg)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --no-sandbox --hide-scrollbars --window-size=1440,1800 --virtual-time-budget=10000 --screenshot=/Users/basil/Desktop/Basil-New-Portfolio/public/projects/dataforge/tall.png https://dataforge-eosin.vercel.app)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/projects/dataforge)",
+      "Bash(lsof -ti:3000)",
+      "Bash(xargs kill -9)",
+      "Bash(PORT=3100 npm run start)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3100/projects/dataforge)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3100/)",
+      "Bash(lsof -ti:3000,3100)"
+    ]
+  }
+}
