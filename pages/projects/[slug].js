@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
+import MunchlyHeroThumb from '@/components/MunchlyHeroThumb'
+import TechLogo, { detectBrand } from '@/components/TechLogo'
 import {
   getAllProjects,
   getAllProjectSlugs,
@@ -8,6 +10,13 @@ import {
 } from '@/lib/projects'
 
 function HeroMedia({ project }) {
+  if (project.mediaType === 'custom' && project.customMedia === 'munchly-hero') {
+    return (
+      <div className="w-full aspect-[16/9] sm:aspect-[16/8]">
+        <MunchlyHeroThumb variant="hero" />
+      </div>
+    )
+  }
   if (project.mediaType === 'video') {
     return (
       <video
@@ -23,7 +32,102 @@ function HeroMedia({ project }) {
   return <img src={project.image} alt={project.title} className="w-full h-auto" />
 }
 
+/**
+ * Phone-shaped frame for mobile screenshots in the project showcase.
+ * Pure CSS — never reads pixels, just wraps an <img src>.
+ */
+function PhoneFramedScreenshot({ shot }) {
+  return (
+    <div className="relative mx-auto w-full" style={{ maxWidth: 260 }}>
+      <div
+        className="relative bg-[#1a1411] rounded-[34px] p-[6px] w-full"
+        style={{
+          boxShadow:
+            '0 30px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08)',
+        }}
+      >
+        <div
+          className="relative w-full rounded-[28px] overflow-hidden bg-black"
+          style={{ aspectRatio: '9 / 19.5' }}
+        >
+          {shot.isVideo ? (
+            <video
+              className="absolute inset-0 w-full h-full object-cover object-top"
+              src={shot.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <img
+              src={shot.src}
+              alt={shot.caption || ''}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover object-top"
+            />
+          )}
+          {/* Dynamic-island-style notch */}
+          <div className="absolute top-2 left-1/2 -translate-x-1/2 h-5 w-24 rounded-full bg-[#0a0a0a]" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Browser-chrome frame for web screenshots. Mimics a Safari/Chrome window
+ * with traffic-light dots + URL bar. Pure CSS — just wraps an <img src>.
+ */
+function BrowserFramedScreenshot({ shot }) {
+  return (
+    <div className="relative rounded-xl overflow-hidden border border-white/10 bg-[#0d0d0d] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]">
+      {/* Title bar */}
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-[#161616] border-b border-white/5">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        </div>
+        <div className="flex-1 min-w-0 flex justify-center">
+          <div className="inline-flex items-center gap-2 max-w-full px-3 py-1 rounded-md bg-[#0a0a0a] border border-white/5 text-[11px] font-mono text-gray-400 truncate">
+            <i className="ph ph-lock-key-fill text-[10px] text-emerald-400/80" aria-hidden />
+            <span className="truncate">{shot.url || 'munchly.sg'}</span>
+          </div>
+        </div>
+        <span className="w-12 flex-shrink-0" aria-hidden />
+      </div>
+      {/* Screenshot */}
+      <div className="relative bg-white">
+        {shot.isVideo ? (
+          <video
+            className="w-full h-auto block"
+            src={shot.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          <img
+            src={shot.src}
+            alt={shot.caption || ''}
+            loading="lazy"
+            className="w-full h-auto block"
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
 function Screenshot({ shot }) {
+  if (shot.device === 'mobile') {
+    return <PhoneFramedScreenshot shot={shot} />
+  }
+  if (shot.device === 'web') {
+    return <BrowserFramedScreenshot shot={shot} />
+  }
   if (shot.isVideo) {
     return (
       <video
@@ -58,6 +162,18 @@ export default function ProjectPage({ project, related }) {
 
   const ogImage =
     project.image && !project.image.match(/\.(mp4|webm|mov)$/i) ? project.image : null
+
+  // Mobile screenshots get a responsive phone-frame grid; web screenshots get
+  // a browser-chrome frame stack; everything else falls back to the legacy
+  // single-column figure layout.
+  const mobileShots =
+    project.screenshots?.filter((s) => s.device === 'mobile') ?? []
+  const webShots =
+    project.screenshots?.filter((s) => s.device === 'web') ?? []
+  const otherShots =
+    project.screenshots?.filter(
+      (s) => s.device !== 'mobile' && s.device !== 'web'
+    ) ?? []
 
   return (
     <>
@@ -201,6 +317,38 @@ export default function ProjectPage({ project, related }) {
               </section>
             ) : null}
 
+            {project.engineeringHighlights && project.engineeringHighlights.length > 0 ? (
+              <section className="mb-14">
+                <h2 className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-4">
+                  Engineering highlights
+                </h2>
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-2xl">
+                  The infra and architecture decisions that make this feel like a
+                  shipped product, not a demo.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {project.engineeringHighlights.map((h, i) => (
+                    <div
+                      key={i}
+                      className="glass-panel rounded-xl p-5 border border-white/10 hover:border-[#4ecdc4]/30 transition duration-300"
+                    >
+                      <div className="flex items-start gap-3 mb-3">
+                        <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#4ecdc4]/10 border border-[#4ecdc4]/20 text-[#4ecdc4] flex-shrink-0">
+                          <i className={`ph ${h.icon} text-lg`} aria-hidden />
+                        </span>
+                        <h3 className="text-base font-semibold text-white leading-snug pt-1">
+                          {h.title}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-gray-400 leading-relaxed">
+                        {h.blurb}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             {project.techStack && project.techStack.length > 0 ? (
               <section className="mb-14">
                 <h2 className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-4">
@@ -215,12 +363,32 @@ export default function ProjectPage({ project, related }) {
                       <p className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-3">
                         {group.category}
                       </p>
-                      <ul className="space-y-1.5">
-                        {group.items.map((item, i) => (
-                          <li key={i} className="text-sm text-gray-200">
-                            {item}
-                          </li>
-                        ))}
+                      <ul className="space-y-2">
+                        {group.items.map((item, i) => {
+                          const brand = detectBrand(item)
+                          return (
+                            <li
+                              key={i}
+                              className="flex items-start gap-3 text-sm text-gray-200 leading-snug"
+                            >
+                              {brand ? (
+                                // White "favicon plate" — gives every logo a
+                                // consistent readable surface, including dark
+                                // marks (Expo / Next.js / Vercel / Sentry /
+                                // Railway) that would disappear against the
+                                // page background.
+                                <span className="flex items-center justify-center w-6 h-6 mt-px shrink-0 rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,0.4)] p-1">
+                                  <TechLogo brand={brand} size="list" />
+                                </span>
+                              ) : (
+                                <span className="w-6 h-6 mt-px shrink-0 flex items-center justify-center">
+                                  <span className="w-1 h-1 rounded-full bg-[#4ecdc4]/60" />
+                                </span>
+                              )}
+                              <span className="pt-0.5">{item}</span>
+                            </li>
+                          )
+                        })}
                       </ul>
                     </div>
                   ))}
@@ -244,13 +412,63 @@ export default function ProjectPage({ project, related }) {
               </section>
             )}
 
-            {project.screenshots && project.screenshots.length > 1 ? (
+            {mobileShots.length > 0 ? (
+              <section className="mb-14">
+                <h2 className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-4">
+                  Mobile app — selected screens
+                </h2>
+                <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-2xl">
+                  Built once in Expo / React Native, shipped natively to iOS and
+                  Android via EAS.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-6">
+                  {mobileShots.map((shot, i) => (
+                    <figure key={i} className="flex flex-col items-center">
+                      <PhoneFramedScreenshot shot={shot} />
+                      {shot.caption ? (
+                        <figcaption className="mt-4 text-xs text-gray-400 leading-relaxed text-center max-w-[260px]">
+                          {shot.caption}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {webShots.length > 0 ? (
+              <section className="mb-14">
+                <h2 className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-4">
+                  Web platform — selected screens
+                </h2>
+                <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-2xl">
+                  Built with Next.js 16 (App Router) + Tailwind v4 + Radix on
+                  Vercel. Shares the same Supabase backend as the mobile app, so
+                  browsing on web and ordering on mobile work off one source of
+                  truth.
+                </p>
+                <div className="space-y-10">
+                  {webShots.map((shot, i) => (
+                    <figure key={i}>
+                      <BrowserFramedScreenshot shot={shot} />
+                      {shot.caption ? (
+                        <figcaption className="mt-4 text-sm text-gray-400 leading-relaxed max-w-3xl">
+                          {shot.caption}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {otherShots.length > 1 ? (
               <section className="mb-14">
                 <h2 className="text-xs font-mono uppercase tracking-[0.18em] text-[#4ecdc4] mb-4">
                   Screenshots
                 </h2>
                 <div className="space-y-6">
-                  {project.screenshots.map((shot, i) => (
+                  {otherShots.map((shot, i) => (
                     <figure
                       key={i}
                       className="rounded-xl overflow-hidden border border-white/10 bg-black/30"

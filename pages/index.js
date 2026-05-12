@@ -6,7 +6,7 @@ import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Projects from '@/components/Projects'
 import ChessGames from '@/components/ChessGames'
-import Fintech from '@/components/Fintech'
+import Hackathons from '@/components/Hackathons'
 import Contact from '@/components/Contact'
 
 export default function Home() {
@@ -51,7 +51,7 @@ export default function Home() {
           <About />
           <Projects />
           <ChessGames />
-          <Fintech />
+          <Hackathons />
           <Contact />
         </main>
       </div>

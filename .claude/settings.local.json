@@ -27,7 +27,30 @@
       "Bash(PORT=3100 npm run start)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3100/projects/dataforge)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3100/)",
-      "Bash(lsof -ti:3000,3100)"
+      "Bash(lsof -ti:3000,3100)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/1.png /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-ai-engineer.png)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/2.png /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-grab.png)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/3.png /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-gemini.png)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/4.png /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-hack-and-roll.png)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/5.jpeg /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-sea-openai.jpeg)",
+      "Bash(cp /Users/basil/.claude/image-cache/ad009188-5e56-45d9-b0e3-d37e59ba3d8a/6.jpeg /Users/basil/Desktop/Basil-New-Portfolio/public/hackathon-ralphthon.jpeg)",
+      "Bash(xargs -I {} ls -la \"{}\")",
+      "Bash(sort -k5 -n -r)",
+      "Read(//Users/basil/Desktop/munchly/**)",
+      "Read(//Users/basil/Desktop/**)",
+      "Bash(sips -s format jpeg -s formatOptions 90 --resampleWidth 1600 '/Users/basil/Desktop/everything-munchly/MUNCHLY Mascot Drafts/Official/Logo:Banner.png' --out /Users/basil/Desktop/everything-munchly/screenshots-jpeg/brand-banner.jpg)",
+      "Bash(sips -s format jpeg -s formatOptions 90 --resampleWidth 1400 '/Users/basil/Desktop/everything-munchly/MUNCHLY Mascot Drafts/Official/IG-1.png' --out /Users/basil/Desktop/everything-munchly/screenshots-jpeg/brand-ig.jpg)",
+      "Bash(sips -s format jpeg -s formatOptions 90 --resampleWidth 1200 '/Users/basil/Desktop/everything-munchly/MUNCHLY Mascot Drafts/Draft 1/munchly-mascot.png' --out /Users/basil/Desktop/everything-munchly/screenshots-jpeg/mascot.jpg)",
+      "Bash(sips -s format jpeg -s formatOptions 90 --resampleWidth 1200 '/Users/basil/Desktop/everything-munchly/MUNCHLY Mascot Drafts/Draft 1/munchly-mascot-waving.png' --out /Users/basil/Desktop/everything-munchly/screenshots-jpeg/mascot-waving.jpg)",
+      "Bash(sips -s format jpeg -s formatOptions 90 --resampleWidth 1200 '/Users/basil/Desktop/everything-munchly/MUNCHLY Mascot Drafts/Draft 1/munchly-title-mascot.png' --out /Users/basil/Desktop/everything-munchly/screenshots-jpeg/mascot-title.jpg)",
+      "Bash(rm -rf .next)",
+      "Bash(npx next *)",
+      "Bash(pdftotext -layout /Users/basil/Desktop/everything-munchly/Munchly-Infographics/Munchly_BD_Deck.pdf -)",
+      "Read(//Users/basil/.claude/image-cache/8bf5f569-a816-47b9-a841-4ba7fe79ac6e/**)",
+      "Bash(shasum /Users/basil/.claude/image-cache/8bf5f569-a816-47b9-a841-4ba7fe79ac6e/8.png /Users/basil/.claude/image-cache/8bf5f569-a816-47b9-a841-4ba7fe79ac6e/9.png)",
+      "Read(//Users/basil/Downloads/**)",
+      "Bash(cp /Users/basil/Downloads/sentry-icon.svg /Users/basil/Desktop/Basil-New-Portfolio/public/projects/munchly/logos/sentry.svg)",
+      "Bash(node *)"
     ]
   }
 }
