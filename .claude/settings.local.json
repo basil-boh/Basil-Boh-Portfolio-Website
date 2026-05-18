@@ -50,7 +50,20 @@
       "Bash(shasum /Users/basil/.claude/image-cache/8bf5f569-a816-47b9-a841-4ba7fe79ac6e/8.png /Users/basil/.claude/image-cache/8bf5f569-a816-47b9-a841-4ba7fe79ac6e/9.png)",
       "Read(//Users/basil/Downloads/**)",
       "Bash(cp /Users/basil/Downloads/sentry-icon.svg /Users/basil/Desktop/Basil-New-Portfolio/public/projects/munchly/logos/sentry.svg)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf=/Users/basil/Desktop/Basil_Resume.pdf --print-to-pdf-no-header file:///tmp/basil_resume.html)",
+      "WebFetch(domain:devpost.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(rm -rf snaproom-clone)",
+      "Bash(gh repo *)",
+      "Bash(cp /Users/basil/.claude/image-cache/8409af63-2ab0-4de6-969d-89872d7e579e/2.png landing.png)",
+      "Bash(cp /Users/basil/.claude/image-cache/8409af63-2ab0-4de6-969d-89872d7e579e/3.png processing.png)",
+      "Bash(file *.png *.gif)",
+      "Bash(sed -n '1,40p;240,320p' 'pages/projects/[slug].js')",
+      "Bash(sed -n '1,30p' components/ThreeBackground.js)",
+      "Bash(sed -n '200,265p' 'pages/projects/[slug].js')",
+      "Bash(sed -n '440,560p' 'pages/projects/[slug].js')",
+      "WebFetch(domain:aie-sg-day1.vercel.app)"
     ]
   }
 }

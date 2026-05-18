@@ -139,8 +139,11 @@ export default function ThreeBackground() {
     }
 
     const handleMouseDown = (event) => {
-      // Prevent text selection
-      event.preventDefault()
+      // Don't call preventDefault() here — this listener is on `window`, so
+      // it fires for every click on the page (including nav links/buttons).
+      // Preventing the mousedown default swallowed clicks on UI elements.
+      // Text selection during a background drag is still blocked in
+      // handleMouseMove (and #canvas-container has user-select: none).
       isMouseDown = true
       mouseX = event.clientX - windowHalfX
       mouseY = event.clientY - windowHalfY

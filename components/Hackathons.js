@@ -1,18 +1,27 @@
 export default function Hackathons() {
   const hackathons = [
     {
-      name: 'Gemini Hackathon',
-      date: '10 Jan 2026',
+      name: 'Sea x OpenAI Regional Codex Hackathon',
+      date: '6 Jun 2026',
+      upcoming: true,
       description:
-        'Built with the Gemini API across multimodal reasoning, tool use, and long-context workflows.',
-      image: '/hackathon-gemini.png',
+        'Regional hackathon co-hosted by Sea and OpenAI, focused on building with Codex and OpenAI tooling across Southeast Asia.',
+      image: '/hackathon-sea-openai.jpeg',
     },
     {
-      name: 'NUS Hack&Roll',
-      date: '17 Jan 2026',
+      name: 'Ralphthon @SG',
+      date: '17 May 2026',
+      role: '2nd Place Winner',
       description:
-        "Singapore's largest student-run 24-hour hackathon, hosted by NUS Hackers — built and shipped a full project end-to-end against the clock.",
-      image: '/hackathon-hack-and-roll.png',
+        'Won 2nd place building SnapRoom, a platform that turns a single room image into a walkable 3D world using Gaussian-splat world generation, AI-generated object meshes, and a companion mobile AR viewer.',
+      image: '/hackathon-ralphthon.jpeg',
+    },
+    {
+      name: 'AI Engineer Hackathon',
+      date: '9 May 2026',
+      description:
+        'Shipped an end-to-end AI engineering prototype, agents, retrieval, and evaluation, under a tight time-boxed build alongside OpenAI, Cursor, Vercel, Google DeepMind and ElevenLabs.',
+      image: '/hackathon-ai-engineer.png',
     },
     {
       name: 'GrabMaps Hackathon',
@@ -22,27 +31,18 @@ export default function Hackathons() {
       image: '/hackathon-grab.png',
     },
     {
-      name: 'AI Engineer Hackathon',
-      date: '9 May 2026',
+      name: 'NUS Hack&Roll',
+      date: '17 Jan 2026',
       description:
-        'Shipped an end-to-end AI engineering prototype — agents, retrieval, and evaluation — under a tight time-boxed build alongside OpenAI, Cursor, Vercel, Google DeepMind and ElevenLabs.',
-      image: '/hackathon-ai-engineer.png',
+        "Singapore's largest student-run 24-hour hackathon, hosted by NUS Hackers, built and shipped a full project end-to-end against the clock.",
+      image: '/hackathon-hack-and-roll.png',
     },
     {
-      name: 'Ralphthon @SG',
-      date: '17 May 2026',
-      upcoming: true,
+      name: 'Gemini Hackathon',
+      date: '10 Jan 2026',
       description:
-        'Singapore community hackathon supported by OpenAI — building rapid, irreverent prototypes on the latest OpenAI models.',
-      image: '/hackathon-ralphthon.jpeg',
-    },
-    {
-      name: 'Sea x OpenAI Regional Codex Hackathon',
-      date: '6 Jun 2026',
-      upcoming: true,
-      description:
-        'Regional hackathon co-hosted by Sea and OpenAI, focused on building with Codex and OpenAI tooling across Southeast Asia.',
-      image: '/hackathon-sea-openai.jpeg',
+        'Built with the Gemini API across multimodal reasoning, tool use, and long-context workflows.',
+      image: '/hackathon-gemini.png',
     },
   ]
 
@@ -75,7 +75,7 @@ export default function Hackathons() {
                           </span>
                         ) : null}
                       </h4>
-                      <p className="text-[#4ecdc4] text-sm mb-1">Hackathon Participant</p>
+                      <p className="text-[#4ecdc4] text-sm mb-1">{h.role || 'Hackathon Participant'}</p>
                     </div>
                     <p className="text-gray-400 text-sm text-right whitespace-nowrap">{h.date}</p>
                   </div>
