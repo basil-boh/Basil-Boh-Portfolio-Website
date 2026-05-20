@@ -129,6 +129,64 @@ export default function About() {
             <span className="text-[#4ecdc4] text-2xl mr-4">02.</span> Experience
           </h2>
           <div className="space-y-6">
+            {/* Twiss */}
+            <div className="flex gap-4">
+              <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
+                <img
+                  src="https://framerusercontent.com/images/PgeppFxYE7z22xTAdZ0bVNFjRa8.png?width=246&height=67"
+                  alt="Twiss Logo"
+                  className="w-full h-full object-contain rounded"
+                />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">Software Engineer Intern</h4>
+                    <p className="text-[#4ecdc4] text-sm mb-1">Twiss</p>
+                  </div>
+                  <p className="text-gray-400 text-sm">May 2026 - Present</p>
+                </div>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                      Built WatchTower, an AI operations layer for F&amp;B businesses that ingested
+                      RTSP camera feeds and turned raw video into a queryable event stream covering
+                      queue buildup, table turnover, kitchen pickup congestion, and staff coverage,
+                      with realtime alerts and natural-language &ldquo;ask-your-camera&rdquo; queries.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                      Designed a multimodal reasoning pipeline that fused YOLO and Vertex AI Vision
+                      detections with an OpenAI LLM summarisation layer to answer free-form
+                      operational questions and emit autonomous action recommendations across
+                      staffing, restocking, and counter allocation.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                      Engineered a semantic video memory layer that compressed raw frames into
+                      structured events in Supabase/Postgres, enabling decision-simulation queries
+                      against historical footage without re-processing video.
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-[#4ecdc4] shrink-0">•</span>
+                    <span>
+                      Shipped a tiered token/cost-optimisation layer that ran a cheap vision model
+                      for steady-state monitoring and escalated to a stronger multimodal model only
+                      on anomaly triggers (crowd spikes, blocked aisles, abandoned counters), on a
+                      FastAPI + Next.js stack with Supabase Realtime over WebSockets deployed on
+                      Cloud Run.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             {/* Biohackk */}
             <div className="flex gap-4">
               <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
