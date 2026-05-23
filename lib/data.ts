@@ -10,7 +10,8 @@ export const profile = {
   initials: "BB",
   role: "Full-Stack & AI Engineer",
   tagline:
-    "Computer Science student at NUS who ships full-stack products across payments, AI and spatial computing — most of them born at a hackathon.",
+    "Computer Science student at NUS who ships full-stack products across AI, payments and spatial computing.",
+  roles: ["AI Engineer", "Full-Stack Engineer", "Penultimate CS @ NUS"],
   location: "Singapore",
   available: true,
   email: "basil.boh001@gmail.com",
@@ -619,7 +620,7 @@ export type Programme = {
 export const programmes: Programme[] = [
   {
     slug: "orbital",
-    title: "Orbital Programme",
+    title: "Orbital Programme · Apollo 11",
     org: "National University of Singapore",
     period: "May 2024 — Aug 2024",
     description:

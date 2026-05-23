@@ -6,7 +6,8 @@ import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { ProjectCard, HackathonCard, ArticleCard } from "@/components/cards";
 import { Timeline } from "@/components/timeline";
-import { profile, stats, projects, hackathons, experiences } from "@/lib/data";
+import { Programmes } from "@/components/programmes";
+import { profile, stats, projects, hackathons, experiences, education, programmes } from "@/lib/data";
 import { getAllArticles } from "@/lib/articles";
 
 export default function HomePage() {
@@ -69,9 +70,19 @@ export default function HomePage() {
 
           <Reveal delay={220}>
             <div className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-              <p className="max-w-xl text-lg leading-relaxed text-muted md:text-xl">
-                {profile.tagline}
-              </p>
+              <div className="max-w-xl">
+                <ul className="space-y-2">
+                  {profile.roles.map((r) => (
+                    <li key={r} className="flex items-center gap-3 text-base font-medium text-foreground">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      {r}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6 text-lg leading-relaxed text-muted md:text-xl">
+                  {profile.tagline}
+                </p>
+              </div>
               <div className="flex flex-wrap gap-3">
                 <ButtonLink href="/projects" variant="accent" withArrow>
                   View work
@@ -192,6 +203,48 @@ export default function HomePage() {
           <Reveal delay={120}>
             <div className="mt-10">
               <Timeline items={experiences.slice(0, 3)} />
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* ---------------------------------------------------- EDUCATION */}
+      <Section tone="invert">
+        <Container className="py-20 md:py-28">
+          <Reveal>
+            <SectionHeader
+              eyebrow="Education"
+              title="Where I studied"
+              description="A computing degree in progress at NUS, built on an engineering foundation from Temasek Polytechnic."
+              action={<ButtonLink href="/experience" variant="ghost" withArrow>Full timeline</ButtonLink>}
+            />
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="mt-10">
+              <Timeline items={education} />
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* --------------------------------------------------- PROGRAMMES */}
+      <Section>
+        <Container className="py-20 md:py-28">
+          <Reveal>
+            <SectionHeader
+              eyebrow="Programmes"
+              title={
+                <>
+                  Programmes & <span className="text-primary">mentorships</span>
+                </>
+              }
+              description="Selective programmes and industry mentorships that shaped how I build — from NUS Orbital to fintech and business mentorship."
+              action={<ButtonLink href="/experience" variant="ghost" withArrow>See all</ButtonLink>}
+            />
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="mt-12">
+              <Programmes items={programmes} />
             </div>
           </Reveal>
         </Container>

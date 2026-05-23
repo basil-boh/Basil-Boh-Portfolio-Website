@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { IconType } from "react-icons";
 import {
   SiTypescript,
@@ -22,13 +23,15 @@ import {
   SiGooglecloud,
   SiOpenai,
   SiGooglegemini,
+  SiAnthropic,
 } from "react-icons/si";
 
-/* Tech-stack logos in their official brand colours. Brands whose mark is
-   black/white (Next.js, Express, Three.js, Vercel, Railway, Expo, OpenAI)
-   have no `color` and inherit the theme foreground so they stay visible in
-   both light and dark modes. */
-const LOGOS: { name: string; Icon: IconType; color?: string }[] = [
+/* Tech-stack + tools logos. Brand-coloured vector icons where available;
+   `img` is used for brands not in the icon set (rendered from /public/logos).
+   Black/white brands have no `color` and inherit the theme foreground. */
+type Logo = { name: string; Icon?: IconType; img?: string; color?: string };
+
+const LOGOS: Logo[] = [
   { name: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
   { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
   { name: "Python", Icon: SiPython, color: "#3776AB" },
@@ -51,6 +54,10 @@ const LOGOS: { name: string; Icon: IconType; color?: string }[] = [
   { name: "Google Cloud", Icon: SiGooglecloud, color: "#4285F4" },
   { name: "OpenAI", Icon: SiOpenai },
   { name: "Gemini", Icon: SiGooglegemini, color: "#8E75B2" },
+  { name: "Anthropic", Icon: SiAnthropic, color: "#D97757" },
+  { name: "DeepSeek", img: "/logos/deepseek.png" },
+  { name: "Daytona", img: "/logos/daytona.png" },
+  { name: "Hyperspell", img: "/logos/hyperspell.png" },
 ];
 
 export function Marquee() {
@@ -58,7 +65,7 @@ export function Marquee() {
   return (
     <div className="relative flex overflow-hidden border-y border-border py-7 [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
       <div className="marquee-track flex shrink-0 items-center gap-12 pr-12 text-foreground">
-        {row.map(({ name, Icon, color }, i) => (
+        {row.map(({ name, Icon, img, color }, i) => (
           <span
             key={i}
             title={name}
@@ -68,7 +75,17 @@ export function Marquee() {
             style={color ? { color } : undefined}
             className="shrink-0 transition-transform duration-300 hover:scale-110"
           >
-            <Icon className="h-7 w-7 sm:h-8 sm:w-8" />
+            {img ? (
+              <Image
+                src={img}
+                alt={name}
+                width={32}
+                height={32}
+                className="h-7 w-7 rounded-[6px] object-contain sm:h-8 sm:w-8"
+              />
+            ) : Icon ? (
+              <Icon className="h-7 w-7 sm:h-8 sm:w-8" />
+            ) : null}
           </span>
         ))}
       </div>

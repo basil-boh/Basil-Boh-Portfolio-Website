@@ -71,7 +71,7 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {profile.name}. Built with Next.js.
           </p>
-          <p>Designed in the Revolut spirit — {profile.location}.</p>
+          <p>{profile.location}</p>
         </div>
       </Container>
     </footer>
