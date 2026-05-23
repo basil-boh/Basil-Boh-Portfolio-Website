@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowDown, MapPin, Sparkles } from "lucide-react";
-import { Container, Section, SectionHeader, ButtonLink, Eyebrow } from "@/components/ui";
+import { Container, Section, SectionHeader, ButtonLink } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { ProjectCard, HackathonCard, ArticleCard } from "@/components/cards";
@@ -276,22 +276,37 @@ export default function HomePage() {
       <Section>
         <Container className="py-24 md:py-36">
           <Reveal>
-            <div className="card flex flex-col items-center gap-8 p-12 text-center md:p-20">
-              <Eyebrow>Let&apos;s talk</Eyebrow>
-              <h2 className="font-display max-w-3xl text-5xl leading-[0.95] md:text-7xl">
-                Got something worth <span className="text-primary">building?</span>
-              </h2>
-              <p className="max-w-lg text-lg text-muted">
-                I&apos;m always up for an interesting problem — whether it&apos;s an internship, a
-                freelance build, or a weekend hack.
-              </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                <ButtonLink href={`mailto:${profile.email}`} variant="accent" withArrow external>
-                  <Sparkles className="h-[18px] w-[18px]" /> Get in touch
-                </ButtonLink>
-                <ButtonLink href={profile.resumeUrl} variant="ghost" external>
-                  Download résumé
-                </ButtonLink>
+            <div
+              className="card relative overflow-hidden p-12 text-center md:p-20"
+              style={{
+                background:
+                  "radial-gradient(140% 120% at 50% 0%, var(--surface) 0%, var(--surface-2) 100%)",
+              }}
+            >
+              {/* line texture + glow — matching the featured project banner, in grey */}
+              <div className="pointer-events-none absolute inset-0 text-foreground opacity-[0.05] [background-image:linear-gradient(currentColor_1px,transparent_1px),linear-gradient(90deg,currentColor_1px,transparent_1px)] [background-size:40px_40px]" />
+              <div className="pointer-events-none absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-primary/15 blur-[120px]" />
+
+              <div className="relative z-10 flex flex-col items-center gap-8">
+                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  Let&apos;s talk
+                </span>
+                <h2 className="font-display max-w-3xl text-5xl leading-[0.95] md:text-7xl">
+                  Got something worth <span className="text-primary">building?</span>
+                </h2>
+                <p className="max-w-lg text-lg text-muted">
+                  I&apos;m always up for an interesting problem — whether it&apos;s an internship, a
+                  freelance build, or a weekend hack.
+                </p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <ButtonLink href={`mailto:${profile.email}`} variant="accent" withArrow external>
+                    <Sparkles className="h-[18px] w-[18px]" /> Get in touch
+                  </ButtonLink>
+                  <ButtonLink href={profile.resumeUrl} variant="ghost" external>
+                    Download résumé
+                  </ButtonLink>
+                </div>
               </div>
             </div>
           </Reveal>
