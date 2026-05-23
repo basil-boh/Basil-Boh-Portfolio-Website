@@ -1,0 +1,33 @@
+---
+title: "Designing a ledger you can trust"
+excerpt: "Money is too important for floating point. A practical guide to building a double-entry ledger that stays correct under load."
+date: "2025-11-12"
+tags: ["Payments", "Architecture"]
+accent: "violet"
+---
+
+Every payments company eventually rebuilds its ledger. The first version is a `balance` column on the users table. It works right up until the day it doesn't — a double-spend, a failed refund, a reconciliation that won't tie out — and then you learn why banks have used double-entry bookkeeping for 500 years.
+
+## The one rule
+
+Every movement of money is recorded as **two** postings: a debit and a credit. They must sum to zero. If they don't, you reject the transaction. That's the whole system, and it's the invariant your database should enforce, not your application code.
+
+```sql
+-- Postings always balance, or the transaction fails.
+ALTER TABLE postings
+  ADD CONSTRAINT amount_nonzero CHECK (amount <> 0);
+
+-- Enforced per-transaction via a deferred trigger that sums to 0.
+```
+
+## Never use floats
+
+Represent money as integer minor units (cents, satoshis) or a fixed-point decimal. `0.1 + 0.2 !== 0.3` is a fun JavaScript meme until it's a customer's refund.
+
+> A ledger's job is to be boring and correct. Excitement is a bug.
+
+## Idempotency is not optional
+
+Networks retry. If a client sends the same transfer twice, you must record it once. An `idempotency_key` unique constraint turns a distributed-systems nightmare into a database error you can catch and ignore.
+
+The payoff: when something looks wrong, you can replay every posting from the beginning of time and arrive at the exact same balances. That property — **determinism** — is what lets you sleep at night.
