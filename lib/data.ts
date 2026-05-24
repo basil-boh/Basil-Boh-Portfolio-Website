@@ -11,7 +11,7 @@ export const profile = {
   role: "Full-Stack & AI Engineer",
   tagline:
     "Computer Science student at NUS who ships full-stack products across AI, payments and spatial computing.",
-  roles: ["AI Engineer", "Full-Stack Engineer", "Penultimate CS @ NUS"],
+  roles: ["Full-Stack & AI Engineer", "Forward Deployment Engineer", "Penultimate CS @ NUS"],
   location: "Singapore",
   available: true,
   email: "basil.boh001@gmail.com",
