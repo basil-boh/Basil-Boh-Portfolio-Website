@@ -21,7 +21,7 @@ export const profile = {
   bio: `I'm Basil — a Computer Science (Honours) student at the National University of Singapore. I build full-stack products end-to-end: payment systems, AI pipelines and real-time experiences. Right now I'm interning as a software engineer at Twiss and Biohackk, and I serve as Vice-President of the NUS Students' Computing Club. Most of what I build starts as a hackathon hack and grows from there.`,
   socials: [
     { label: "GitHub", href: "https://github.com/basil-boh", handle: "github.com/basil-boh" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/basil-boh", handle: "in/basil-boh" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/basil-boh-81933b18b/", handle: "in/basil-boh" },
     { label: "Email", href: "mailto:basil.boh001@gmail.com", handle: "basil.boh001@gmail.com" },
   ],
 };
