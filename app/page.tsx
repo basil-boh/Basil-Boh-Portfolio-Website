@@ -145,7 +145,7 @@ export default function HomePage() {
               eyebrow="Selected work"
               title={
                 <>
-                  Products I&apos;ve <span className="text-primary">shipped</span>
+                  Products I&apos;ve <span className="text-primary">built</span>
                 </>
               }
               description="A few things I've designed, built and taken to production — from payment rails to AI tooling."
@@ -171,10 +171,10 @@ export default function HomePage() {
               eyebrow="Hackathons"
               title={
                 <>
-                  Built fast, <span className="text-primary">shipped real</span>
+                  Built fast, <span className="text-primary">under pressure</span>
                 </>
               }
-              description="36-hour sprints are where most of my best ideas start — including a 2nd-place finish at Ralphthon @SG 2026."
+              description="Time-boxed sprints are where most of my best ideas start — including a 2nd-place finish at Ralphthon @SG 2026."
               action={<ButtonLink href="/hackathons" variant="ghost" withArrow>All hackathons</ButtonLink>}
             />
           </Reveal>
