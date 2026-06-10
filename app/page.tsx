@@ -7,6 +7,14 @@ import { Marquee } from "@/components/marquee";
 import { ProjectCard, HackathonCard, ArticleCard } from "@/components/cards";
 import { Timeline } from "@/components/timeline";
 import { Programmes } from "@/components/programmes";
+import { ParticleField } from "@/components/particle-field";
+import { KineticText } from "@/components/kinetic-text";
+import { Magnetic } from "@/components/magnetic";
+import { CountUp } from "@/components/count-up";
+import { SectionRail } from "@/components/section-rail";
+import { GithubActivity } from "@/components/github-activity";
+import { Testimonials } from "@/components/testimonials";
+import { testimonials } from "@/lib/data";
 import { profile, stats, projects, hackathons, experiences, education, programmes } from "@/lib/data";
 import { getAllArticles } from "@/lib/articles";
 
@@ -19,10 +27,12 @@ export default function HomePage() {
 
   return (
     <>
+      <SectionRail />
       {/* ---------------------------------------------------------- HERO */}
-      <Section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-primary/15 blur-[120px]" />
-        <Container className="relative pb-20 pt-16 md:pb-28 md:pt-24">
+      <Section id="top" className="relative overflow-hidden">
+        <div className="relative">
+          <ParticleField />
+          <Container className="relative z-10 pb-20 pt-16 md:pb-28 md:pt-24">
           <Reveal>
             <div className="inline-flex items-center gap-2 rounded-full border hairline bg-surface px-4 py-2 text-sm">
               <span className="relative flex h-2 w-2">
@@ -40,7 +50,7 @@ export default function HomePage() {
               <h1 className="font-display">
                 <span className="block text-2xl font-normal text-muted sm:text-3xl">Hi, I&apos;m</span>
                 <span className="mt-2 block whitespace-nowrap text-[clamp(2.5rem,8vw,6.5rem)] leading-[1.02]">
-                  {profile.name}
+                  <KineticText text={profile.name} delay={140} />
                   <span className="text-primary">.</span>
                 </span>
               </h1>
@@ -84,12 +94,16 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <ButtonLink href="/projects" variant="accent" withArrow>
-                  View work
-                </ButtonLink>
-                <ButtonLink href="/articles" variant="ghost">
-                  Read writing
-                </ButtonLink>
+                <Magnetic>
+                  <ButtonLink href="/projects" variant="accent" withArrow>
+                    View work
+                  </ButtonLink>
+                </Magnetic>
+                <Magnetic>
+                  <ButtonLink href="/articles" variant="ghost">
+                    Read writing
+                  </ButtonLink>
+                </Magnetic>
               </div>
             </div>
           </Reveal>
@@ -116,7 +130,28 @@ export default function HomePage() {
               </div>
             </div>
           </Reveal>
-        </Container>
+
+          <Reveal delay={380}>
+            <div className="mt-14">
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <span className="label inline-flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Always building
+                </span>
+                <Link
+                  href="https://github.com/basil-boh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-muted transition-colors hover:text-foreground"
+                >
+                  GitHub ↗
+                </Link>
+              </div>
+              <GithubActivity username="basil-boh" />
+            </div>
+          </Reveal>
+          </Container>
+        </div>
 
         <Marquee />
       </Section>
@@ -128,7 +163,9 @@ export default function HomePage() {
             {stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 80}>
                 <div className="text-center">
-                  <div className="font-display text-5xl md:text-6xl">{s.value}</div>
+                  <div className="font-display text-5xl md:text-6xl">
+                    <CountUp value={s.value} />
+                  </div>
                   <div className="mt-2 text-sm text-muted">{s.label}</div>
                 </div>
               </Reveal>
@@ -164,7 +201,7 @@ export default function HomePage() {
       </Section>
 
       {/* ---------------------------------------------------- HACKATHONS */}
-      <Section tone="invert">
+      <Section id="hackathons" tone="invert">
         <Container className="py-20 md:py-28">
           <Reveal>
             <SectionHeader
@@ -190,7 +227,7 @@ export default function HomePage() {
       </Section>
 
       {/* --------------------------------------------------- EXPERIENCE */}
-      <Section>
+      <Section id="experience">
         <Container className="py-20 md:py-28">
           <Reveal>
             <SectionHeader
@@ -251,7 +288,7 @@ export default function HomePage() {
       </Section>
 
       {/* ----------------------------------------------------- WRITING */}
-      <Section tone="invert">
+      <Section id="writing" tone="invert">
         <Container className="py-20 md:py-28">
           <Reveal>
             <SectionHeader
@@ -272,8 +309,32 @@ export default function HomePage() {
         </Container>
       </Section>
 
+      {/* ------------------------------------------------- TESTIMONIALS */}
+      {testimonials.length > 0 ? (
+        <Section>
+          <Container className="py-20 md:py-28">
+            <Reveal>
+              <SectionHeader
+                eyebrow="Kind words"
+                title={
+                  <>
+                    What people <span className="text-primary">say</span>
+                  </>
+                }
+                description="From mentors, leads and teammates I've worked alongside."
+              />
+            </Reveal>
+            <Reveal delay={120}>
+              <div className="mt-12">
+                <Testimonials items={testimonials} />
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+      ) : null}
+
       {/* --------------------------------------------------------- CTA */}
-      <Section>
+      <Section id="contact">
         <Container className="py-24 md:py-36">
           <Reveal>
             <div
@@ -300,9 +361,11 @@ export default function HomePage() {
                   freelance build, or a weekend hack.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
-                  <ButtonLink href={`mailto:${profile.email}`} variant="accent" withArrow external>
-                    <Sparkles className="h-[18px] w-[18px]" /> Get in touch
-                  </ButtonLink>
+                  <Magnetic>
+                    <ButtonLink href={`mailto:${profile.email}`} variant="accent" withArrow external>
+                      <Sparkles className="h-[18px] w-[18px]" /> Get in touch
+                    </ButtonLink>
+                  </Magnetic>
                   <ButtonLink href={profile.resumeUrl} variant="ghost" external>
                     Download résumé
                   </ButtonLink>

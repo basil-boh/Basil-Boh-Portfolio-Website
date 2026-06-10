@@ -9,6 +9,7 @@ import { Container, Section, Tag } from "@/components/ui";
 import { mdxComponents } from "@/components/mdx";
 import { getArticle, getArticleSlugs, getAllArticles, formatDate } from "@/lib/articles";
 import { ArticleCard } from "@/components/cards";
+import { ArticleToc } from "@/components/article-toc";
 
 export function generateStaticParams() {
   return getArticleSlugs().map((slug) => ({ slug }));
@@ -46,7 +47,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           <ArrowLeft className="h-4 w-4" /> All writing
         </Link>
 
-        <article className="mx-auto mt-10 max-w-2xl">
+        <div className="relative">
+          <ArticleToc />
+          <article className="mx-auto mt-10 max-w-2xl">
           <header>
             <div className="flex items-center gap-3 text-sm text-muted">
               <span>{formatDate(article.date)}</span>
@@ -76,7 +79,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               }}
             />
           </div>
-        </article>
+          </article>
+        </div>
       </Container>
 
       {more.length > 0 ? (

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { navLinks, profile } from "@/lib/data";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -63,6 +63,17 @@ export function Nav() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Open command palette"
+              onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+              className="hidden h-10 items-center gap-2 rounded-full border hairline px-3 text-sm text-muted transition-colors hover:text-foreground sm:inline-flex"
+            >
+              <Search className="h-4 w-4" />
+              <kbd className="rounded border border-border bg-surface px-1.5 py-0.5 font-sans text-[11px] font-medium">
+                ⌘K
+              </kbd>
+            </button>
             <ThemeToggle />
             <Link
               href={`mailto:${profile.email}`}

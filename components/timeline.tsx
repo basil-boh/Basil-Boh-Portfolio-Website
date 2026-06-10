@@ -7,11 +7,13 @@ function CompanyLogo({
   logo,
   logoBg,
   logoFit = "contain",
+  logoPad = "p-1",
 }: {
   name: string;
   logo?: string;
   logoBg?: string;
   logoFit?: "contain" | "cover";
+  logoPad?: string;
 }) {
   if (logo) {
     return (
@@ -24,7 +26,7 @@ function CompanyLogo({
           alt={`${name} logo`}
           fill
           sizes="64px"
-          className={logoFit === "cover" ? "object-cover" : "object-contain p-1"}
+          className={logoFit === "cover" ? "object-cover" : `object-contain ${logoPad}`}
         />
       </div>
     );
@@ -58,6 +60,7 @@ export function Timeline({ items }: { items: Experience[] }) {
                 logo={item.logo}
                 logoBg={item.logoBg}
                 logoFit={item.logoFit}
+                logoPad={item.logoPad}
               />
             </div>
 
@@ -68,6 +71,12 @@ export function Timeline({ items }: { items: Experience[] }) {
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold text-primary">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   Now
+                </span>
+              ) : null}
+              {item.incoming ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold text-primary">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Incoming
                 </span>
               ) : null}
               <span className="text-sm text-muted">· {item.location}</span>

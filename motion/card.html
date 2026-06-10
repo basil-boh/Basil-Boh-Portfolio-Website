@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Card Loop</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 1600px;
+        height: 1000px;
+        overflow: hidden;
+        font-family: system-ui, sans-serif;
+      }
+      /* --accent is injected from render variables (defaults to indigo). */
+      #root {
+        position: relative;
+        width: 1600px;
+        height: 1000px;
+        --accent: #494fdf;
+        background: radial-gradient(
+          125% 125% at 0% 0%,
+          var(--accent) 0%,
+          color-mix(in srgb, var(--accent) 34%, #0b0b0d) 55%,
+          #0b0b0d 100%
+        );
+        overflow: hidden;
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.16;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-size: 56px 56px;
+      }
+      .glow {
+        position: absolute;
+        right: -160px;
+        top: -160px;
+        width: 620px;
+        height: 620px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent 65%);
+        filter: blur(40px);
+        will-change: transform;
+      }
+      .dots {
+        position: absolute;
+        left: 56px;
+        top: 56px;
+        display: flex;
+        gap: 16px;
+      }
+      .dots span {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+      }
+      /* a floating "panel" of animated data — reads as a live product UI */
+      .panel {
+        position: absolute;
+        left: 56px;
+        right: 56px;
+        top: 150px;
+        bottom: 150px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(2px);
+        overflow: hidden;
+      }
+      .bars {
+        position: absolute;
+        left: 64px;
+        bottom: 90px;
+        display: flex;
+        align-items: flex-end;
+        gap: 34px;
+        height: 360px;
+      }
+      .bar {
+        width: 74px;
+        border-radius: 14px 14px 0 0;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55));
+        will-change: transform;
+        transform-origin: bottom center;
+      }
+      .skeleton {
+        position: absolute;
+        right: 64px;
+        top: 70px;
+        width: 520px;
+      }
+      .line {
+        height: 22px;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.28);
+        margin-bottom: 22px;
+      }
+      .line.short {
+        width: 60%;
+      }
+      .line.mid {
+        width: 85%;
+      }
+      .sheen {
+        position: absolute;
+        top: -10%;
+        left: 0;
+        width: 280px;
+        height: 120%;
+        transform: rotate(16deg);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.22) 50%,
+          transparent
+        );
+        filter: blur(10px);
+        will-change: transform;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="card"
+      data-width="1600"
+      data-height="1000"
+      data-start="0"
+      data-duration="6"
+      data-composition-variables='{"accent":"#494fdf"}'
+    >
+      <div id="card-grid" class="grid clip" data-start="0" data-duration="6" data-track-index="0"></div>
+      <div id="card-glow" class="glow clip" data-start="0" data-duration="6" data-track-index="1"></div>
+
+      <div id="card-panel" class="panel clip" data-start="0" data-duration="6" data-track-index="2">
+        <div class="bars">
+          <div class="bar" style="height: 40%"></div>
+          <div class="bar" style="height: 68%"></div>
+          <div class="bar" style="height: 52%"></div>
+          <div class="bar" style="height: 86%"></div>
+          <div class="bar" style="height: 62%"></div>
+        </div>
+        <div class="skeleton">
+          <div class="line mid"></div>
+          <div class="line short"></div>
+          <div class="line"></div>
+        </div>
+        <div id="card-sheen" class="sheen"></div>
+      </div>
+
+      <div id="card-dots" class="dots clip" data-start="0" data-duration="6" data-track-index="3">
+        <span></span><span></span><span></span>
+      </div>
+
+      <script>
+        // Apply the injected accent colour.
+        const vars =
+          (window.__hyperframes && window.__hyperframes.getVariables
+            ? window.__hyperframes.getVariables()
+            : null) || {};
+        if (vars.accent) document.getElementById("root").style.setProperty("--accent", vars.accent);
+
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        const LOOP = 6;
+        const half = LOOP / 2;
+
+        // Bars breathe (yoyo → identical at the loop seam).
+        gsap.utils.toArray(".bar").forEach((bar, i) => {
+          const lo = [0.55, 0.78, 0.62, 0.95, 0.7][i];
+          tl.fromTo(bar, { scaleY: lo },
+            { scaleY: lo * 0.74 + 0.18, duration: half, ease: "sine.inOut", yoyo: true, repeat: 1 },
+            i * 0.12);
+        });
+
+        // Glow drifts gently and returns.
+        tl.fromTo("#card-glow", { x: 0, y: 0 },
+          { x: -70, y: 50, duration: half, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+        // Sheen sweeps fully across the panel once per loop (off-screen both ends).
+        tl.fromTo("#card-sheen", { x: -360 }, { x: 1700, duration: LOOP, ease: "none" }, 0);
+
+        window.__timelines["card"] = tl;
+      </script>
+    </div>
+  </body>
+</html>

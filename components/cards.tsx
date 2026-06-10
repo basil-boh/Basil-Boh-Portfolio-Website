@@ -172,11 +172,13 @@ export function ProjectCard({ project }: { project: Project }) {
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[16px] border border-border">
             <video
               src={project.cardVideo}
-              className="h-full w-full object-cover"
+              poster={project.cardVideo.replace(/\.mp4$/, "-poster.jpg")}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
             />
           </div>
         ) : project.image ? (

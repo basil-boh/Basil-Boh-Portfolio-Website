@@ -34,3 +34,8 @@ next-env.d.ts
 
 # claude code local settings
 .claude/settings.local.json
+
+# hyperframes render intermediates (sources kept; outputs live in /public)
+/motion/renders/
+/motion/snapshots/
+/motion/node_modules/

@@ -250,6 +250,7 @@ export const projects: Project[] = [
     role: "Hackathon Build",
     tags: ["React", "Grab Maps", "OpenAI", "ElevenLabs"],
     accent: "pink",
+    cardVideo: "/projects/personality-map/card.mp4",
     links: { repo: "https://github.com/basil-boh" },
   },
   {
@@ -262,6 +263,7 @@ export const projects: Project[] = [
     role: "Hackathon Build",
     tags: ["React", "Node/Express", "MongoDB", "Gemini Vision"],
     accent: "green",
+    cardVideo: "/projects/reely/card.mp4",
     links: { repo: "https://github.com/basil-boh" },
   },
   {
@@ -274,6 +276,7 @@ export const projects: Project[] = [
     role: "Hackathon Build",
     tags: ["Next.js", "Gemini 3 Pro", "Express", "TypeScript"],
     accent: "orange",
+    cardVideo: "/projects/urban-incident-review/card.mp4",
     links: { repo: "https://github.com/basil-boh" },
   },
   {
@@ -491,6 +494,8 @@ export type Experience = {
   role: string;
   period: string;
   current?: boolean;
+  /** Role secured but not yet started. */
+  incoming?: boolean;
   location: string;
   summary: string;
   highlights: string[];
@@ -500,6 +505,8 @@ export type Experience = {
   logoBg?: string;
   /** How the logo fills its tile. `contain` (default) for wordmarks, `cover` for full-bleed icons. */
   logoFit?: "contain" | "cover";
+  /** Padding around a `contain` logo, as a Tailwind class. Defaults to `p-1`; use `p-0`/`p-0.5` to enlarge. */
+  logoPad?: string;
 };
 
 export const experiences: Experience[] = [
@@ -678,6 +685,31 @@ export const navLinks = [
   { label: "Experience", href: "/experience" },
   { label: "Writing", href: "/articles" },
 ];
+
+/* -------------------------------------------------------------- Testimonials
+   Real quotes only — never invent endorsements. Add entries below and the
+   "Kind words" section on the homepage appears automatically; leave it empty
+   and the section stays hidden.
+
+   Template:
+   {
+     quote: "Basil shipped the payments service end-to-end and unblocked the
+             whole team — rare ownership for an intern.",
+     name: "Jane Doe",
+     role: "Engineering Lead",
+     org: "Company",
+     avatar: "/testimonials/jane.jpg", // optional
+   }
+*/
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  org?: string;
+  avatar?: string;
+};
+
+export const testimonials: Testimonial[] = [];
 
 export const accentVar: Record<Accent, string> = {
   violet: "var(--primary)",

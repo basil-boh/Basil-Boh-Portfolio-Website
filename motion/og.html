@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        background: #07070a;
+        overflow: hidden;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #fff;
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        background-image: linear-gradient(rgba(73, 79, 223, 0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(73, 79, 223, 0.18) 1px, transparent 1px);
+        background-size: 48px 48px;
+        -webkit-mask-image: radial-gradient(110% 110% at 70% 0%, #000 20%, transparent 75%);
+        mask-image: radial-gradient(110% 110% at 70% 0%, #000 20%, transparent 75%);
+      }
+      .glow-a {
+        position: absolute;
+        right: -120px;
+        top: -180px;
+        width: 620px;
+        height: 620px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(73, 79, 223, 0.65), transparent 65%);
+        filter: blur(70px);
+      }
+      .glow-b {
+        position: absolute;
+        left: -160px;
+        bottom: -220px;
+        width: 560px;
+        height: 560px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(88, 166, 255, 0.32), transparent 65%);
+        filter: blur(80px);
+      }
+      .inner {
+        position: absolute;
+        inset: 0;
+        padding: 76px 84px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        align-self: flex-start;
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 22px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.82);
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #43d39e;
+        box-shadow: 0 0 14px #43d39e;
+      }
+      .name {
+        font-family: "Schibsted Grotesk", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 132px;
+        line-height: 0.96;
+        letter-spacing: -0.03em;
+      }
+      .name .accent {
+        color: #6b70ff;
+      }
+      .roles {
+        margin-top: 26px;
+        font-size: 30px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.66);
+      }
+      .roles .sep {
+        color: #6b70ff;
+        margin: 0 14px;
+      }
+      .foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .foot .url {
+        color: #fff;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="grid"></div>
+      <div class="glow-a"></div>
+      <div class="glow-b"></div>
+      <div class="inner">
+        <div class="pill"><span class="dot"></span> Available for new work · Singapore</div>
+        <div>
+          <div class="name">Basil Boh<span class="accent">.</span></div>
+          <div class="roles">
+            Full-Stack &amp; AI Engineer <span class="sep">/</span> Forward Deployment Engineer
+          </div>
+        </div>
+        <div class="foot">
+          <span>Computer Science · NUS</span>
+          <span class="url">basilboh.dev</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
