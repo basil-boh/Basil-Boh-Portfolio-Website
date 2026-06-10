@@ -44,7 +44,12 @@ export async function GET(req: NextRequest) {
 
   const json = (data: unknown) =>
     new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=3600" },
+      headers: {
+        "Content-Type": "application/json",
+        // browser always revalidates; CDN serves a ~15 min cache with SWR so
+        // GitHub isn't hammered, but no stale graph sticks for an hour.
+        "Cache-Control": "public, max-age=0, s-maxage=900, stale-while-revalidate=86400",
+      },
     });
 
   if (!token) {
