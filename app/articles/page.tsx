@@ -31,7 +31,7 @@ export default function ArticlesPage() {
         ) : (
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {articles.map((a, i) => (
-              <Reveal key={a.slug} delay={(i % 3) * 70}>
+              <Reveal key={a.slug} delay={(i % 3) * 70} className="h-full">
                 <ArticleCard article={a} />
               </Reveal>
             ))}

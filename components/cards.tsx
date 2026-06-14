@@ -295,7 +295,7 @@ export function ArticleCard({ article }: { article: ArticleMeta }) {
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="card group flex flex-col p-7 transition-transform duration-300 hover:-translate-y-1"
+      className="card group flex h-full flex-col p-7 transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="flex items-center gap-3 text-xs text-muted">
         <span>{formatDate(article.date)}</span>
