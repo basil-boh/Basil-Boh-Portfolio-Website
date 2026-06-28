@@ -43,8 +43,11 @@ export default function MatrixField() {
       ).matches;
       let C = readThemeTokens();
 
-      // --- the data point-cloud (fixed in object space, transformed each frame)
-      const pts: Vec2[] = [];
+      // --- the data point-cloud (fixed in object space, transformed each frame).
+      // Each point also carries a `glow` value that randomly ignites and decays,
+      // giving a scattered firefly twinkle across the plane.
+      type Pt = { o: Vec2; glow: number };
+      const pts: Pt[] = [];
       let seed = 1337;
       const rnd = () => {
         // deterministic PRNG so SSR/CSR + reruns stay stable
@@ -52,7 +55,7 @@ export default function MatrixField() {
         return seed / 4294967296;
       };
       for (let i = 0; i < 140; i++) {
-        pts.push([(rnd() - 0.5) * 6, (rnd() - 0.5) * 6]);
+        pts.push({ o: [(rnd() - 0.5) * 6, (rnd() - 0.5) * 6], glow: 0 });
       }
 
       const view = { m: IDENTITY as Mat2, name: "IDENTITY" };
@@ -149,11 +152,31 @@ export default function MatrixField() {
         ctx.fillStyle = C.fillAccent;
         ctx.fill();
 
-        // data point-cloud
+        // data point-cloud — calm base dots, batched into a single fill
+        ctx.fillStyle = C.dot;
+        ctx.beginPath();
         for (const p of pts) {
-          const s = toScreen(applyMat(m, p));
-          ctx.fillStyle = C.dot;
-          ctx.fillRect(s[0] - dpr, s[1] - dpr, 2 * dpr, 2 * dpr);
+          if (p.glow > 0.03) continue;
+          const s = toScreen(applyMat(m, p.o));
+          ctx.moveTo(s[0] + 1.3 * dpr, s[1]);
+          ctx.arc(s[0], s[1], 1.3 * dpr, 0, Math.PI * 2);
+        }
+        ctx.fill();
+
+        // …and the points currently mid-flare, each with an accent glow halo
+        for (const p of pts) {
+          if (p.glow <= 0.03) continue;
+          const s = toScreen(applyMat(m, p.o));
+          const g = p.glow;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(s[0], s[1], (1.6 + g * 2.6) * dpr, 0, Math.PI * 2);
+          ctx.shadowBlur = g * 16 * dpr;
+          ctx.shadowColor = C.accent;
+          ctx.globalAlpha = 0.4 + g * 0.6;
+          ctx.fillStyle = C.accent;
+          ctx.fill();
+          ctx.restore();
         }
 
         // basis vectors
@@ -207,9 +230,18 @@ export default function MatrixField() {
 
       // rAF render loop (independent of the morph tween for buttery parallax)
       let raf = 0;
+      // random firefly glow: every point slowly decays, with a small chance
+      // each frame of igniting to near-full brightness.
+      const tickGlow = () => {
+        for (const p of pts) {
+          p.glow *= 0.94;
+          if (Math.random() < 0.0016) p.glow = 0.75 + Math.random() * 0.25;
+        }
+      };
       const loop = () => {
         pointer.tx += (pointer.x * 18 * dpr - pointer.tx) * 0.06;
         pointer.ty += (pointer.y * 18 * dpr - pointer.ty) * 0.06;
+        tickGlow();
         draw();
         raf = requestAnimationFrame(loop);
       };
