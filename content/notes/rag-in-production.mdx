@@ -1,0 +1,34 @@
+---
+id: N-08
+title: "RAG in production: the boring parts that matter"
+date: "2026.04"
+readingTime: "2 min"
+tags: ["AI","Architecture"]
+excerpt: "The model is the easy bit. Chunking, evals and freshness are what make or break a retrieval-augmented system in the real world."
+---
+
+Everyone can build a RAG demo. Far fewer can keep one accurate three months after launch, when the docs have changed and the embeddings are stale. The interesting work in retrieval-augmented generation isn't the model — it's everything around it.
+
+## Chunking is a product decision
+
+How you split documents determines what the model can ever retrieve. Split too small and you lose context; too large and you drown the prompt in noise. Chunk on **semantic boundaries** (headings, sections), not character counts.
+
+## You can't improve what you don't measure
+
+Before touching prompts, build an eval set: 50 real questions with known-good answers. Then every change is a measurable experiment, not a vibe.
+
+```python
+# A minimal eval loop beats endless prompt fiddling.
+for q, expected in eval_set:
+    answer = rag.ask(q)
+    score = judge(answer, expected)   # LLM-as-judge or exact match
+    log(q, score)
+```
+
+## Freshness is a feature
+
+A RAG system that confidently cites last quarter's policy is worse than one that says "I don't know." Wire your ingestion to your source of truth, set a TTL, and surface the retrieval date to the user.
+
+> Retrieval quality caps answer quality. No prompt rescues a bad chunk.
+
+The unglamorous infrastructure — ingestion pipelines, eval harnesses, observability — is what separates a hackathon demo from something a team will actually trust on-call.

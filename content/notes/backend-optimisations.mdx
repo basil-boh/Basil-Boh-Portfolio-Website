@@ -1,0 +1,42 @@
+---
+id: N-05
+title: "Backend engineering concepts I've been learning about"
+date: "2026.06"
+readingTime: "3 min"
+tags: ["Backend","Optimisation","Database","Efficiency"]
+excerpt: "Notes on the patterns that keep an app fast and reliable once thousands of people start using it at the same time."
+---
+
+Everything seems to work well when you use that web or mobile app you built for yourself — until thousands of users hit it at the same time. Bugs you never thought were possible, errors you've never seen before, and bottlenecks that catch you completely off guard.
+
+These are a few of the concepts I've been learning about while trying to make my own apps hold up under real load.
+
+## The N+1 problem
+
+I used to see this term thrown around but never really understood what it meant — until I started getting feedback that the app I'd built felt slow and sluggish. Truth be told, I never bothered to look into optimisation until I shipped something for hundreds of users. When I took a proper look at my database and querying functions, the problem was obvious.
+
+The N+1 problem is when you run one query to fetch a list of items, then run *another* query for each item in that list. Fetch 100 blog posts, then loop over them to fetch each author one by one, and you've just made 101 database round-trips instead of 2. Each trip is cheap on its own, but they add up fast.
+
+The fix is usually to fetch the related data up front — a join, or an "include"/eager-load in your ORM — so the database does the work in one go instead of you hammering it in a loop.
+
+## Caching and eliminating repeated DB queries
+
+The fastest query is the one you never make. A lot of slowness comes from asking the database for the same thing over and over when the answer barely changes.
+
+Caching means storing the result of an expensive operation somewhere fast — in memory, or a store like Redis — and serving that copy until it goes stale. The hard part isn't storing the data; it's deciding *when* to throw it away. Cache for too long and users see outdated information; cache for too short and you lose most of the benefit. Getting that balance right is most of the job.
+
+## Asynchronous workers
+
+Not everything needs to happen while the user waits. Sending a confirmation email, resizing an image, or generating a report can take seconds — and there's no reason to make someone stare at a loading spinner while it finishes.
+
+The pattern is to hand that slow work off to a background worker. Your app drops the task onto a queue, responds to the user immediately, and a separate process picks the task up and runs it on its own time. The request feels instant, and the heavy lifting still gets done.
+
+## Pagination and data streams
+
+Sending 50,000 rows to the browser in a single response is a great way to freeze both your server and the user's device. Pagination breaks that data into smaller, predictable chunks — page 1, page 2, and so on — so you only ever load what's actually on screen.
+
+For data that's continuous or genuinely huge, streaming is the better tool: instead of building the whole response in memory and sending it at once, you send it piece by piece as it's ready. The user starts seeing results sooner, and your server never has to hold the entire thing at once.
+
+---
+
+I'm still early in learning all of this, but the through-line is clear: most backend optimisation is about doing less work, doing it once, or doing it later. More to come as I break (and fix) more things.

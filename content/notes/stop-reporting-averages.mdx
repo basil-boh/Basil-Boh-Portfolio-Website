@@ -1,0 +1,26 @@
+---
+id: N-04
+title: "Stop reporting averages"
+date: "2025.09"
+readingTime: "6 min"
+tags: [statistics, observability]
+excerpt: "Latency is a distribution. Averages lie. A short argument for percentiles, histograms, and treating every metric as a random variable."
+---
+
+Latency is not a number. It's a distribution, and the average is the least
+interesting thing about it. Two services with an identical mean can deliver wildly
+different experiences — one smooth, one full of stalls.
+
+## The average hides the tail
+
+Most user-facing pain lives in the tail: the 1% of requests that take 10× longer.
+Average them with the happy path and the signal vanishes. Worse, averages aren't
+composable — the average of a fan-out is dominated by its slowest branch, not its
+mean branch.
+
+- Report percentiles: p50, p95, p99, and p99.9 for anything user-facing.
+- Keep histograms, not just summaries — percentiles don't aggregate across hosts.
+- Treat every metric as a random variable; describe its shape, not just its center.
+
+> If you only remember one thing: the user doesn't experience your average. They
+> experience their request.

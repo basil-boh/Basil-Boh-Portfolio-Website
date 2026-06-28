@@ -1,0 +1,52 @@
+---
+id: N-01
+title: "The index you didn't know you needed"
+date: "2026.03"
+readingTime: "8 min"
+tags: [postgres, performance]
+excerpt: "A field guide to reading EXPLAIN ANALYZE, spotting the sequential scan hiding in plain sight, and the composite index that makes it disappear."
+---
+
+Most slow queries aren't slow because the database is slow. They're slow because
+the planner can't find a path that avoids reading rows it doesn't need. The fix is
+almost never a bigger machine — it's giving the planner a better option.
+
+## Read the plan, not the query
+
+Before changing anything, get the real plan with timing and buffer counts. The
+estimate matters less than what actually happened at runtime.
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM events
+WHERE tenant_id = $1
+ORDER BY created_at DESC
+LIMIT 50;
+```
+
+The line that gives it away is a **Seq Scan** with a large `Rows Removed by Filter`.
+The database read the whole table and threw most of it away — work that scales with
+your data, not your result.
+
+## The index you actually need
+
+Column order in a composite index is everything. Lead with the equality predicate,
+then the column you sort by. That lets one index satisfy both the filter and the
+`ORDER BY`, so the `LIMIT` can stop early.
+
+```sql
+CREATE INDEX idx_events_tenant_recent
+  ON events (tenant_id, created_at DESC);
+```
+
+## Rules of thumb
+
+- Equality columns first, range/sort columns last.
+- An index that covers the `ORDER BY` can turn a sort + limit into an early exit.
+- Every index is paid for on every write — index the read patterns that are stable,
+  not the ones you hope for.
+- Re-run `EXPLAIN ANALYZE` after. If the Seq Scan is still there, the planner didn't
+  believe you.
+
+> An index is a bet that a read pattern is stable enough to be worth paying for on
+> every single write.

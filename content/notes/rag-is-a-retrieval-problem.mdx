@@ -1,0 +1,40 @@
+---
+id: N-02
+title: "RAG is a retrieval problem, not a prompt problem"
+date: "2026.01"
+readingTime: "12 min"
+tags: [llm, rag, retrieval]
+excerpt: "Why most RAG systems fail at retrieval long before generation, and how to instrument the pipeline so you can actually see where context goes wrong."
+---
+
+When a RAG system gives a wrong answer, the instinct is to rewrite the prompt. But
+by the time the model is generating, the outcome is mostly decided — it can only
+work with the context it was handed. If the right chunk never got retrieved, no
+prompt will save it.
+
+## Where it actually breaks
+
+Failures cluster in retrieval, long before generation. The usual suspects:
+
+- Chunking that splits the answer across two chunks, so neither is a strong match.
+- Embeddings that capture topic but not the specific entity the user asked about.
+- A top-k that's too small, evicting the one chunk that mattered.
+- No re-ranking, so a lexically-similar-but-wrong chunk outranks the right one.
+
+## Instrument the pipeline
+
+You can't fix what you can't see. Log the retrieved chunk ids and their scores for
+every request, and tag whether the final answer was grounded. Now retrieval quality
+is a metric, not a vibe.
+
+```python
+span.set_attributes({
+    "rag.query": query,
+    "rag.chunk_ids": [c.id for c in chunks],
+    "rag.scores": [round(c.score, 3) for c in chunks],
+    "rag.reranked": True,
+})
+```
+
+> Generation is downstream of retrieval. Fix the input distribution before you tune
+> the output.

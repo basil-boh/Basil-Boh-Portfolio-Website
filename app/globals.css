@@ -1,0 +1,367 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — Kinetic Brutalism (dark / OLED)
+   ============================================================ */
+@theme {
+  /* ---- DARK (default) ---- */
+  --color-bg: #09090b;
+  --color-bg-raised: #0c0c0f;
+  --color-fg: #fafafa;
+  --color-muted: #27272a;
+  --color-muted-fg: #8a8a93;
+  --color-line: #2a2a30;
+  --color-line-bright: #3f3f46;
+  --color-accent: #dfe104; /* the one loud accent — used as a FILL */
+  --color-accent-fg: #050505;
+  --color-accent-ink: #dfe104; /* accent as TEXT/strokes — stays readable per theme */
+  --color-vec-i: #dfe104; /* basis vector î (canvas) */
+  --color-vec-j: #4dd0ff; /* basis vector ĵ (canvas) */
+
+  /* canvas-only tokens (read by JS via getComputedStyle) */
+  --color-grid: #1c1c20;
+  --color-grid-soft: #161619;
+  --color-dot: rgba(250, 250, 250, 0.32);
+  --color-fill-accent: rgba(223, 225, 4, 0.07);
+
+  /* long-form reading */
+  --color-prose: #c6c6ce;
+  --color-code: #d8d8df;
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  --ease-brutal: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- LIGHT ---- override the same custom properties; utilities + arbitrary
+   var() references all cascade automatically. ---- */
+:root[data-theme="light"] {
+  --color-bg: #f3f3ee;
+  --color-bg-raised: #fbfbf7;
+  --color-fg: #0a0a0a;
+  --color-muted: #e7e7e0;
+  --color-muted-fg: #56565c;
+  --color-line: #d9d9d1;
+  --color-line-bright: #adada3;
+  --color-accent: #e9eb12; /* loud yellow fill (black text on it) */
+  --color-accent-fg: #050505;
+  --color-accent-ink: #5c5e00; /* dark lime — readable on light */
+  --color-vec-i: #5c5e00;
+  --color-vec-j: #0f5f9e;
+
+  --color-grid: #dcdcd4;
+  --color-grid-soft: #e6e6de;
+  --color-dot: rgba(10, 10, 10, 0.26);
+  --color-fill-accent: rgba(92, 94, 0, 0.1);
+
+  --color-prose: #2c2c30;
+  --color-code: #1f1f24;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: auto; /* Lenis owns scrolling */
+  background: var(--color-bg);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-display);
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* theme-aware legibility wash behind the hero headline */
+.hero-wash {
+  background: radial-gradient(
+    120% 90% at 20% 40%,
+    var(--color-bg) 0%,
+    color-mix(in srgb, var(--color-bg) 55%, transparent) 45%,
+    color-mix(in srgb, var(--color-bg) 12%, transparent) 100%
+  );
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+a,
+button {
+  color: inherit;
+}
+
+/* Tabular figures everywhere we show numbers/metrics */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+.label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1;
+  color: var(--color-muted-fg);
+}
+
+.label-bright {
+  color: var(--color-fg);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* Fluid display sizes */
+.d-hero {
+  font-size: clamp(3rem, 11vw, 11rem);
+}
+.d-xl {
+  font-size: clamp(2.25rem, 6.5vw, 5.5rem);
+}
+.d-lg {
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+}
+
+/* ============================================================
+   BRUTALIST SURFACES
+   ============================================================ */
+.line-t { border-top: 1px solid var(--color-line); }
+.line-b { border-bottom: 1px solid var(--color-line); }
+.line-l { border-left: 1px solid var(--color-line); }
+.line-r { border-right: 1px solid var(--color-line); }
+
+.panel {
+  border: 1.5px solid var(--color-line-bright);
+  background: var(--color-bg-raised);
+  border-radius: 0;
+}
+
+/* Hard inversion on hover — the brutalist signature, ~90ms snap */
+.invert-hover {
+  transition: background-color 90ms var(--ease-brutal),
+    color 90ms var(--ease-brutal), border-color 90ms var(--ease-brutal);
+}
+.invert-hover:hover,
+.invert-hover:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  border-color: var(--color-accent);
+}
+.invert-hover:hover .label,
+.invert-hover:focus-visible .label {
+  color: var(--color-accent-fg);
+}
+
+/* Blueprint grid background */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Corner registration cross marks (blueprint feel) */
+.reg::before,
+.reg::after {
+  content: "+";
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--color-line-bright);
+  pointer-events: none;
+}
+.reg::before { top: -6px; left: -6px; }
+.reg::after { bottom: -6px; right: -6px; }
+
+/* Focus ring — keep it visible & on-brand */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   PROSE — long-form reading (note + project pages)
+   ============================================================ */
+.prose {
+  color: var(--color-prose);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  max-width: 68ch;
+}
+@media (min-width: 768px) {
+  .prose {
+    font-size: 1.15rem;
+  }
+}
+.prose > * + * {
+  margin-top: 1.45em;
+}
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  color: var(--color-fg);
+  margin-top: 2.2em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--color-line);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.prose h2::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: none;
+  background: var(--color-accent-ink);
+  transform: translateY(-0.05em);
+}
+.prose strong {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.prose a {
+  color: var(--color-accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose ul {
+  list-style: none;
+  padding: 0;
+}
+.prose li {
+  position: relative;
+  padding-left: 1.6em;
+}
+.prose li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent-ink);
+}
+.prose li + li {
+  margin-top: 0.6em;
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--color-muted);
+  color: var(--color-fg);
+  padding: 0.12em 0.4em;
+}
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--color-code);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-line-bright);
+  border-left: 2px solid var(--color-accent-ink);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+}
+.prose blockquote {
+  border-left: 2px solid var(--color-accent-ink);
+  padding-left: 1.25rem;
+  color: var(--color-muted-fg);
+  font-style: italic;
+  font-size: 1.05em;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* ============================================================
+   ANIMATION HELPERS
+   ============================================================ */
+/* Elements hidden until GSAP reveals them — but only when JS+motion run.
+   The .gsap-ready flag is added to <html> on mount so no-JS users see content. */
+.gsap-ready .reveal-init {
+  visibility: hidden;
+}
+
+/* SVG draw-on default state */
+.draw path,
+.draw line,
+.draw circle,
+.draw rect,
+.draw polyline {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Theme toggle icon visibility — driven by data-theme, not JS state */
+.t-sun {
+  display: block;
+}
+.t-moon {
+  display: none;
+}
+:root[data-theme="light"] .t-sun {
+  display: none;
+}
+:root[data-theme="light"] .t-moon {
+  display: block;
+}
+
+/* Custom cursor: hide native on fine pointers */
+@media (pointer: fine) {
+  .cursor-host,
+  .cursor-host * {
+    cursor: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION — show everything, kill movement
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .gsap-ready .reveal-init {
+    visibility: visible !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}

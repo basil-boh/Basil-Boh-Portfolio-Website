@@ -1,0 +1,35 @@
+---
+id: N-03
+title: "Connection pools as queueing systems"
+date: "2025.11"
+readingTime: "10 min"
+tags: [systems, statistics]
+excerpt: "Modelling a connection pool with Little's Law, why your p99 explodes before your averages move, and how to size for the tail."
+---
+
+A connection pool is a queue with a fixed number of servers. That single sentence
+unlocks a century of queueing theory — and explains why your tail latency falls off
+a cliff while your averages still look fine.
+
+## Little's Law, applied
+
+The number of in-flight requests equals arrival rate times time spent in the system.
+When the pool saturates, new requests wait, `W` grows, and `L` grows with it — fast.
+
+```text
+L = λ × W
+
+# in-flight = arrival_rate × latency
+# saturate the pool → W includes queue wait → L explodes
+```
+
+## Why p99 explodes first
+
+Utilization and wait time are non-linear. Past roughly 70–80% pool utilization, a
+small bump in load produces a large jump in queue wait. The mean barely moves because
+most requests still get a free connection — but the unlucky tail waits behind a full
+queue. That's your p99 leaving the building.
+
+- Size for the tail you promised, not the average you measured.
+- Watch pool wait time directly — it leads latency, where CPU lags it.
+- An adaptive pool that resizes on observed wait beats a hand-tuned constant.
