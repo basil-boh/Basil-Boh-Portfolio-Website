@@ -1,325 +1,253 @@
 "use client";
 
 import { useRef } from "react";
-import * as THREE from "three";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { readThemeTokens } from "@/lib/theme";
 import {
-  IDENTITY3,
-  lerpMat3,
-  det3,
-  TRANSFORMS3,
-  type Mat3,
+  applyMat,
+  lerpMat,
+  determinant,
+  IDENTITY,
+  TRANSFORMS,
+  type Mat2,
+  type Vec2,
 } from "@/lib/math";
 
 /**
- * The hero centerpiece: a live linear-algebra space that *reveals its third
- * dimension*. It opens face-on — a flat deforming grid that reads as the old
- * 2×2 plane — then the camera orbits out, k̂ rises into view, and the readout
- * grows from 2×2 to a full 3×3 matrix. From there it walks through a sequence
- * of real 3D maps (rotation, shear, scale, an off-axis spin) and finishes on a
- * *singular* projection where space collapses onto a plane and the volume
- * readout (det) drops to 0.00.
+ * The hero centerpiece: a coordinate space + data point-cloud + basis vectors
+ * that continuously morph through a sequence of real 2x2 linear maps. A live
+ * matrix readout shows the exact numbers being multiplied each frame.
  *
- * Rendered with three.js but kept deliberately brutalist: flat MeshBasicMaterial
- * + wireframe lines, no lighting, no PBR — line-art that deforms in 3D. The
- * morph and the camera choreography are GSAP tweens; under reduced motion it
- * renders a single static 3/4 view of the identity.
+ * Everything is drawn on a DPR-aware canvas; the morph is a single scalar tween
+ * (GSAP) interpolating between named transforms, with subtle pointer parallax.
+ * Under reduced motion it renders a single static identity grid.
  */
 export default function MatrixField() {
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const nameEl = useRef<HTMLSpanElement>(null);
   const detEl = useRef<HTMLSpanElement>(null);
-  const cellRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const cells = [
+    useRef<HTMLSpanElement>(null),
+    useRef<HTMLSpanElement>(null),
+    useRef<HTMLSpanElement>(null),
+    useRef<HTMLSpanElement>(null),
+  ];
 
   useGSAP(
     () => {
+      const cv = canvas.current!;
+      const ctx = cv.getContext("2d")!;
       const reduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
       let C = readThemeTokens();
 
-      // ---- renderer / scene / camera -----------------------------------
-      const renderer = new THREE.WebGLRenderer({
-        canvas: canvas.current!,
-        alpha: true,
-        antialias: true,
-      });
-      renderer.setClearColor(0x000000, 0); // transparent — page bg shows through
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-
-      // ---- the linear map (everything inside deforms by M) -------------
-      const mapGroup = new THREE.Group();
-      mapGroup.matrixAutoUpdate = false;
-      scene.add(mapGroup);
-
-      // deforming 3D lattice: lines along x, y, z over [-2,2]³ on a unit step.
-      // Seen face-on it collapses into the familiar flat grid; orbit out and it
-      // becomes a volume of space that shears/rotates with the matrix.
-      const LAT = 2;
-      const latPts: number[] = [];
-      for (let a = -LAT; a <= LAT; a++) {
-        for (let b = -LAT; b <= LAT; b++) {
-          latPts.push(-LAT, a, b, LAT, a, b); // ∥ x
-          latPts.push(a, -LAT, b, a, LAT, b); // ∥ y
-          latPts.push(a, b, -LAT, a, b, LAT); // ∥ z
-        }
+      // --- the data point-cloud (fixed in object space, transformed each frame)
+      const pts: Vec2[] = [];
+      let seed = 1337;
+      const rnd = () => {
+        // deterministic PRNG so SSR/CSR + reruns stay stable
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      };
+      for (let i = 0; i < 140; i++) {
+        pts.push([(rnd() - 0.5) * 6, (rnd() - 0.5) * 6]);
       }
-      const latGeo = new THREE.BufferGeometry();
-      latGeo.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(latPts, 3)
-      );
-      const latMat = new THREE.LineBasicMaterial({
-        color: new THREE.Color(C.grid),
-        transparent: true,
-        opacity: 0.55,
-      });
-      mapGroup.add(new THREE.LineSegments(latGeo, latMat));
 
-      // the unit cube [0,1]³ — its (signed) volume IS the determinant
-      const cubeBox = new THREE.BoxGeometry(1, 1, 1).translate(0.5, 0.5, 0.5);
-      const cubeEdgeGeo = new THREE.EdgesGeometry(cubeBox);
-      const cubeEdgeMat = new THREE.LineBasicMaterial({
-        color: new THREE.Color(C.fg),
-      });
-      mapGroup.add(new THREE.LineSegments(cubeEdgeGeo, cubeEdgeMat));
+      const view = { m: IDENTITY as Mat2, name: "IDENTITY" };
+      const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
-      const cubeFillMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(C.accent),
-        transparent: true,
-        opacity: 0.08,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      });
-      const cubeFill = new THREE.Mesh(cubeBox, cubeFillMat);
-      cubeFill.renderOrder = -1;
-      mapGroup.add(cubeFill);
-
-      // origin marker (fixed — M·0 = 0)
-      const originGeo = new THREE.SphereGeometry(0.05, 16, 12);
-      const originMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(C.fg),
-      });
-      scene.add(new THREE.Mesh(originGeo, originMat));
-
-      // ---- basis arrows î ĵ k̂ (drawn in world space at the columns of M, so
-      //      the arrowheads stay clean instead of being sheared by M) --------
-      const HEAD = 0.18;
-      const makeArrow = (hex: string) => {
-        const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex) });
-        const shaftGeo = new THREE.CylinderGeometry(0.022, 0.022, 1, 10);
-        const headGeo = new THREE.ConeGeometry(0.07, HEAD, 16);
-        const shaft = new THREE.Mesh(shaftGeo, mat);
-        const head = new THREE.Mesh(headGeo, mat);
-        const g = new THREE.Group();
-        g.add(shaft, head);
-        scene.add(g);
-        const up = new THREE.Vector3(0, 1, 0);
-        const q = new THREE.Quaternion();
-        const dir = new THREE.Vector3();
-        const update = (end: THREE.Vector3) => {
-          const len = end.length();
-          if (len < 1e-3) {
-            g.visible = false;
-            return;
-          }
-          g.visible = true;
-          dir.copy(end).normalize();
-          q.setFromUnitVectors(up, dir);
-          const shaftLen = Math.max(len - HEAD, 0.001);
-          shaft.scale.set(1, shaftLen, 1);
-          shaft.quaternion.copy(q);
-          shaft.position.copy(dir).multiplyScalar(shaftLen / 2);
-          head.quaternion.copy(q);
-          head.position.copy(dir).multiplyScalar(len - HEAD / 2);
-        };
-        return { mat, shaftGeo, headGeo, update };
-      };
-      const aI = makeArrow(C.vecI);
-      const aJ = makeArrow(C.vecJ);
-      const aK = makeArrow(C.vecK);
-
-      // ---- state: current matrix + its name ----------------------------
-      const view = { m: IDENTITY3 as Mat3, name: "IDENTITY" };
-      const M4 = new THREE.Matrix4();
-      const eI = new THREE.Vector3();
-      const eJ = new THREE.Vector3();
-      const eK = new THREE.Vector3();
-
-      const applyMatrix = () => {
-        const m = view.m;
-        // row-major Mat3 → Matrix4 (column-major .set takes row-major args)
-        M4.set(
-          m[0], m[1], m[2], 0,
-          m[3], m[4], m[5], 0,
-          m[6], m[7], m[8], 0,
-          0, 0, 0, 1
-        );
-        mapGroup.matrix.copy(M4);
-        mapGroup.matrixWorldNeedsUpdate = true;
-        // basis vectors are the columns of M
-        aI.update(eI.set(m[0], m[3], m[6]));
-        aJ.update(eJ.set(m[1], m[4], m[7]));
-        aK.update(eK.set(m[2], m[5], m[8]));
-      };
-
-      const writeReadout = () => {
-        const m = view.m;
-        for (let i = 0; i < 9; i++) {
-          const el = cellRefs.current[i];
-          if (el) el.textContent = m[i].toFixed(2);
-        }
-        if (detEl.current) detEl.current.textContent = det3(m).toFixed(2);
-        if (nameEl.current) nameEl.current.textContent = view.name;
-      };
-
-      // ---- colours (re-applied on theme flip) --------------------------
-      const applyColors = () => {
-        latMat.color.set(C.grid);
-        cubeEdgeMat.color.set(C.fg);
-        cubeFillMat.color.set(C.accent);
-        originMat.color.set(C.fg);
-        aI.mat.color.set(C.vecI);
-        aJ.mat.color.set(C.vecJ);
-        aK.mat.color.set(C.vecK);
-      };
-
-      // ---- camera (spherical orbit) ------------------------------------
-      const cam = { az: 0, el: 0, radius: 9 };
-      const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
-      const placeCam = () => {
-        const az = cam.az + ptr.tx * 0.22;
-        const el = Math.max(-1.2, Math.min(1.2, cam.el + ptr.ty * 0.16));
-        const ce = Math.cos(el);
-        camera.position.set(
-          cam.radius * ce * Math.sin(az),
-          cam.radius * Math.sin(el),
-          cam.radius * ce * Math.cos(az)
-        );
-        camera.lookAt(0, 0, 0);
-      };
+      let scale = 46;
+      let cx = 0;
+      let cy = 0;
+      let dpr = 1;
 
       const resize = () => {
         const r = host.current!.getBoundingClientRect();
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        renderer.setSize(r.width, r.height, true);
-        camera.aspect = r.width / Math.max(r.height, 1);
-        camera.updateProjectionMatrix();
-        if (reduced) {
-          placeCam();
-          renderer.render(scene, camera);
-        }
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        cv.width = Math.floor(r.width * dpr);
+        cv.height = Math.floor(r.height * dpr);
+        cv.style.width = `${r.width}px`;
+        cv.style.height = `${r.height}px`;
+        cx = cv.width / 2;
+        cy = cv.height / 2;
+        scale = Math.max(30, Math.min(r.width, r.height) / 9) * dpr;
       };
       resize();
       const ro = new ResizeObserver(resize);
       ro.observe(host.current!);
 
-      applyColors();
-      applyMatrix();
-      writeReadout();
+      const toScreen = (v: Vec2): Vec2 => [
+        cx + scale * v[0] + pointer.tx,
+        cy - scale * v[1] + pointer.ty,
+      ];
 
+      const line = (a: Vec2, b: Vec2, color: string, w: number) => {
+        const p = toScreen(a);
+        const q = toScreen(b);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = w * dpr;
+        ctx.beginPath();
+        ctx.moveTo(p[0], p[1]);
+        ctx.lineTo(q[0], q[1]);
+        ctx.stroke();
+      };
+
+      const arrow = (to: Vec2, color: string) => {
+        const o = toScreen([0, 0]);
+        const t = toScreen(to);
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2.5 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(o[0], o[1]);
+        ctx.lineTo(t[0], t[1]);
+        ctx.stroke();
+        const ang = Math.atan2(t[1] - o[1], t[0] - o[0]);
+        const h = 11 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(t[0], t[1]);
+        ctx.lineTo(
+          t[0] - h * Math.cos(ang - 0.4),
+          t[1] - h * Math.sin(ang - 0.4)
+        );
+        ctx.lineTo(
+          t[0] - h * Math.cos(ang + 0.4),
+          t[1] - h * Math.sin(ang + 0.4)
+        );
+        ctx.closePath();
+        ctx.fill();
+      };
+
+      const draw = () => {
+        const m = view.m;
+        ctx.clearRect(0, 0, cv.width, cv.height);
+
+        const K = 7;
+        // transformed grid
+        for (let i = -K; i <= K; i++) {
+          const axis = i === 0;
+          const col = axis ? C.lineBright : C.grid;
+          line(applyMat(m, [i, -K]), applyMat(m, [i, K]), col, axis ? 1.4 : 1);
+          line(applyMat(m, [-K, i]), applyMat(m, [K, i]), col, axis ? 1.4 : 1);
+        }
+
+        // unit-square (signed area = det) fill
+        const sq: Vec2[] = [
+          [0, 0],
+          [1, 0],
+          [1, 1],
+          [0, 1],
+        ].map((p) => applyMat(m, p as Vec2));
+        ctx.beginPath();
+        sq.forEach((p, i) => {
+          const s = toScreen(p);
+          i === 0 ? ctx.moveTo(s[0], s[1]) : ctx.lineTo(s[0], s[1]);
+        });
+        ctx.closePath();
+        ctx.fillStyle = C.fillAccent;
+        ctx.fill();
+
+        // data point-cloud
+        for (const p of pts) {
+          const s = toScreen(applyMat(m, p));
+          ctx.fillStyle = C.dot;
+          ctx.fillRect(s[0] - dpr, s[1] - dpr, 2 * dpr, 2 * dpr);
+        }
+
+        // basis vectors
+        arrow(applyMat(m, [1, 0]), C.vecI); // î
+        arrow(applyMat(m, [0, 1]), C.vecJ); // ĵ
+
+        // origin
+        const o = toScreen([0, 0]);
+        ctx.fillStyle = C.fg;
+        ctx.beginPath();
+        ctx.arc(o[0], o[1], 3 * dpr, 0, Math.PI * 2);
+        ctx.fill();
+      };
+
+      const writeReadout = () => {
+        const m = view.m;
+        cells[0].current && (cells[0].current.textContent = m[0].toFixed(2));
+        cells[1].current && (cells[1].current.textContent = m[1].toFixed(2));
+        cells[2].current && (cells[2].current.textContent = m[2].toFixed(2));
+        cells[3].current && (cells[3].current.textContent = m[3].toFixed(2));
+        detEl.current &&
+          (detEl.current.textContent = determinant(m).toFixed(2));
+        nameEl.current && (nameEl.current.textContent = view.name);
+      };
+
+      // re-read palette when the theme flips
       const onTheme = () => {
         C = readThemeTokens();
-        applyColors();
-        if (reduced) renderer.render(scene, camera);
+        if (reduced) draw();
       };
       document.addEventListener("themechange", onTheme);
 
-      // ---- reduced motion: one static 3/4 view, no animation -----------
       if (reduced) {
-        cam.az = -0.62;
-        cam.el = 0.4;
-        placeCam();
-        gsap.set(".z-cell", { opacity: 1 });
-        renderer.render(scene, camera);
+        view.m = IDENTITY;
+        view.name = "IDENTITY";
+        draw();
+        writeReadout();
         return () => {
           ro.disconnect();
           document.removeEventListener("themechange", onTheme);
-          renderer.dispose();
-          [latGeo, cubeEdgeGeo, cubeBox, originGeo, aI.shaftGeo, aI.headGeo, aJ.shaftGeo, aJ.headGeo, aK.shaftGeo, aK.headGeo].forEach((g) => g.dispose());
-          [latMat, cubeEdgeMat, cubeFillMat, originMat, aI.mat, aJ.mat, aK.mat].forEach((m) => m.dispose());
         };
       }
 
-      // ---- pointer parallax --------------------------------------------
+      // pointer parallax
       const onMove = (e: PointerEvent) => {
         const r = host.current!.getBoundingClientRect();
-        ptr.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
-        ptr.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        pointer.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        pointer.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
       };
       host.current!.addEventListener("pointermove", onMove);
 
-      // ---- render loop --------------------------------------------------
-      let orbiting = false;
+      // rAF render loop (independent of the morph tween for buttery parallax)
       let raf = 0;
       const loop = () => {
-        if (orbiting) cam.az -= 0.0016; // slow continuous orbit
-        ptr.tx += (ptr.x - ptr.tx) * 0.05;
-        ptr.ty += (ptr.y - ptr.ty) * 0.05;
-        placeCam();
-        renderer.render(scene, camera);
+        pointer.tx += (pointer.x * 18 * dpr - pointer.tx) * 0.06;
+        pointer.ty += (pointer.y * 18 * dpr - pointer.ty) * 0.06;
+        draw();
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
 
-      // ---- morph: walk a scalar through the 3D transform list ----------
+      // the morph: one scalar walks through the transform list; matrix is the
+      // lerp between the two it currently sits between.
       const prog = { t: 0 };
-      const N = TRANSFORMS3.length;
+      const N = TRANSFORMS.length;
       const recompute = () => {
         const f = Math.floor(prog.t) % N;
         const c = (f + 1) % N;
         const frac = prog.t - Math.floor(prog.t);
-        view.m = lerpMat3(TRANSFORMS3[f].m, TRANSFORMS3[c].m, frac);
-        view.name = frac < 0.5 ? TRANSFORMS3[f].name : TRANSFORMS3[c].name;
-        applyMatrix();
+        view.m = lerpMat(TRANSFORMS[f].m, TRANSFORMS[c].m, frac);
+        view.name = frac < 0.5 ? TRANSFORMS[f].name : TRANSFORMS[c].name;
         writeReadout();
       };
 
-      const morph = gsap.timeline({ repeat: -1, paused: true });
+      const tl = gsap.timeline({ repeat: -1 });
       for (let i = 0; i < N; i++) {
-        morph
-          .to(prog, {
-            t: i + 1,
-            duration: 2.6,
-            ease: "power2.inOut",
-            onUpdate: recompute,
-          })
-          .to({}, { duration: 0.9 }); // hold on each transform
+        tl.to(prog, {
+          t: i + 1,
+          duration: 2.4,
+          ease: "power2.inOut",
+          onUpdate: recompute,
+        }).to({}, { duration: 0.7 }); // hold on each transform
       }
-
-      // ---- the 2D → 3D reveal ------------------------------------------
-      gsap.set(".z-cell", { opacity: 0 });
-      const reveal = gsap.timeline({ delay: 0.4 });
-      reveal
-        .to(cam, { el: 0.4, az: -0.62, duration: 2.6, ease: "power3.inOut" })
-        .to(".z-cell", { opacity: 1, duration: 0.9, stagger: 0.05 }, "-=1.5")
-        .add(() => {
-          orbiting = true;
-          morph.play(0);
-        });
 
       return () => {
         cancelAnimationFrame(raf);
-        reveal.kill();
-        morph.kill();
+        tl.kill();
         ro.disconnect();
         document.removeEventListener("themechange", onTheme);
         host.current?.removeEventListener("pointermove", onMove);
-        renderer.dispose();
-        [latGeo, cubeEdgeGeo, cubeBox, originGeo, aI.shaftGeo, aI.headGeo, aJ.shaftGeo, aJ.headGeo, aK.shaftGeo, aK.headGeo].forEach((g) => g.dispose());
-        [latMat, cubeEdgeMat, cubeFillMat, originMat, aI.mat, aJ.mat, aK.mat].forEach((m) => m.dispose());
       };
     },
     { scope: host }
   );
-
-  // column → basis-vector colour (î / ĵ / k̂); 3rd row & col fade in on reveal
-  const colColor = ["--color-vec-i", "--color-vec-j", "--color-vec-k"];
-  const isZ = (i: number) => i % 3 === 2 || i >= 6; // 3rd column or 3rd row
 
   return (
     <div ref={host} className="absolute inset-0">
@@ -328,34 +256,20 @@ export default function MatrixField() {
       {/* live matrix readout */}
       <div className="pointer-events-none absolute bottom-5 right-5 select-none md:bottom-7 md:right-7">
         <div className="label mb-2 text-right">
-          TRANSFORM ={" "}
-          <span ref={nameEl} className="label-bright">
-            IDENTITY
-          </span>
+          TRANSFORM = <span ref={nameEl} className="label-bright">IDENTITY</span>
         </div>
         <div className="flex items-stretch gap-2">
           <span className="w-[2px] bg-[var(--color-line-bright)]" />
-          <div className="mono grid grid-cols-3 gap-x-4 gap-y-1 text-sm tabular-nums md:text-base">
-            {Array.from({ length: 9 }, (_, i) => (
-              <span
-                key={i}
-                ref={(el) => {
-                  cellRefs.current[i] = el;
-                }}
-                className={isZ(i) ? "z-cell" : undefined}
-                style={{ color: `var(${colColor[i % 3]})` }}
-              >
-                {i === 0 || i === 4 || i === 8 ? "1.00" : "0.00"}
-              </span>
-            ))}
+          <div className="mono grid grid-cols-2 gap-x-5 gap-y-1 text-sm tabular-nums md:text-base">
+            <span ref={cells[0]} className="text-[color:var(--color-vec-i)]">1.00</span>
+            <span ref={cells[1]} className="text-[color:var(--color-vec-j)]">0.00</span>
+            <span ref={cells[2]} className="text-[color:var(--color-vec-i)]">0.00</span>
+            <span ref={cells[3]} className="text-[color:var(--color-vec-j)]">1.00</span>
           </div>
           <span className="w-[2px] bg-[var(--color-line-bright)]" />
         </div>
         <div className="label mt-2 text-right">
-          det <span className="text-[color:var(--color-muted-fg)]">(vol)</span> ={" "}
-          <span ref={detEl} className="label-bright">
-            1.00
-          </span>
+          det = <span ref={detEl} className="label-bright">1.00</span>
         </div>
       </div>
     </div>

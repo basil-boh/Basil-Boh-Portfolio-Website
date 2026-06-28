@@ -145,7 +145,7 @@ export default function Hero() {
             <span className="inline-block animate-bounce">↓</span> SCROLL
           </span>
           <span className="label hidden md:block">
-            î · ĵ · k̂ = BASIS · LIVE 3×3 MAP
+            î = BASIS-X · ĵ = BASIS-Y · LIVE 2×2 MAP
           </span>
         </div>
       </div>

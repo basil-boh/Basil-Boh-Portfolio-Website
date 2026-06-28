@@ -15,7 +15,6 @@ export type ThemeTokens = {
   fillAccent: string;
   vecI: string;
   vecJ: string;
-  vecK: string;
   mutedFg: string;
 };
 
@@ -37,7 +36,6 @@ export function readThemeTokens(): ThemeTokens {
     fillAccent: read("--color-fill-accent"),
     vecI: read("--color-vec-i"),
     vecJ: read("--color-vec-j"),
-    vecK: read("--color-vec-k"),
     mutedFg: read("--color-muted-fg"),
   };
 }
