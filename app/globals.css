@@ -17,6 +17,7 @@
   --color-accent-ink: #dfe104; /* accent as TEXT/strokes — stays readable per theme */
   --color-vec-i: #dfe104; /* basis vector î (canvas) */
   --color-vec-j: #4dd0ff; /* basis vector ĵ (canvas) */
+  --color-vec-k: #ff5cc8; /* basis vector k̂ (canvas) — magenta completes the î/ĵ/k̂ triad */
 
   /* canvas-only tokens (read by JS via getComputedStyle) */
   --color-grid: #1c1c20;
@@ -49,6 +50,7 @@
   --color-accent-ink: #5c5e00; /* dark lime — readable on light */
   --color-vec-i: #5c5e00;
   --color-vec-j: #0f5f9e;
+  --color-vec-k: #b0008e; /* magenta k̂ — darkened to read on light */
 
   --color-grid: #dcdcd4;
   --color-grid-soft: #e6e6de;
