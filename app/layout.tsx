@@ -7,6 +7,7 @@ import Cursor from "@/components/layout/Cursor";
 import GridOverlay from "@/components/layout/GridOverlay";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -64,6 +65,7 @@ export default function RootLayout({
         <Nav />
         <main id="main">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
