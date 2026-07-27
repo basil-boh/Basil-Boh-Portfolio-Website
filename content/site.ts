@@ -277,6 +277,17 @@ export type Hackathon = {
 export const hackathons: Hackathon[] = [
   {
     id: "H-01",
+    event: "DAYTONA HACKSPRINT",
+    project: "Airlock",
+    result: "1ST PLACE",
+    isWin: true,
+    date: "JUL 2026",
+    location: "Singapore",
+    desc: "Overall Grand Winner. A security gate for AI agents that blocks supply-chain malware before install — detonating each package in a disposable Daytona sandbox seeded with honeypot credentials, fused with Qwen 3.5 static analysis on a Nosana GPU, Doubleword embedding matches against known malware and live Oxylabs reputation intel.",
+    stack: ["Daytona", "Claude Code Hooks", "Nosana GPU", "Doubleword", "Oxylabs"],
+  },
+  {
+    id: "H-02",
     event: "RALPHTHON @SG",
     project: "SnapRoom",
     result: "2ND PLACE",
@@ -287,7 +298,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Three.js", "World Labs", "Fal AI", "Expo"],
   },
   {
-    id: "H-02",
+    id: "H-03",
     event: "AI ENGINEER SINGAPORE",
     project: "DataForge",
     result: "FEATURED BUILD",
@@ -297,7 +308,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Next.js", "Convex", "OpenAI", "Fal AI"],
   },
   {
-    id: "H-03",
+    id: "H-04",
     event: "GRABMAPS",
     project: "Personality Map",
     result: "LIVE AI DEMO",
@@ -307,7 +318,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Grab Maps", "OpenAI", "ElevenLabs", "Vite"],
   },
   {
-    id: "H-04",
+    id: "H-05",
     event: "NUS HACK&ROLL",
     project: "Reely",
     result: "SHIPPED TO CLOUD RUN",
@@ -317,7 +328,7 @@ export const hackathons: Hackathon[] = [
     stack: ["React", "MongoDB", "Gemini Vision", "GCP"],
   },
   {
-    id: "H-05",
+    id: "H-06",
     event: "GOOGLE GEMINI",
     project: "Urban Incident Review",
     result: "LONG-VIDEO AI",

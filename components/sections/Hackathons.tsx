@@ -100,7 +100,7 @@ export default function Hackathons() {
         <SectionHeader
           index="03"
           title="HACKATHONS"
-          kicker="5 BUILDS · 1 PODIUM"
+          kicker="6 BUILDS · 2 PODIUMS"
         />
 
         <div className="mt-12 grid gap-px border border-[var(--color-line-bright)] bg-[var(--color-line-bright)] md:grid-cols-2">
