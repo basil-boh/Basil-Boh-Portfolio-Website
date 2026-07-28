@@ -5,6 +5,7 @@ import { projects } from "@/content/site";
 import { getProject, projectSlug } from "@/lib/content";
 import Blocks from "@/components/reading/Blocks";
 import Counter from "@/components/anim/Counter";
+import Shot from "@/components/work/Shot";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -49,6 +50,19 @@ export default async function ProjectPage({ params }: Params) {
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-muted-fg)] md:text-xl">
             {p.blurb}
           </p>
+
+          {p.repo && (
+            <a
+              href={p.repo}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="hover"
+              className="invert-hover panel mt-8 inline-flex items-center gap-2 px-5 py-3"
+            >
+              <span className="label">SOURCE ON GITHUB</span>
+              <span aria-hidden>↗</span>
+            </a>
+          )}
         </header>
 
         {/* metrics */}
@@ -62,6 +76,24 @@ export default async function ProjectPage({ params }: Params) {
             </div>
           ))}
         </div>
+
+        {/* captures from the project itself */}
+        {p.shots && p.shots.length > 0 && (
+          <section className="mt-14">
+            <div className="label mb-4">/ CAPTURES</div>
+            <div className="grid gap-px border border-[var(--color-line-bright)] bg-[var(--color-line-bright)]">
+              {p.shots.map((s, i) => (
+                <div key={s.src} className="bg-[var(--color-bg)] p-4 md:p-6">
+                  <Shot
+                    shot={s}
+                    sizes="(max-width: 896px) 92vw, 848px"
+                    priority={i === 0}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div className="prose mt-14">
           <Blocks blocks={body} />

@@ -68,6 +68,32 @@ export const about = {
   ],
 } as const;
 
+/** A screenshot shipped from the project itself. Files live in /public/work/<slug>/. */
+export type Shot = {
+  src: string;
+  alt: string;
+  /** Short mono caption rendered under (or over) the plate. */
+  caption: string;
+  w: number;
+  h: number;
+};
+
+/**
+ * A silent screen-recording loop shown on the card in place of a flat cover,
+ * flanked by two stills. Muted + looping so it can autoplay; it only loads and
+ * plays once scrolled into view, and never under prefers-reduced-motion.
+ */
+export type Demo = {
+  src: string;
+  poster: string;
+  alt: string;
+  caption: string;
+  w: number;
+  h: number;
+  /** Portrait stills placed either side of the video. */
+  stills: [Shot, Shot];
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -77,12 +103,232 @@ export type Project = {
   stack: string[];
   metrics: { label: string; value: string }[];
   href?: string;
+  /** Public source, linked from the detail page. */
+  repo?: string;
+  /** 16:10 crop used on the card. Hand-cropped from the best region of a shot. */
+  cover?: Shot;
+  /** Takes the card's cover slot when present; `cover` stays the fallback. */
+  demo?: Demo;
+  /** Full-size captures, shown as a gallery on the detail page. */
+  shots?: Shot[];
   featured?: boolean;
 };
 
 export const projects: Project[] = [
   {
     id: "P-01",
+    title: "AIRLOCK",
+    blurb:
+      "A safety gate that stands in front of every package an AI agent installs. Each candidate is detonated in a throwaway Daytona sandbox seeded with honeytoken credentials, read line-by-line by a code model on a rented GPU, and reputation-checked against the live web — then a judge weighs all of it and blocks or passes, in plain language the agent understands.",
+    year: "2026",
+    role: "Backend / Security",
+    stack: ["Python", "Daytona", "Qwen 3.5", "Nosana GPU", "Doubleword", "Oxylabs"],
+    metrics: [
+      { label: "SANDBOX SPIN-UP", value: "0.7s" },
+      { label: "VERDICT SIGNALS", value: "4" },
+      { label: "HACKSPRINT", value: "1ST PLACE" },
+    ],
+    repo: "https://github.com/basil-boh/airlock",
+    featured: true,
+    cover: {
+      src: "/work/airlock/cover.webp",
+      alt: "Agent terminal session where Airlock intercepts a pip install of python-pillow and returns a BLOCKED verdict.",
+      caption: "BLOCKED — python-pillow",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/airlock/verdict.webp",
+        alt: "Terminal showing Airlock detonating python-pillow in a Daytona sandbox: tripwires fire on a planted ~/.aws/credentials read and an outbound connection, Nosana rates the source 10/10 malicious, and the install is blocked.",
+        caption: "THE VERDICT — TRIPWIRES, SOURCE RATING, BLOCK",
+        w: 1600,
+        h: 780,
+      },
+      {
+        src: "/work/airlock/checks.webp",
+        alt: "Airlock's three checks: Daytona detonates the package, Nosana reads every line of source, and a judge weighs both and delivers the verdict.",
+        caption: "THREE CHECKS BEFORE ANY INSTALL",
+        w: 1600,
+        h: 780,
+      },
+      {
+        src: "/work/airlock/problem.webp",
+        alt: "Title card: your AI agent installs a package, it just stole your keys — 34,319 malicious packages hit the registries in a single quarter of 2025.",
+        caption: "THE PROBLEM — 34,319 IN ONE QUARTER",
+        w: 1600,
+        h: 780,
+      },
+    ],
+  },
+  {
+    id: "P-02",
+    title: "BIOHACKK JOURNEY APP",
+    blurb:
+      "A full-stack mobile health platform: Singpass and Google OAuth, realtime bidirectional sync across four-plus biometric sources — Apple HealthKit, Omron, smart scales and Visbody body scans — and a phase-aware daily protocol with food, sleep, mood and vitals journaling on top. The Supabase and GCP pipelines behind it ingest 10,000+ readings a day; reworking the schemas and query paths took API responses from 3s to 500ms.",
+    year: "2026",
+    role: "Mobile / Backend",
+    stack: ["React Native", "Expo", "TypeScript", "Supabase", "GCP", "NestJS", "HealthKit"],
+    metrics: [
+      { label: "API RESPONSE", value: "-83%" },
+      { label: "READINGS / DAY", value: "10,000+" },
+      { label: "BIOMETRIC SOURCES", value: "4+" },
+    ],
+    featured: true,
+    demo: {
+      src: "/work/biohackk-journey-app/demo.mp4",
+      poster: "/work/biohackk-journey-app/demo-poster.webp",
+      alt: "Screen recording of the Biohackk app: the phase-aware home dashboard with a 3D body figure and weight, sustenance, sleep and water cards, the five-phase programme carousel, and the posture-analysis body scan.",
+      caption: "LIVE — DASHBOARD, PHASES, BODY SCAN",
+      w: 384,
+      h: 832,
+      stills: [
+        {
+          src: "/work/biohackk-journey-app/still-nutrition.webp",
+          alt: "The nutrition detail screen: a photographed meal identified as strawberry kakigori with creme brulee topping, a health score, and a per-ingredient sodium, salt and energy breakdown.",
+          caption: "AI MEAL ANALYSIS",
+          w: 384,
+          h: 832,
+        },
+        {
+          src: "/work/biohackk-journey-app/still-quests.webp",
+          alt: "The quests screen listing daily and weekly missions — 10K steps, mindful moment, workout streak, hydration hero — each with XP and coin rewards and a progress bar.",
+          caption: "QUESTS + STREAKS",
+          w: 384,
+          h: 832,
+        },
+      ],
+    },
+    cover: {
+      src: "/work/biohackk-journey-app/cover.webp",
+      alt: "Three Biohackk app screens side by side: the home dashboard with weight, calories, sleep and water cards around a body figure; the calorie log with per-meal rings; and the weight progress view.",
+      caption: "DASHBOARD · FOOD LOG · WEIGHT",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/biohackk-journey-app/daily.webp",
+        alt: "Full-length captures of the three core screens: the phase-aware home dashboard with macro rings and water, sleep and mood cards; the calorie log broken down by breakfast, lunch and dinner; and the weight view with progress chart, weight-change table, progress photos, weekly energy chart and BMI band.",
+        caption: "THE DAILY LOOP, END TO END",
+        w: 1600,
+        h: 1180,
+      },
+      {
+        src: "/work/biohackk-journey-app/onboarding.webp",
+        alt: "Onboarding screens: the generated custom plan with calorie and weight goals, a projected weight curve against a traditional diet, and the calorie-tracking explainer.",
+        caption: "ONBOARDING — GENERATED PLAN",
+        w: 1600,
+        h: 900,
+      },
+      {
+        src: "/work/biohackk-journey-app/engagement.webp",
+        alt: "The streak screen with a weekly calendar and streak milestones, and the mood journal with an emotion picker, activity tags and a focus-and-energy chart.",
+        caption: "STREAKS + MOOD JOURNAL",
+        w: 1600,
+        h: 900,
+      },
+    ],
+  },
+  {
+    id: "P-03",
+    title: "PORTFOLIO RISK ANALYTICS",
+    blurb:
+      "A quant notebook that runs AMZN's 29-year return series through the full risk battery against SPY — Sharpe and Sortino, drawdown curves, beta and alpha, a monthly-return heatmap and a 1,000-path Monte Carlo on the trailing year. A 30% CAGR reads very differently once you plot the drawdown underneath it.",
+    year: "2026",
+    role: "Quant Research",
+    stack: ["Python", "quantstats", "pandas", "NumPy", "Jupyter"],
+    metrics: [
+      { label: "CAGR (AMZN)", value: "30.82%" },
+      { label: "SHARPE", value: "0.76" },
+      { label: "MAX DRAWDOWN", value: "-94.4%" },
+    ],
+    repo: "https://github.com/basil-boh/simple-portfolio-analysis",
+    cover: {
+      src: "/work/portfolio-risk-analytics/cover.webp",
+      alt: "Monte Carlo simulation of 1,000 paths over 252 trading days, with the realised return traced in red through a 95% confidence band.",
+      caption: "MONTE CARLO — 1,000 PATHS",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/portfolio-risk-analytics/snapshot.webp",
+        alt: "Portfolio summary for AMZN from May 1997 to July 2026: cumulative return, underwater drawdown curve and daily returns, alongside end-of-year returns for AMZN and SPY.",
+        caption: "SNAPSHOT — RETURN, DRAWDOWN, DAILY",
+        w: 1162,
+        h: 1754,
+      },
+      {
+        src: "/work/portfolio-risk-analytics/heatmap.webp",
+        alt: "Monthly returns heatmap for AMZN from 1997 to 2026, with the Monte Carlo simulation below it.",
+        caption: "MONTHLY RETURNS, 1997—2026",
+        w: 1150,
+        h: 1756,
+      },
+      {
+        src: "/work/portfolio-risk-analytics/montecarlo.webp",
+        alt: "Monte Carlo simulation and the full quantstats performance metrics table: cumulative return, CAGR, Sharpe, Sortino, Omega and max drawdown.",
+        caption: "SIMULATION + FULL METRICS TABLE",
+        w: 1114,
+        h: 1756,
+      },
+    ],
+  },
+  {
+    id: "P-04",
+    title: "HDB RESALE PRICE MODEL",
+    blurb:
+      "A linear regression over 287,196 Singapore HDB resale transactions, built as an honest end-to-end scikit-learn pipeline: correlation and multicollinearity screening, leakage checks, imputation kept inside the pipeline, and a held-out test set measured against a mean-predictor baseline rather than against itself.",
+    year: "2026",
+    role: "Modelling",
+    stack: ["Python", "scikit-learn", "pandas", "seaborn", "Jupyter"],
+    metrics: [
+      { label: "TEST MAE", value: "S$58.9k" },
+      { label: "VS BASELINE", value: "-43%" },
+      { label: "TRAIN↔TEST GAP", value: "0.15%" },
+    ],
+    repo: "https://github.com/basil-boh/linear-regression-ml",
+    cover: {
+      src: "/work/hdb-resale-price-model/cover.webp",
+      alt: "Scatter plot of resale price against floor area for Singapore HDB flats, with the fitted linear model drawn through it in red.",
+      caption: "FIT — RESALE PRICE VS FLOOR AREA",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/hdb-resale-price-model/fit.webp",
+        alt: "The fitted model: 287,196 training points of resale price against floor area, with the linear model drawn through them in red, rising from roughly zero at 30 sqm to just over one million SGD at 300 sqm.",
+        caption: "FIT — RESALE PRICE VS FLOOR AREA",
+        w: 1600,
+        h: 1000,
+      },
+      {
+        src: "/work/hdb-resale-price-model/equation.webp",
+        alt: "Notebook output printing a baseline MAE of 103,471.41 against a test MAE of 58,866.31, and the fitted equation: resale price SGD = -129,773.39 + (3,742.47 × floor_area_sqm).",
+        caption: "BASELINE 103K → TEST 59K MAE",
+        w: 1600,
+        h: 602,
+      },
+      {
+        src: "/work/hdb-resale-price-model/correlation.webp",
+        alt: "Null-value check across all ten columns and a correlation heatmap between floor area, lease commence date and resale price.",
+        caption: "CORRELATION + LEAKAGE SCREEN",
+        w: 1600,
+        h: 994,
+      },
+      {
+        src: "/work/hdb-resale-price-model/pipeline.webp",
+        alt: "The scikit-learn pipeline of SimpleImputer into LinearRegression, and the evaluation cell printing training MAE 58,778 against test MAE 58,866.",
+        caption: "PIPELINE + HELD-OUT EVALUATION",
+        w: 1600,
+        h: 986,
+      },
+    ],
+  },
+  {
+    id: "P-05",
     title: "SUB-MS VECTOR SEARCH ENGINE",
     blurb:
       "A from-scratch ANN engine with an HNSW index, SIMD distance kernels, and a lock-free query path. Serves nearest-neighbour lookups over 50M embeddings without breaking a millisecond at p99.",
@@ -97,7 +343,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-02",
+    id: "P-06",
     title: "DISTRIBUTED RAG ORCHESTRATOR",
     blurb:
       "A DAG-based orchestration layer for retrieval-augmented agents: typed tool calls, speculative retrieval, automatic eval gating, and full request tracing across every hop.",
@@ -112,7 +358,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-03",
+    id: "P-07",
     title: "CONNECTION-POOL AUTOPILOT",
     blurb:
       "An adaptive pooler that models pool saturation as a queueing system and resizes itself from live telemetry — killing tail latency spikes during traffic surges.",
@@ -126,7 +372,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-04",
+    id: "P-08",
     title: "STREAMING FEATURE STORE",
     blurb:
       "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -140,7 +386,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-05",
+    id: "P-09",
     title: "LLM EVAL HARNESS",
     blurb:
       "A reproducible eval framework with statistical significance gating — every model/prompt change ships with a confidence interval, not a vibe.",
@@ -154,7 +400,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-06",
+    id: "P-10",
     title: "QUERY PLAN VISUALISER",
     blurb:
       "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, surfacing the one missing index hiding behind a sequential scan.",
@@ -198,8 +444,9 @@ export const experience: Experience[] = [
     location: "Singapore",
     points: [
       "Built secure auth with Singpass and Google OAuth using state, nonce and token validation for end-to-end security.",
-      "Integrated Apple HealthKit and third-party IoT/biometric SDKs (Omron, smart scales, Visbody) for realtime ingestion, sync and bidirectional write-back.",
-      "Shipped AI-powered nutritional analysis (OCR + LLMs), push notifications and dynamic data-visualisation dashboards on a Supabase + GCP backend.",
+      "Integrated Apple HealthKit and third-party IoT/biometric SDKs (Omron, smart scales, Visbody) for realtime bidirectional sync across 4+ biometric sources.",
+      "Designed Supabase + GCP services and data pipelines ingesting 10,000+ health readings a day, cutting API response times from 3s to 500ms (83% faster) on schemas built for user metrics, streaks, leaderboards and health tracking.",
+      "Shipped AI-powered nutritional analysis (OCR + LLMs), push notifications and dynamic data-visualisation dashboards.",
     ],
     stack: ["React Native", "Supabase", "GCP", "Apple HealthKit"],
   },

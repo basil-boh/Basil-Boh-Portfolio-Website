@@ -14,6 +14,124 @@ export const projectBodies: Record<string, Block[]> = {
   "P-01": [
     {
       t: "p",
+      text: "Every time an AI agent runs a package install, it trusts a stranger's code to execute on your machine — unattended, at full speed, at 2am. Airlock is the checkpoint that stands in the way: it takes each package somewhere disposable, runs it, reads it, and decides whether it is trying to hurt you before it ever reaches your real machine.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "Registry poisoning is the fastest-growing corner of software security — Sonatype counted 34,319 new malicious packages in a single quarter of 2025, and in March 2026 one landed in npm right next to Claude Code itself. Agents make it worse: they install faster than any human, with nobody watching. Most tooling stops at reading a package and guessing.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Detonation: a fresh Daytona sandbox spins up in ~0.7s, seeded with honeytoken credentials as bait, and the package is installed while every file read, outbound connection and shell spawn is watched.",
+        "Static reading: Qwen 3.5 on a rented Nosana GPU reads the entire source — including the branches a short test run never reaches, which is exactly where sleeping attacks hide.",
+        "Similarity: Doubleword embeddings fingerprint the code against known malware, catching repackaged attacks that only reworded a known trick.",
+        "Reputation: Oxylabs scans the live web for what is already known about the package, so brand-new attacks that no advisory database lists yet still get caught.",
+        "A judge weighs all four signals — but sits on a floor made of plain code, not AI. Reading planted bait, phoning home or opening a shell during an install is an instant block on its own, and the model can only ever make the gate stricter.",
+      ],
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "A typosquatted python-pillow is caught, blocked and explained in plain language the agent can act on, while safe packages pass through with no noise at all. Built at the Daytona HackSprint in Singapore and took the overall grand prize.",
+    },
+  ],
+
+  "P-02": [
+    {
+      t: "p",
+      text: "The client companion app for a medically-supervised health-transformation programme. Clients follow a five-phase fat-loss and cellular-cleanse protocol, and the app's whole job is to make that protocol survive contact with a real week: know which phase you're in, know what today asks of you, and capture the evidence without it feeling like data entry.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "The programme used to live in a printed manual. A protocol that spans five back-to-back phases — a one-day feast, a 7-to-28-day cleanse the client chooses the length of, then transition, maintenance and open-ended sustainability — asks a lot of someone reading a PDF. Adherence dies in the gap between what the plan says and what you can remember at 7am on day nine.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Secure auth via Singpass and Google OAuth, with state, nonce and token validation end to end — a health record is not something you protect casually.",
+        "A phase engine as the spine: the schedule derives from a start date and the client's chosen phase-two duration, so every screen can answer 'what does today look like' without the client tracking dates themselves.",
+        "Realtime bidirectional sync across four-plus biometric sources — Apple HealthKit plus native BLE modules for Lefu, Omron, Senssun and Yolanda scales — so readings flow from whichever device the client already owns, and writes flow back.",
+        "A NestJS service for what the phone can't do: Visbody body-scan ingestion, gamification and insights.",
+        "AI-generated nutrition plans at onboarding and AI meal analysis (OCR + LLMs) day to day, so the plan is theirs rather than a generic template.",
+        "Streaks, quests, milestones and leaderboards on top — a protocol only works if the client is still running it in week three.",
+      ],
+    },
+    { t: "h", text: "Making it fast" },
+    {
+      t: "p",
+      text: "The pipelines take in over 10,000 health readings a day, and the first version showed it: dashboard calls sat around three seconds, which is long enough that a client stops opening the app. Reworking the Supabase schemas around the access patterns the app actually has — user metrics, streaks, leaderboards, health tracking — and fixing the query paths feeding them brought responses down to roughly 500ms, an 83% cut.",
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "34 screens, 130 components and 67 services across the app, against a 35-table schema, shipping to both iOS and Android from one Expo codebase. The printed manual became something a client actually runs day by day.",
+    },
+  ],
+
+  "P-03": [
+    {
+      t: "p",
+      text: "A quant notebook that treats a 29-year return series as a distribution rather than a headline — running AMZN against the S&P 500 through the risk battery that decides whether a return was earned or just survived.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "Cumulative return is the most quoted and least informative number in investing. It says nothing about the path taken, the volatility endured, or how much of the result was simply market beta. Two assets with identical returns can be completely different propositions once you look underneath.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Pull daily returns for AMZN and SPY as a common benchmark, matched on dates.",
+        "Risk-adjusted returns — Sharpe, Sortino and Omega — instead of raw performance.",
+        "Drawdown curves plotted underneath the equity curve, so the pain is visible next to the gain.",
+        "Beta and alpha to separate market exposure from genuine excess return.",
+        "A monthly-return heatmap across every year, and a 1,000-path Monte Carlo on the trailing year to frame the realised path against the distribution it could have taken.",
+      ],
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "A 30.82% CAGR that most write-ups would stop at — sitting on a −94.4% maximum drawdown, a Sharpe of only 0.76 against the benchmark's 0.65, and a beta of 1.30. The excess return is real (alpha 0.27), but it was paid for in volatility, and the drawdown chart is the honest version of the story.",
+    },
+  ],
+
+  "P-04": [
+    {
+      t: "p",
+      text: "A linear regression predicting Singapore HDB resale prices from floor area across 287,196 transactions — built less as a modelling exercise than as a discipline exercise in not fooling yourself.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "A regression will happily report a great score on the data it was fit to. The interesting question is never 'does it fit?' but 'does it beat a trivial baseline on data it has never seen, and is it fitting signal or leakage?' — and answering that takes more care than the model itself does.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Screen every column first: null counts, cardinality, and a correlation matrix to catch multicollinearity before it reaches the model.",
+        "Check explicitly for leakage — features that encode the answer or information from the future.",
+        "Keep imputation inside a scikit-learn pipeline (SimpleImputer → LinearRegression) so the transform is fit on training data only and can never leak across the split.",
+        "Benchmark against a mean-predictor baseline, not against the model's own training score.",
+        "Compare training and test MAE side by side as the overfitting check.",
+      ],
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "Test MAE of S$58,866 against a baseline of S$103,471 — a 43% improvement on unseen data. Training MAE came in at S$58,778, a 0.15% gap from test, so the model generalises rather than memorises. The fitted relationship: resale price ≈ −129,773 + 3,742 × floor_area_sqm, with floor area correlating 0.80 with price.",
+    },
+  ],
+
+  "P-05": [
+    {
+      t: "p",
       text: "A nearest-neighbour search engine built from the ground up in Rust, designed around a single goal: never let a similarity lookup cross a millisecond at the 99th percentile, even over tens of millions of vectors.",
     },
     { t: "h", text: "The problem" },
@@ -38,7 +156,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-02": [
+  "P-06": [
     {
       t: "p",
       text: "An orchestration layer that treats a retrieval-augmented agent as a typed dataflow graph rather than a pile of prompt strings — so every hop is observable, testable, and individually optimisable.",
@@ -65,7 +183,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-03": [
+  "P-07": [
     {
       t: "p",
       text: "An adaptive connection pooler that models saturation as a queueing system and resizes itself from live telemetry, killing the tail-latency spikes that traffic surges used to cause.",
@@ -91,7 +209,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-04": [
+  "P-08": [
     {
       t: "p",
       text: "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -117,7 +235,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-05": [
+  "P-09": [
     {
       t: "p",
       text: "A reproducible evaluation harness that ships every model or prompt change with a confidence interval instead of a hunch — so 'it feels better' becomes 'it's better, p < 0.05'.",
@@ -143,7 +261,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-06": [
+  "P-10": [
     {
       t: "p",
       text: "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, making the one missing index hiding behind a sequential scan impossible to miss.",

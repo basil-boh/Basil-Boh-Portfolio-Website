@@ -13,7 +13,7 @@ export default function Projects() {
         <SectionHeader
           index="02"
           title="PROJECTS"
-          kicker="6 BUILDS / SYSTEMS + AI"
+          kicker={`${projects.length} BUILDS / SYSTEMS + AI`}
         />
 
         <div className="mt-12 grid gap-px border border-[var(--color-line-bright)] bg-[var(--color-line-bright)] md:grid-cols-2">

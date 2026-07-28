@@ -2,6 +2,8 @@ import Link from "next/link";
 import ScrambleHeading from "@/components/anim/ScrambleHeading";
 import Counter from "@/components/anim/Counter";
 import Reveal from "@/components/ui/Reveal";
+import Shot from "@/components/work/Shot";
+import DemoTrio from "@/components/work/DemoTrio";
 import { type Project } from "@/content/site";
 import { projectSlug } from "@/lib/content";
 
@@ -38,6 +40,9 @@ function Tags({ stack }: { stack: string[] }) {
 /** Clickable project card — shared by the home Work grid and /work. */
 export default function ProjectCard({ p }: { p: Project }) {
   const featured = !!p.featured;
+  // A demo reel takes the cover slot when present; a flat cover is the fallback.
+  const media = p.demo ?? p.cover;
+  const featuredCover = featured && !!media;
   return (
     <Reveal y={56} className={`h-full ${featured ? "md:col-span-2" : "md:col-span-1"}`}>
       <Link
@@ -67,13 +72,41 @@ export default function ProjectCard({ p }: { p: Project }) {
             <p className="mt-4 max-w-prose text-sm leading-relaxed text-[var(--color-muted-fg)] md:text-base">
               {p.blurb}
             </p>
+            {/* On a half-width card the capture sits inline in the one column. */}
+            {!featured && p.demo && (
+              <DemoTrio
+                demo={p.demo}
+                sizes="(max-width: 768px) 28vw, 14vw"
+                className="mt-6"
+              />
+            )}
+            {!featured && !p.demo && p.cover && (
+              <Shot
+                shot={p.cover}
+                sizes="(max-width: 768px) 92vw, 46vw"
+                className="mt-6"
+              />
+            )}
+            {/* A full-width card gives the whole second column to the capture,
+                so the metrics move under the copy to keep the columns level. */}
+            {featuredCover && (
+              <div className="mt-8">
+                <Metrics items={p.metrics} />
+              </div>
+            )}
             <div className="mt-auto pt-6">
               <Tags stack={p.stack} />
             </div>
           </div>
 
           <div className={featured ? "flex flex-col justify-end" : "mt-6"}>
-            <Metrics items={p.metrics} />
+            {featuredCover && p.demo ? (
+              <DemoTrio demo={p.demo} sizes="(max-width: 768px) 28vw, 14vw" />
+            ) : featuredCover && p.cover ? (
+              <Shot shot={p.cover} sizes="(max-width: 768px) 92vw, 46vw" />
+            ) : (
+              <Metrics items={p.metrics} />
+            )}
           </div>
         </div>
 
