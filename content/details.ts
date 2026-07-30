@@ -164,6 +164,33 @@ export const projectBodies: Record<string, Block[]> = {
   "P-06": [
     {
       t: "p",
+      text: "This one is still being built — the page is here so it has somewhere to land. A scheduled ETL pipeline that pulls from source APIs, lands the raw payloads untouched, and reshapes them into warehouse tables downstream queries can rely on.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "A pipeline is easy to write once and hard to run every day. The failure modes are all in the second category: a source that rate-limits halfway through, a schema that quietly gains a column, a rerun that double-counts the window it already loaded. Getting those right is the actual work.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Extract: scheduled pulls against the source APIs, with retry and backoff, writing raw payloads to a landing area before anything touches them.",
+        "Transform: parse and typecast, dedupe, validate, derive the columns the warehouse actually wants, and fail loudly on a schema that has drifted.",
+        "Load: idempotent upserts into the warehouse tables, so replaying a window lands the same rows once rather than twice.",
+        "A run log and a freshness check, because a pipeline nobody can inspect is a pipeline nobody can trust.",
+      ],
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "To come. Throughput, runtime and the source repo go up here once the pipeline is running on a schedule, along with captures from the real thing in place of the schematic.",
+    },
+  ],
+
+  "P-07": [
+    {
+      t: "p",
       text: "A nearest-neighbour search engine built from the ground up in Rust, designed around a single goal: never let a similarity lookup cross a millisecond at the 99th percentile, even over tens of millions of vectors.",
     },
     { t: "h", text: "The problem" },
@@ -188,7 +215,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-07": [
+  "P-08": [
     {
       t: "p",
       text: "An orchestration layer that treats a retrieval-augmented agent as a typed dataflow graph rather than a pile of prompt strings — so every hop is observable, testable, and individually optimisable.",
@@ -215,7 +242,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-08": [
+  "P-09": [
     {
       t: "p",
       text: "An adaptive connection pooler that models saturation as a queueing system and resizes itself from live telemetry, killing the tail-latency spikes that traffic surges used to cause.",
@@ -241,7 +268,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-09": [
+  "P-10": [
     {
       t: "p",
       text: "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -267,7 +294,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-10": [
+  "P-11": [
     {
       t: "p",
       text: "A reproducible evaluation harness that ships every model or prompt change with a confidence interval instead of a hunch — so 'it feels better' becomes 'it's better, p < 0.05'.",
@@ -293,7 +320,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-11": [
+  "P-12": [
     {
       t: "p",
       text: "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, making the one missing index hiding behind a sequential scan impossible to miss.",

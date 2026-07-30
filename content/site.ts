@@ -350,6 +350,13 @@ export const projects: Project[] = [
     },
     shots: [
       {
+        src: "/work/mnist-digit-cnn/data.webp",
+        alt: "Loading MNIST through torchvision: 60,000 training and 10,000 test datapoints with a ToTensor transform, and the training tensor shape printed as torch.Size([60000, 28, 28]).",
+        caption: "THE DATA — 60,000 TRAIN / 10,000 TEST",
+        w: 1600,
+        h: 1170,
+      },
+      {
         src: "/work/mnist-digit-cnn/architecture.webp",
         alt: "The CNN class in PyTorch: two Conv2d layers of 10 and 20 channels with 5×5 kernels, Dropout2d between them, and Linear layers of 320→50→10, followed by the Adam optimiser and the train and test loops.",
         caption: "THE NETWORK — TWO CONV BLOCKS, 21,840 PARAMS",
@@ -370,17 +377,40 @@ export const projects: Project[] = [
         w: 1600,
         h: 1139,
       },
-      {
-        src: "/work/mnist-digit-cnn/data.webp",
-        alt: "Loading MNIST through torchvision: 60,000 training and 10,000 test datapoints with a ToTensor transform, and the training tensor shape printed as torch.Size([60000, 28, 28]).",
-        caption: "THE DATA — 60,000 TRAIN / 10,000 TEST",
-        w: 1600,
-        h: 1170,
-      },
     ],
   },
   {
     id: "P-06",
+    title: "ETL PIPELINE",
+    blurb:
+      "In build. A scheduled extract–transform–load pipeline: pull from source APIs, land the raw payloads untouched, then parse, validate and reshape them into warehouse tables a query can trust. Reruns are the design constraint — the same window replayed twice should land the same rows once. Numbers, source and captures go up when it ships.",
+    year: "2026",
+    role: "Data Engineering",
+    stack: ["Python", "SQL"],
+    metrics: [
+      { label: "ROWS / RUN", value: "—" },
+      { label: "RUNTIME", value: "—" },
+      { label: "STATUS", value: "IN BUILD" },
+    ],
+    cover: {
+      src: "/work/etl-pipeline/cover.webp",
+      alt: "Schematic of the pipeline: three stages — extract, transform and load — connected left to right, with the sub-steps of each listed underneath.",
+      caption: "SCHEMATIC — EXTRACT / TRANSFORM / LOAD",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/etl-pipeline/cover.webp",
+        alt: "Schematic of the pipeline: extract covers source APIs, scheduled pulls, retry and backoff and raw landing; transform covers parsing, deduplication, validation, derived columns and schema checks; load covers idempotent upserts, warehouse tables, a freshness check and a run log.",
+        caption: "SCHEMATIC — THE SHAPE, NOT THE BUILD",
+        w: 1280,
+        h: 800,
+      },
+    ],
+  },
+  {
+    id: "P-07",
     title: "SUB-MS VECTOR SEARCH ENGINE",
     blurb:
       "A from-scratch ANN engine with an HNSW index, SIMD distance kernels, and a lock-free query path. Serves nearest-neighbour lookups over 50M embeddings without breaking a millisecond at p99.",
@@ -395,7 +425,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-07",
+    id: "P-08",
     title: "DISTRIBUTED RAG ORCHESTRATOR",
     blurb:
       "A DAG-based orchestration layer for retrieval-augmented agents: typed tool calls, speculative retrieval, automatic eval gating, and full request tracing across every hop.",
@@ -410,7 +440,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-08",
+    id: "P-09",
     title: "CONNECTION-POOL AUTOPILOT",
     blurb:
       "An adaptive pooler that models pool saturation as a queueing system and resizes itself from live telemetry — killing tail latency spikes during traffic surges.",
@@ -424,7 +454,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-09",
+    id: "P-10",
     title: "STREAMING FEATURE STORE",
     blurb:
       "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -438,7 +468,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-10",
+    id: "P-11",
     title: "LLM EVAL HARNESS",
     blurb:
       "A reproducible eval framework with statistical significance gating — every model/prompt change ships with a confidence interval, not a vibe.",
@@ -452,7 +482,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-11",
+    id: "P-12",
     title: "QUERY PLAN VISUALISER",
     blurb:
       "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, surfacing the one missing index hiding behind a sequential scan.",
