@@ -41,7 +41,7 @@ export function readThemeTokens(): ThemeTokens {
 }
 
 export function getTheme(): Theme {
-  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
 
 export function setTheme(t: Theme) {

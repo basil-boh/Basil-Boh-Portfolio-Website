@@ -1,42 +1,10 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — Kinetic Brutalism (dark / OLED)
+   DESIGN TOKENS — Kinetic Brutalism (light / paper)
    ============================================================ */
 @theme {
-  /* ---- DARK (default) ---- */
-  --color-bg: #09090b;
-  --color-bg-raised: #0c0c0f;
-  --color-fg: #fafafa;
-  --color-muted: #27272a;
-  --color-muted-fg: #8a8a93;
-  --color-line: #2a2a30;
-  --color-line-bright: #3f3f46;
-  --color-accent: #dfe104; /* the one loud accent — used as a FILL */
-  --color-accent-fg: #050505;
-  --color-accent-ink: #dfe104; /* accent as TEXT/strokes — stays readable per theme */
-  --color-vec-i: #dfe104; /* basis vector î (canvas) */
-  --color-vec-j: #4dd0ff; /* basis vector ĵ (canvas) */
-
-  /* canvas-only tokens (read by JS via getComputedStyle) */
-  --color-grid: #1c1c20;
-  --color-grid-soft: #161619;
-  --color-dot: rgba(250, 250, 250, 0.32);
-  --color-fill-accent: rgba(223, 225, 4, 0.07);
-
-  /* long-form reading */
-  --color-prose: #c6c6ce;
-  --color-code: #d8d8df;
-
-  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
-
-  --ease-brutal: cubic-bezier(0.2, 0, 0, 1);
-}
-
-/* ---- LIGHT ---- override the same custom properties; utilities + arbitrary
-   var() references all cascade automatically. ---- */
-:root[data-theme="light"] {
+  /* ---- LIGHT (default) ---- */
   --color-bg: #f3f3ee;
   --color-bg-raised: #fbfbf7;
   --color-fg: #0a0a0a;
@@ -44,19 +12,51 @@
   --color-muted-fg: #56565c;
   --color-line: #d9d9d1;
   --color-line-bright: #adada3;
-  --color-accent: #e9eb12; /* loud yellow fill (black text on it) */
+  --color-accent: #e9eb12; /* the one loud accent — used as a FILL */
   --color-accent-fg: #050505;
-  --color-accent-ink: #5c5e00; /* dark lime — readable on light */
-  --color-vec-i: #5c5e00;
-  --color-vec-j: #0f5f9e;
+  --color-accent-ink: #5c5e00; /* accent as TEXT/strokes — stays readable per theme */
+  --color-vec-i: #5c5e00; /* basis vector î (canvas) */
+  --color-vec-j: #0f5f9e; /* basis vector ĵ (canvas) */
 
+  /* canvas-only tokens (read by JS via getComputedStyle) */
   --color-grid: #dcdcd4;
   --color-grid-soft: #e6e6de;
   --color-dot: rgba(10, 10, 10, 0.26);
   --color-fill-accent: rgba(92, 94, 0, 0.1);
 
+  /* long-form reading */
   --color-prose: #2c2c30;
   --color-code: #1f1f24;
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  --ease-brutal: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- DARK ---- override the same custom properties; utilities + arbitrary
+   var() references all cascade automatically. ---- */
+:root[data-theme="dark"] {
+  --color-bg: #09090b;
+  --color-bg-raised: #0c0c0f;
+  --color-fg: #fafafa;
+  --color-muted: #27272a;
+  --color-muted-fg: #8a8a93;
+  --color-line: #2a2a30;
+  --color-line-bright: #3f3f46;
+  --color-accent: #dfe104; /* loud yellow fill (black text on it) */
+  --color-accent-fg: #050505;
+  --color-accent-ink: #dfe104; /* full-strength lime — readable on OLED */
+  --color-vec-i: #dfe104;
+  --color-vec-j: #4dd0ff;
+
+  --color-grid: #1c1c20;
+  --color-grid-soft: #161619;
+  --color-dot: rgba(250, 250, 250, 0.32);
+  --color-fill-accent: rgba(223, 225, 4, 0.07);
+
+  --color-prose: #c6c6ce;
+  --color-code: #d8d8df;
 }
 
 /* ============================================================
@@ -330,16 +330,16 @@ button {
 }
 
 /* Theme toggle icon visibility — driven by data-theme, not JS state */
-.t-sun {
+.t-moon {
   display: block;
 }
-.t-moon {
+.t-sun {
   display: none;
 }
-:root[data-theme="light"] .t-sun {
+:root[data-theme="dark"] .t-moon {
   display: none;
 }
-:root[data-theme="light"] .t-moon {
+:root[data-theme="dark"] .t-sun {
   display: block;
 }
 
