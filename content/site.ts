@@ -329,6 +329,58 @@ export const projects: Project[] = [
   },
   {
     id: "P-05",
+    title: "MNIST DIGIT CNN",
+    blurb:
+      "A convolutional net built from the layer definitions up in PyTorch — two conv blocks with dropout into a 50-unit head, 21,840 parameters total — trained for ten epochs on a CPU across all 60,000 MNIST digits and scored against the 10,000-image held-out set after every one. 92% after the first epoch, 97.46% by the tenth, with a loss curve that floors at 1.46 for a reason worth explaining.",
+    year: "2026",
+    role: "Deep Learning",
+    stack: ["Python", "PyTorch", "torchvision", "NumPy", "Jupyter"],
+    metrics: [
+      { label: "TEST ACCURACY", value: "97.46%" },
+      { label: "PARAMETERS", value: "21,840" },
+      { label: "EPOCHS (CPU)", value: "10" },
+    ],
+    repo: "https://github.com/basil-boh/cnn_mnist",
+    cover: {
+      src: "/work/mnist-digit-cnn/cover.webp",
+      alt: "Two MNIST test digits rendered from the notebook — a 7 and a 2 — both classified correctly by the trained network.",
+      caption: "PREDICTED — 7 AND 2",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/mnist-digit-cnn/architecture.webp",
+        alt: "The CNN class in PyTorch: two Conv2d layers of 10 and 20 channels with 5×5 kernels, Dropout2d between them, and Linear layers of 320→50→10, followed by the Adam optimiser and the train and test loops.",
+        caption: "THE NETWORK — TWO CONV BLOCKS, 21,840 PARAMS",
+        w: 1600,
+        h: 1142,
+      },
+      {
+        src: "/work/mnist-digit-cnn/training.webp",
+        alt: "Training output for the first two epochs: loss falling from 2.30 to 1.61 across 60,000 images, then the first held-out evaluation — average loss 0.0155, accuracy 9199/10000.",
+        caption: "EPOCH 1 — 2.30 → 1.61, 9,199/10,000",
+        w: 1600,
+        h: 1140,
+      },
+      {
+        src: "/work/mnist-digit-cnn/inference.webp",
+        alt: "Inference on the first test image: the model is put in eval mode, the digit is passed through, argmax prints Prediction: 7, and the 28×28 image is plotted underneath as a 7.",
+        caption: "INFERENCE — PREDICTION 7",
+        w: 1600,
+        h: 1139,
+      },
+      {
+        src: "/work/mnist-digit-cnn/data.webp",
+        alt: "Loading MNIST through torchvision: 60,000 training and 10,000 test datapoints with a ToTensor transform, and the training tensor shape printed as torch.Size([60000, 28, 28]).",
+        caption: "THE DATA — 60,000 TRAIN / 10,000 TEST",
+        w: 1600,
+        h: 1170,
+      },
+    ],
+  },
+  {
+    id: "P-06",
     title: "SUB-MS VECTOR SEARCH ENGINE",
     blurb:
       "A from-scratch ANN engine with an HNSW index, SIMD distance kernels, and a lock-free query path. Serves nearest-neighbour lookups over 50M embeddings without breaking a millisecond at p99.",
@@ -343,7 +395,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-06",
+    id: "P-07",
     title: "DISTRIBUTED RAG ORCHESTRATOR",
     blurb:
       "A DAG-based orchestration layer for retrieval-augmented agents: typed tool calls, speculative retrieval, automatic eval gating, and full request tracing across every hop.",
@@ -358,7 +410,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-07",
+    id: "P-08",
     title: "CONNECTION-POOL AUTOPILOT",
     blurb:
       "An adaptive pooler that models pool saturation as a queueing system and resizes itself from live telemetry — killing tail latency spikes during traffic surges.",
@@ -372,7 +424,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-08",
+    id: "P-09",
     title: "STREAMING FEATURE STORE",
     blurb:
       "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -386,7 +438,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-09",
+    id: "P-10",
     title: "LLM EVAL HARNESS",
     blurb:
       "A reproducible eval framework with statistical significance gating — every model/prompt change ships with a confidence interval, not a vibe.",
@@ -400,7 +452,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-10",
+    id: "P-11",
     title: "QUERY PLAN VISUALISER",
     blurb:
       "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, surfacing the one missing index hiding behind a sequential scan.",

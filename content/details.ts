@@ -132,6 +132,38 @@ export const projectBodies: Record<string, Block[]> = {
   "P-05": [
     {
       t: "p",
+      text: "A convolutional network for handwritten digits, written layer by layer in PyTorch rather than pulled off a shelf — two convolution blocks into a small dense head, 21,840 parameters in total, trained on a laptop CPU over the 60,000-image MNIST training set and scored against the 10,000 images it never saw.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "MNIST is the one dataset where the accuracy number is not the point — everything clears 95%. What it is good for is building the whole loop by hand and being able to account for every number that comes out of it: what each layer does to the tensor shape, what the optimiser is actually being handed, and why the loss curve settles where it does.",
+    },
+    { t: "h", text: "Approach" },
+    {
+      t: "ul",
+      items: [
+        "Two convolution blocks — 1→10 and 10→20 channels on 5×5 kernels, each followed by 2×2 max pooling and ReLU, with Dropout2d on the second to stop the filters co-adapting.",
+        "The 20×4×4 activation map flattened to 320 features into a 50-unit dense layer, dropout again, then 10 outputs — one per digit.",
+        "Adam at lr=0.001 with cross-entropy over batches of 100, shuffled every epoch by the DataLoader.",
+        "A held-out evaluation after every single epoch rather than only at the end, so the accuracy trajectory is visible instead of just its endpoint.",
+      ],
+    },
+    { t: "h", text: "Reading the loss curve" },
+    {
+      t: "p",
+      text: "The interesting artefact: the loss falls to about 1.49 and then stops, which looks like a model that has given up. It hasn't. The forward pass returns a softmax and PyTorch's CrossEntropyLoss applies its own log-softmax on top, so the loss is being taken over an already-normalised distribution. Feed it a perfectly confident prediction and the floor is log((e + 9) / e) ≈ 1.461, not 0 — which is exactly where the curve lands. The argmax that produces the prediction is unaffected, since softmax is monotonic; what it does cost is gradient signal, which is why the last few epochs only inch forward.",
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "9,199 of 10,000 correct after the first epoch, climbing to 9,746 — 97.46% — by the tenth, on CPU alone. Inference on individual test images comes back correct and legible: image 0 predicted 7, image 1 predicted 2.",
+    },
+  ],
+
+  "P-06": [
+    {
+      t: "p",
       text: "A nearest-neighbour search engine built from the ground up in Rust, designed around a single goal: never let a similarity lookup cross a millisecond at the 99th percentile, even over tens of millions of vectors.",
     },
     { t: "h", text: "The problem" },
@@ -156,7 +188,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-06": [
+  "P-07": [
     {
       t: "p",
       text: "An orchestration layer that treats a retrieval-augmented agent as a typed dataflow graph rather than a pile of prompt strings — so every hop is observable, testable, and individually optimisable.",
@@ -183,7 +215,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-07": [
+  "P-08": [
     {
       t: "p",
       text: "An adaptive connection pooler that models saturation as a queueing system and resizes itself from live telemetry, killing the tail-latency spikes that traffic surges used to cause.",
@@ -209,7 +241,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-08": [
+  "P-09": [
     {
       t: "p",
       text: "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -235,7 +267,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-09": [
+  "P-10": [
     {
       t: "p",
       text: "A reproducible evaluation harness that ships every model or prompt change with a confidence interval instead of a hunch — so 'it feels better' becomes 'it's better, p < 0.05'.",
@@ -261,7 +293,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-10": [
+  "P-11": [
     {
       t: "p",
       text: "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, making the one missing index hiding behind a sequential scan impossible to miss.",
