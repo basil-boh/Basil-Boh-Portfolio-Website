@@ -497,30 +497,47 @@ export const projects: Project[] = [
   },
 ];
 
+/** Org mark shown on experience + education entries. Files live in /public/companies/. */
+export type Logo = {
+  src: string;
+  alt: string;
+  w: number;
+  h: number;
+};
+
 export type Experience = {
   org: string;
+  logo?: Logo;
   role: string;
   period: string;
   location: string;
   points: string[];
+  /** Headline numbers for the role. Omitted where there aren't any worth quoting. */
+  metrics?: { label: string; value: string }[];
   stack: string[];
 };
 
 export const experience: Experience[] = [
   {
     org: "TWISS",
+    logo: { src: "/companies/twiss.png", alt: "Twiss logo", w: 246, h: 67 },
     role: "Software Engineer Intern",
     period: "MAY 2026 — NOW",
     location: "Singapore",
     points: [
       "Building WatchTower, an AI operations layer for F&B — turning RTSP camera feeds into a queryable event stream (queue buildup, table turnover, kitchen congestion) with realtime alerts and natural-language 'ask-your-camera' queries.",
       "Designed a multimodal pipeline fusing YOLO and Vertex AI Vision detections with an OpenAI summarisation layer to emit autonomous operational recommendations.",
-      "Shipped a tiered cost-optimisation layer that escalates from a cheap vision model to a stronger multimodal one only on anomalies, on FastAPI + Next.js + Supabase on Cloud Run.",
+      "Shipped a tiered cost-optimisation layer — a cheap vision model for steady-state monitoring, escalating to a stronger multimodal one only on anomaly triggers — cutting daily vision-inference volume from 10M to 1.5M tokens (85% cheaper), on FastAPI + Next.js + Supabase Realtime on Cloud Run.",
+    ],
+    metrics: [
+      { label: "INFERENCE COST", value: "-85%" },
+      { label: "VISION TOKENS / DAY", value: "1.5M" },
     ],
     stack: ["FastAPI", "Next.js", "Vertex AI", "OpenAI", "Supabase"],
   },
   {
     org: "BIOHACKK",
+    logo: { src: "/companies/biohackk.jpeg", alt: "Biohackk logo", w: 200, h: 200 },
     role: "Software Engineer Intern",
     period: "JAN 2026 — NOW",
     location: "Singapore",
@@ -530,32 +547,55 @@ export const experience: Experience[] = [
       "Designed Supabase + GCP services and data pipelines ingesting 10,000+ health readings a day, cutting API response times from 3s to 500ms (83% faster) on schemas built for user metrics, streaks, leaderboards and health tracking.",
       "Shipped AI-powered nutritional analysis (OCR + LLMs), push notifications and dynamic data-visualisation dashboards.",
     ],
+    metrics: [
+      { label: "API RESPONSE", value: "-83%" },
+      { label: "READINGS / DAY", value: "10,000+" },
+      { label: "BIOMETRIC SOURCES", value: "4+" },
+    ],
     stack: ["React Native", "Supabase", "GCP", "Apple HealthKit"],
   },
   {
     org: "DNDTS PTE. LTD.",
+    logo: { src: "/companies/dndts.png", alt: "DND Technologies logo", w: 756, h: 330 },
     role: "Software Engineer Intern",
     period: "MAY 2025 — JUL 2025",
     location: "Singapore",
     points: [
-      "Built and maintained an internal OS with React (Vite, Mantine) and a Go backend on SQL + Docker.",
-      "Shipped new features and optimised performance and integration across microservices and internal tools.",
+      "Built and maintained a full-stack logistical inventory management system tracking SKUs, price points, model numbers and shipments, with React (Vite, Mantine) and a Go backend on SQL + Docker.",
+      "Shipped new features and system enhancements; optimised SQL query performance across microservices and internal tools, cutting a core internal query from 5s to 0.28s — 18× faster.",
+    ],
+    metrics: [
+      { label: "CORE QUERY", value: "0.28s" },
+      { label: "SPEEDUP", value: "18×" },
     ],
     stack: ["React", "Go", "SQL", "Docker"],
   },
   {
     org: "NUS STUDENTS' COMPUTING CLUB",
+    logo: {
+      src: "/companies/comclub.png",
+      alt: "NUS Students' Computing Club logo",
+      w: 641,
+      h: 740,
+    },
     role: "Vice-President",
     period: "SEP 2024 — SEP 2025",
     location: "Singapore",
     points: [
-      "Led 100+ members across subcommittees to organise 7 major events impacting 5,000+ computing students.",
-      "Coordinated hackathons, tech talks and workshops; streamlined workflows and mentored junior leaders for continuity.",
+      "Led 100+ members across subcommittees to organise 7 major faculty-wide events, growing total attendance from 3,800 to 5,000 computing students — 32% year-over-year.",
+      "Coordinated hackathons, tech talks and workshops while leading sponsorship outreach, growing sponsor funding from $11k+ to $23k+ (109% year-over-year); mentored junior leaders for continuity.",
     ],
-    stack: ["Leadership", "Events", "Mentorship"],
+    metrics: [
+      { label: "MEMBERS LED", value: "100+" },
+      { label: "MAJOR EVENTS", value: "7" },
+      { label: "ATTENDANCE", value: "+32%" },
+      { label: "SPONSOR FUNDING", value: "+109%" },
+    ],
+    stack: ["Leadership", "Events", "Sponsorships", "Mentorship"],
   },
   {
     org: "NUS FINTECH SOCIETY",
+    logo: { src: "/companies/fintech.webp", alt: "NUS Fintech Society logo", w: 256, h: 256 },
     role: "Business Development Executive",
     period: "AUG 2024 — AUG 2025",
     location: "Singapore",
@@ -569,6 +609,7 @@ export const experience: Experience[] = [
 
 export type Education = {
   org: string;
+  logo?: Logo;
   qualification: string;
   period: string;
   detail: string;
@@ -577,6 +618,12 @@ export type Education = {
 export const education: Education[] = [
   {
     org: "NATIONAL UNIVERSITY OF SINGAPORE",
+    logo: {
+      src: "/companies/nus.png",
+      alt: "National University of Singapore logo",
+      w: 300,
+      h: 137,
+    },
     qualification: "B.Comp. (Hons), Computer Science",
     period: "2023 — 2027",
     detail:
@@ -584,6 +631,12 @@ export const education: Education[] = [
   },
   {
     org: "TEMASEK POLYTECHNIC",
+    logo: {
+      src: "/companies/temasek-poly.jpg",
+      alt: "Temasek Polytechnic logo",
+      w: 1253,
+      h: 1253,
+    },
     qualification: "Diploma (Merit), Biomedical Engineering",
     period: "2018 — 2021",
     detail:

@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Reveal from "@/components/ui/Reveal";
+import Counter from "@/components/anim/Counter";
+import LogoMark from "@/components/ui/LogoMark";
 import { experience } from "@/content/site";
 
 export default function Experience() {
@@ -68,6 +70,7 @@ export default function Experience() {
 
                     <div className="md:col-span-4">
                       <div className="label mb-3">{e.period}</div>
+                      {e.logo && <LogoMark logo={e.logo} className="mb-4" />}
                       <h3 className="display text-2xl md:text-3xl">{e.org}</h3>
                       <div className="mono mt-2 text-sm text-[var(--color-muted-fg)]">
                         {e.location}
@@ -91,6 +94,22 @@ export default function Experience() {
                           </li>
                         ))}
                       </ul>
+                      {e.metrics && (
+                        <div className="mt-6 flex flex-wrap gap-px border border-[var(--color-line)] bg-[var(--color-line)]">
+                          {e.metrics.map((m) => (
+                            <div
+                              key={m.label}
+                              className="min-w-[9rem] flex-1 bg-[var(--color-bg)] px-3 py-3"
+                            >
+                              <div className="display text-lg tabular-nums md:text-2xl">
+                                <Counter value={m.value} />
+                              </div>
+                              <div className="label mt-1.5">{m.label}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                       <div className="mt-5 flex flex-wrap gap-1.5">
                         {e.stack.map((s) => (
                           <span

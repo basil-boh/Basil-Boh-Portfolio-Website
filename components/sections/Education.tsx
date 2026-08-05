@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/ui/SectionHeader";
 import Reveal from "@/components/ui/Reveal";
+import LogoMark from "@/components/ui/LogoMark";
 import { education } from "@/content/site";
 
 export default function Education() {
@@ -25,7 +26,8 @@ export default function Education() {
                   </span>
                   <span className="label">{e.period}</span>
                 </div>
-                <h3 className="display mt-8 text-2xl md:text-4xl">{e.org}</h3>
+                {e.logo && <LogoMark logo={e.logo} className="mt-8" size={64} />}
+                <h3 className="display mt-5 text-2xl md:text-4xl">{e.org}</h3>
                 <div className="mono mt-3 text-sm text-[var(--color-fg)] md:text-base">
                   {e.qualification}
                 </div>
