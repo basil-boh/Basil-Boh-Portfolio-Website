@@ -503,6 +503,8 @@ export type Logo = {
   alt: string;
   w: number;
   h: number;
+  /** Dark ink on transparency — needs its lightness flipped under the dark theme. */
+  adaptDark?: boolean;
 };
 
 export type Experience = {
@@ -520,7 +522,7 @@ export type Experience = {
 export const experience: Experience[] = [
   {
     org: "TWISS",
-    logo: { src: "/companies/twiss.png", alt: "Twiss logo", w: 246, h: 67 },
+    logo: { src: "/companies/twiss.png", alt: "Twiss logo", w: 246, h: 67, adaptDark: true },
     role: "Software Engineer Intern",
     period: "MAY 2026 — NOW",
     location: "Singapore",
@@ -537,7 +539,7 @@ export const experience: Experience[] = [
   },
   {
     org: "BIOHACKK",
-    logo: { src: "/companies/biohackk.jpeg", alt: "Biohackk logo", w: 200, h: 200 },
+    logo: { src: "/companies/biohackk.png", alt: "Biohackk logo", w: 94, h: 102 },
     role: "Software Engineer Intern",
     period: "JAN 2026 — NOW",
     location: "Singapore",
@@ -577,6 +579,7 @@ export const experience: Experience[] = [
       alt: "NUS Students' Computing Club logo",
       w: 641,
       h: 740,
+      adaptDark: true,
     },
     role: "Vice-President",
     period: "SEP 2024 — SEP 2025",
@@ -595,7 +598,13 @@ export const experience: Experience[] = [
   },
   {
     org: "NUS FINTECH SOCIETY",
-    logo: { src: "/companies/fintech.webp", alt: "NUS Fintech Society logo", w: 256, h: 256 },
+    logo: {
+      src: "/companies/fintech.png",
+      alt: "NUS Fintech Society logo",
+      w: 239,
+      h: 116,
+      adaptDark: true,
+    },
     role: "Business Development Executive",
     period: "AUG 2024 — AUG 2025",
     location: "Singapore",
@@ -623,6 +632,7 @@ export const education: Education[] = [
       alt: "National University of Singapore logo",
       w: 300,
       h: 137,
+      adaptDark: true,
     },
     qualification: "B.Comp. (Hons), Computer Science",
     period: "2023 — 2027",

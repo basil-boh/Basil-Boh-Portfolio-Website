@@ -26,7 +26,7 @@ export default function Education() {
                   </span>
                   <span className="label">{e.period}</span>
                 </div>
-                {e.logo && <LogoMark logo={e.logo} className="mt-8" size={64} />}
+                {e.logo && <LogoMark logo={e.logo} className="mt-8" height={44} />}
                 <h3 className="display mt-5 text-2xl md:text-4xl">{e.org}</h3>
                 <div className="mono mt-3 text-sm text-[var(--color-fg)] md:text-base">
                   {e.qualification}

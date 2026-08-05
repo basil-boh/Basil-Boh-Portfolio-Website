@@ -166,6 +166,13 @@ button {
   border-radius: 0;
 }
 
+/* Org marks drawn in dark ink on transparency would disappear into the dark
+   palette. Flip lightness but put the hue back, so Twiss keeps its red notch
+   and NUS keeps its crest rather than turning into a negative of itself. */
+:root[data-theme="dark"] .logo-adapt {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 /* Hard inversion on hover — the brutalist signature, ~90ms snap */
 .invert-hover {
   transition: background-color 90ms var(--ease-brutal),

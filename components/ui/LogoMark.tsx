@@ -2,31 +2,27 @@ import Image from "next/image";
 import { type Logo } from "@/content/site";
 
 /**
- * An org mark on a hairline chip. The plate is deliberately fixed to the light
- * paper tone in both themes — these are third-party marks drawn in their own
- * dark inks, and a theme-following plate would swallow them in dark mode.
+ * A bare org mark — no plate, no border, natural aspect ratio at a fixed height.
+ * Marks drawn in dark ink on transparency carry `adaptDark`, which flips their
+ * lightness (keeping hue) under the dark theme so they don't vanish into it.
  */
 export default function LogoMark({
   logo,
   className = "",
-  size = 56,
+  height = 34,
 }: {
   logo: Logo;
   className?: string;
-  size?: number;
+  height?: number;
 }) {
   return (
-    <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden border border-[var(--color-line-bright)] bg-[#fbfbf7] p-2 ${className}`}
-      style={{ width: size, height: size }}
-    >
-      <Image
-        src={logo.src}
-        alt={logo.alt}
-        width={logo.w}
-        height={logo.h}
-        className="h-full w-full object-contain"
-      />
-    </span>
+    <Image
+      src={logo.src}
+      alt={logo.alt}
+      width={logo.w}
+      height={logo.h}
+      style={{ height, width: (logo.w / logo.h) * height }}
+      className={`w-auto object-contain ${logo.adaptDark ? "logo-adapt" : ""} ${className}`}
+    />
   );
 }
