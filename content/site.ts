@@ -43,7 +43,7 @@ export const about = {
   body: [
     "I'm Basil, a backend and AI engineer. I geek out on the parts of a system that decide whether it survives real load: caching, connection pooling, batch processing, async, and heavy query optimisation.",
     "The other half of my brain lives in AI infrastructure. I build RAG pipelines, evals and agent harnesses that are measurable and debuggable instead of held together by vibes.",
-    "I'm a Computer Science (Honours) student at NUS, currently interning at Twiss and Biohackk. Most of what I build starts as a hackathon hack and grows from there.",
+    "I'm a Computer Science (Honours) student at NUS, currently interning on the FX Technology team at Singapore Exchange (SGX). Most of what I build starts as a hackathon hack and grows from there.",
   ],
   // Each "axis" renders as a labelled brutalist block.
   axes: [
@@ -521,10 +521,21 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
+    org: "SINGAPORE EXCHANGE (SGX FX)",
+    role: "Analyst Intern, FX Technology",
+    period: "AUG 2026 — NOW",
+    location: "Singapore",
+    points: [
+      "Own deployment, configuration and production reliability of the MaxxTrader FX trading platform, serving bank, hedge fund and asset manager clients on a low-latency institutional FX venue.",
+      "Instrument and analyse MaxxTrader performance metrics spanning latency, throughput and system reliability to surface bottlenecks, partnering with Development, QA and Sales on client-driven technical solutions.",
+    ],
+    stack: ["FX Trading", "Low-Latency Systems", "MaxxTrader", "Production Reliability"],
+  },
+  {
     org: "TWISS",
     logo: { src: "/companies/twiss.png", alt: "Twiss logo", w: 246, h: 67, adaptDark: true },
     role: "Software Engineer Intern",
-    period: "MAY 2026 — NOW",
+    period: "APR 2026 — JUN 2026",
     location: "Singapore",
     points: [
       "Building WatchTower, an AI operations layer for F&B — turning RTSP camera feeds into a queryable event stream (queue buildup, table turnover, kitchen congestion) with realtime alerts and natural-language 'ask-your-camera' queries.",
@@ -541,7 +552,7 @@ export const experience: Experience[] = [
     org: "BIOHACKK",
     logo: { src: "/companies/biohackk.png", alt: "Biohackk logo", w: 94, h: 102 },
     role: "Software Engineer Intern",
-    period: "JAN 2026 — NOW",
+    period: "JAN 2026 — APR 2026",
     location: "Singapore",
     points: [
       "Built secure auth with Singpass and Google OAuth using state, nonce and token validation for end-to-end security.",
