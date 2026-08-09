@@ -619,7 +619,7 @@ export const experience: Experience[] = [
       w: 239,
       h: 116,
       adaptDark: true,
-      displayHeight: 44,
+      displayHeight: 56,
     },
     role: "Business Development Executive",
     period: "AUG 2024 — AUG 2025",
