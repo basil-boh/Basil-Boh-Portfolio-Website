@@ -505,6 +505,8 @@ export type Logo = {
   h: number;
   /** Dark ink on transparency — needs its lightness flipped under the dark theme. */
   adaptDark?: boolean;
+  /** Override the rendered height (px). Use for squarer/narrower marks that read small at the default height next to wide wordmarks. */
+  displayHeight?: number;
 };
 
 export type Experience = {
@@ -551,7 +553,7 @@ export const experience: Experience[] = [
   },
   {
     org: "BIOHACKK",
-    logo: { src: "/companies/biohackk.png", alt: "Biohackk logo", w: 94, h: 102 },
+    logo: { src: "/companies/biohackk.png", alt: "Biohackk logo", w: 94, h: 102, displayHeight: 62 },
     role: "Software Engineer Intern",
     period: "JAN 2026 — APR 2026",
     location: "Singapore",
@@ -570,7 +572,7 @@ export const experience: Experience[] = [
   },
   {
     org: "DNDTS PTE. LTD.",
-    logo: { src: "/companies/dndts.png", alt: "DND Technologies logo", w: 756, h: 330 },
+    logo: { src: "/companies/dndts.png", alt: "DND Technologies logo", w: 756, h: 330, displayHeight: 42 },
     role: "Software Engineer Intern",
     period: "MAY 2025 — JUL 2025",
     location: "Singapore",
@@ -592,6 +594,7 @@ export const experience: Experience[] = [
       w: 641,
       h: 740,
       adaptDark: true,
+      displayHeight: 64,
     },
     role: "Vice-President",
     period: "SEP 2024 — SEP 2025",
@@ -616,6 +619,7 @@ export const experience: Experience[] = [
       w: 239,
       h: 116,
       adaptDark: true,
+      displayHeight: 44,
     },
     role: "Business Development Executive",
     period: "AUG 2024 — AUG 2025",

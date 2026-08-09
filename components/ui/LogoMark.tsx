@@ -15,13 +15,14 @@ export default function LogoMark({
   className?: string;
   height?: number;
 }) {
+  const h = logo.displayHeight ?? height;
   return (
     <Image
       src={logo.src}
       alt={logo.alt}
       width={logo.w}
       height={logo.h}
-      style={{ height, width: (logo.w / logo.h) * height }}
+      style={{ height: h, width: (logo.w / logo.h) * h }}
       className={`w-auto object-contain ${logo.adaptDark ? "logo-adapt" : ""} ${className}`}
     />
   );
