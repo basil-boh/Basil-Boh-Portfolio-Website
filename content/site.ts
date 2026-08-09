@@ -521,13 +521,14 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    org: "SINGAPORE EXCHANGE (SGX FX)",
+    org: "SINGAPORE EXCHANGE",
+    logo: { src: "/companies/sgx.png", alt: "Singapore Exchange (SGX) logo", w: 1394, h: 408 },
     role: "Analyst Intern, FX Technology",
     period: "AUG 2026 — NOW",
     location: "Singapore",
     points: [
-      "Own deployment, configuration and production reliability of the MaxxTrader FX trading platform, serving bank, hedge fund and asset manager clients on a low-latency institutional FX venue.",
-      "Instrument and analyse MaxxTrader performance metrics spanning latency, throughput and system reliability to surface bottlenecks, partnering with Development, QA and Sales on client-driven technical solutions.",
+      "Handle deployment, configuration and production reliability for MaxxTrader, a low-latency FX trading platform used by bank, hedge fund and asset manager clients.",
+      "Track and analyse MaxxTrader performance metrics spanning latency, throughput and system reliability to surface bottlenecks, partnering with Development, QA and Sales on client-driven technical solutions.",
     ],
     stack: ["FX Trading", "Low-Latency Systems", "MaxxTrader", "Production Reliability"],
   },
