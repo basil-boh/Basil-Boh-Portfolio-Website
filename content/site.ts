@@ -680,11 +680,24 @@ export type Hackathon = {
   location: string;
   desc: string;
   stack: string[];
+  href?: string;
 };
 
 export const hackathons: Hackathon[] = [
   {
     id: "H-01",
+    event: "APPLE SPATIAL HACK AI",
+    project: "SpatialRehab",
+    result: "1ST / 126",
+    isWin: true,
+    date: "AUG 2026",
+    location: "Singapore",
+    desc: "Grand Champion and Best UI/UX — first of 126 participants. A visionOS cognitive rehabilitation tool for early-stage dementia, built on errorless-learning principles: eight baseline games score memory, attention and executive function silently, then patients study a miniature neighbourhood procedurally meshed from OpenStreetMap and re-walk the route at life size in passthrough. Caregivers get trend charts and a clock-drawing gallery tracking decline over sessions.",
+    stack: ["visionOS", "SwiftUI", "RealityKit", "Swift Charts", "OpenStreetMap"],
+    href: "https://github.com/basil-boh/SpatialRehab",
+  },
+  {
+    id: "H-02",
     event: "DAYTONA HACKSPRINT",
     project: "Airlock",
     result: "1ST PLACE",
@@ -695,7 +708,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Daytona", "Claude Code Hooks", "Nosana GPU", "Doubleword", "Oxylabs"],
   },
   {
-    id: "H-02",
+    id: "H-03",
     event: "RALPHTHON @SG",
     project: "SnapRoom",
     result: "2ND PLACE",
@@ -706,7 +719,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Three.js", "World Labs", "Fal AI", "Expo"],
   },
   {
-    id: "H-03",
+    id: "H-04",
     event: "AI ENGINEER SINGAPORE",
     project: "DataForge",
     result: "FEATURED BUILD",
@@ -716,7 +729,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Next.js", "Convex", "OpenAI", "Fal AI"],
   },
   {
-    id: "H-04",
+    id: "H-05",
     event: "GRABMAPS",
     project: "Personality Map",
     result: "LIVE AI DEMO",
@@ -726,7 +739,7 @@ export const hackathons: Hackathon[] = [
     stack: ["Grab Maps", "OpenAI", "ElevenLabs", "Vite"],
   },
   {
-    id: "H-05",
+    id: "H-06",
     event: "NUS HACK&ROLL",
     project: "Reely",
     result: "SHIPPED TO CLOUD RUN",
@@ -736,7 +749,7 @@ export const hackathons: Hackathon[] = [
     stack: ["React", "MongoDB", "Gemini Vision", "GCP"],
   },
   {
-    id: "H-06",
+    id: "H-07",
     event: "GOOGLE GEMINI",
     project: "Urban Incident Review",
     result: "LONG-VIDEO AI",

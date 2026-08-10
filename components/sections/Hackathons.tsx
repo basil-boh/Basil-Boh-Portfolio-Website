@@ -76,6 +76,17 @@ function Card({ h }: { h: Hackathon }) {
             <div className="label mt-2">
               {h.date} · {h.location}
             </div>
+            {h.href && (
+              <a
+                href={h.href}
+                target="_blank"
+                rel="noreferrer"
+                className="mono mt-4 inline-flex w-fit items-center gap-1.5 border-b border-[var(--color-line-bright)] pb-0.5 text-xs uppercase tracking-wider text-[var(--color-accent-ink)] transition-colors duration-150 hover:border-[var(--color-accent)]"
+              >
+                SOURCE
+                <span aria-hidden>↗</span>
+              </a>
+            )}
           </div>
 
           <div className="flex flex-1 flex-col">
@@ -100,7 +111,7 @@ export default function Hackathons() {
         <SectionHeader
           index="03"
           title="HACKATHONS"
-          kicker="6 BUILDS · 2 PODIUMS"
+          kicker="7 BUILDS · 3 PODIUMS"
         />
 
         <div className="mt-12 grid gap-px border border-[var(--color-line-bright)] bg-[var(--color-line-bright)] md:grid-cols-2">
