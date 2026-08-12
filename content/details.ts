@@ -14,6 +14,58 @@ export const projectBodies: Record<string, Block[]> = {
   "P-01": [
     {
       t: "p",
+      text: "A cognitive rehabilitation companion for early-stage dementia, built for Apple Vision Pro over four days at Apple's Spatial Hack AI. Not a diagnostic tool and not a game — a rehearsal space, for a mind and for the route home.",
+    },
+    { t: "h", text: "The problem" },
+    {
+      t: "p",
+      text: "Dementia takes the everyday first. Long before anything dramatic, the small skills that hold a day together start to fray: the steps of a familiar morning arrive out of order, a walk taken for thirty years stops feeling familiar, and faces stay warm while the names attached to them slip. It is not a small room either — one in eleven Singaporeans over 60 lives with dementia, the projection is 152,000 people by 2030 against about 74,000 in 2023, and 74% of family caregivers say the role overwhelms them.",
+    },
+    { t: "h", text: "The one rule everything is checked against" },
+    {
+      t: "p",
+      text: "Errorless learning. People with dementia retain procedural memory — the how — far longer than they retain the explicit memory of whether they got it right. Corrective feedback leans on exactly the memory that is failing first, so 'no, try again' teaches the error along with the anxiety of having made it. The alternative is to never let the mistake happen: cue before a wrong answer is possible rather than correcting after one, never show a score or a red mark, and fade the cues gradually across sessions so the ability ends up with the person rather than with the headset.",
+    },
+    {
+      t: "p",
+      text: "That rule is load-bearing rather than decorative. A pattern-matching miss just quietly turns back over. The clock-drawing canvas has an unconditional Clear. Wayfinding recall never blocks on a wrong turn. Every game computes a score and none of those numbers ever render anywhere the patient can see them.",
+    },
+    { t: "h", text: "What's in it" },
+    {
+      t: "ul",
+      items: [
+        "A first-run baseline of eight short games — reaction time, orientation, word memory, digit span, pattern matching, trail making, arithmetic and clock drawing — run in a fixed order that opens on the lowest-friction game as a warm-up, each silently scored.",
+        "Making kopi: an activity of daily living practised hand-tracked on a real tabletop, in the order she would actually do it, with the patient choosing up front how much help she wants and every level still ending up offering the full demonstration.",
+        "Mahjong on a proper four-seat table against three computer players, with Pong, Chow and Mahjong claims live on every legal discard. The rules aren't simplified; the deal is — a near-win hand and opponents that feed.",
+        "An identity card one tap away from anywhere — photo, name in English and Chinese, date of birth, address, who to call — built to read as a keepsake rather than a test, plus a family tree of looping portraits that speak a recorded greeting when pinched.",
+        "Remember the Way, the flagship: a real OpenStreetMap extract meshed at runtime into shophouses, road ribbons, street lamps and trees, mounted as a miniature on a holographic tabletop. Study, then trace the route back from memory, then step inside and walk it at life size.",
+        "A caregiver dashboard where every session is appended rather than overwritten — the premise of a baseline collapses if only the most recent run survives.",
+      ],
+    },
+    { t: "h", text: "Walking it without making anyone ill" },
+    {
+      t: "p",
+      text: "The life-size walk is the part most likely to go wrong. Locomotion is seated and driven by a single held pinch: velocity eases in and out over roughly 150ms and never varies with how hard the pinch is, small heading changes snap invisibly, and sharp corners take a blink cut rather than a swung camera. There is no stick to steer and no direction to get wrong. Spoken guidance travels the whole way, the arrival is said out loud, and nothing restarts on its own — stopping is only ever letting go.",
+    },
+    { t: "h", text: "My slice" },
+    {
+      t: "p",
+      text: "Five of us, each owning a distinct piece; mine was AI, analytics and integration. That meant the baseline metrics — what each game measures and how it is scored without any of it reaching the patient — the results store behind them, the caregiver dashboard that turns per-game history into Swift Charts trend lines and a clock-drawing gallery, and the recommendation engine that ranks memory, numeracy and executive function by measured weakness as priority = 1 − score. That last one is a plain weighted comparison rather than a trained model, deliberately: one patient never generates enough sessions to fit anything meaningful, and a caregiver deserves to see exactly why a suggestion came up.",
+    },
+    { t: "h", text: "Results" },
+    {
+      t: "p",
+      text: "Grand Champion and Best UI/UX at Apple's Spatial Hack AI — first of 126 participants, judged at the Apple Developer Center in Singapore in August 2026. Session length, cadence and programme duration are all pulled from published dementia-intervention findings and Apple's own headset-comfort guidance rather than from what demoed well: 20–30 minutes a session, three or more times a week, over five to eight weeks.",
+    },
+    {
+      t: "quote",
+      text: "A hackathon prototype, not a medical device. It has not been clinically validated and makes no diagnostic claims. The eight games borrow structure from established concepts such as clock drawing, digit span and orientation; their specific content is still pending clinical review.",
+    },
+  ],
+
+  "P-02": [
+    {
+      t: "p",
       text: "Every time an AI agent runs a package install, it trusts a stranger's code to execute on your machine — unattended, at full speed, at 2am. Airlock is the checkpoint that stands in the way: it takes each package somewhere disposable, runs it, reads it, and decides whether it is trying to hurt you before it ever reaches your real machine.",
     },
     { t: "h", text: "The problem" },
@@ -39,7 +91,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-02": [
+  "P-03": [
     {
       t: "p",
       text: "The client companion app for a medically-supervised health-transformation programme. Clients follow a five-phase fat-loss and cellular-cleanse protocol, and the app's whole job is to make that protocol survive contact with a real week: know which phase you're in, know what today asks of you, and capture the evidence without it feeling like data entry.",
@@ -73,7 +125,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-03": [
+  "P-04": [
     {
       t: "p",
       text: "A quant notebook that treats a 29-year return series as a distribution rather than a headline — running AMZN against the S&P 500 through the risk battery that decides whether a return was earned or just survived.",
@@ -101,7 +153,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-04": [
+  "P-05": [
     {
       t: "p",
       text: "A linear regression predicting Singapore HDB resale prices from floor area across 287,196 transactions — built less as a modelling exercise than as a discipline exercise in not fooling yourself.",
@@ -129,7 +181,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-05": [
+  "P-06": [
     {
       t: "p",
       text: "A convolutional network for handwritten digits, written layer by layer in PyTorch rather than pulled off a shelf — two convolution blocks into a small dense head, 21,840 parameters in total, trained on a laptop CPU over the 60,000-image MNIST training set and scored against the 10,000 images it never saw.",
@@ -161,7 +213,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-06": [
+  "P-07": [
     {
       t: "p",
       text: "This one is still being built — the page is here so it has somewhere to land. A scheduled ETL pipeline that pulls from source APIs, lands the raw payloads untouched, and reshapes them into warehouse tables downstream queries can rely on.",
@@ -188,7 +240,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-07": [
+  "P-08": [
     {
       t: "p",
       text: "A nearest-neighbour search engine built from the ground up in Rust, designed around a single goal: never let a similarity lookup cross a millisecond at the 99th percentile, even over tens of millions of vectors.",
@@ -215,7 +267,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-08": [
+  "P-09": [
     {
       t: "p",
       text: "An orchestration layer that treats a retrieval-augmented agent as a typed dataflow graph rather than a pile of prompt strings — so every hop is observable, testable, and individually optimisable.",
@@ -242,7 +294,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-09": [
+  "P-10": [
     {
       t: "p",
       text: "An adaptive connection pooler that models saturation as a queueing system and resizes itself from live telemetry, killing the tail-latency spikes that traffic surges used to cause.",
@@ -268,7 +320,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-10": [
+  "P-11": [
     {
       t: "p",
       text: "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -294,7 +346,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-11": [
+  "P-12": [
     {
       t: "p",
       text: "A reproducible evaluation harness that ships every model or prompt change with a confidence interval instead of a hunch — so 'it feels better' becomes 'it's better, p < 0.05'.",
@@ -320,7 +372,7 @@ export const projectBodies: Record<string, Block[]> = {
     },
   ],
 
-  "P-12": [
+  "P-13": [
     {
       t: "p",
       text: "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, making the one missing index hiding behind a sequential scan impossible to miss.",

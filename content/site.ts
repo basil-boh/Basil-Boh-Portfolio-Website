@@ -111,12 +111,89 @@ export type Project = {
   demo?: Demo;
   /** Full-size captures, shown as a gallery on the detail page. */
   shots?: Shot[];
+  /**
+   * A self-contained slide deck shipped with the project, embedded on the
+   * detail page and openable full-screen. Lives in /public/work/<slug>/.
+   */
+  deck?: { src: string; title: string; note?: string };
   featured?: boolean;
 };
 
 export const projects: Project[] = [
   {
     id: "P-01",
+    title: "SPATIALREHAB",
+    blurb:
+      "A visionOS companion for early-stage dementia, built on one clinical rule: never let the person feel they got it wrong. Eight short games take a silent cognitive baseline, then the daily exercises rehearse what dementia takes first — making kopi one step at a time, mahjong by the real Singapore rules, and the route home studied on a holographic tabletop before being walked at life size through a neighbourhood meshed from OpenStreetMap. The caregiver dashboard holds the only numbers in the app: one trend line per game, never a grade.",
+    year: "2026",
+    role: "AI / Analytics",
+    stack: ["visionOS", "SwiftUI", "RealityKit", "Swift Charts", "OpenStreetMap"],
+    metrics: [
+      { label: "SPATIAL HACK AI", value: "1ST / 126" },
+      { label: "AWARDS", value: "2" },
+      { label: "BASELINE GAMES", value: "8" },
+    ],
+    repo: "https://github.com/basil-boh/SpatialRehab",
+    featured: true,
+    deck: {
+      src: "/work/spatialrehab/deck.html",
+      title: "SpatialRehab design deck — 18 slides",
+      note: "18 SLIDES · ARROW KEYS, THE CHEVRONS, OR THE DOTS ALONG THE BOTTOM",
+    },
+    cover: {
+      src: "/work/spatialrehab/cover.webp",
+      alt: "The Tiong Bahru neighbourhood meshed from OpenStreetMap as a miniature on a holographic tabletop, with the route home drawn through it as a glowing cyan line between a green start pin and a white home marker.",
+      caption: "THE TABLETOP — THE ROUTE HOME",
+      w: 1280,
+      h: 800,
+    },
+    shots: [
+      {
+        src: "/work/spatialrehab/tabletop.webp",
+        alt: "The full tabletop miniature: extruded shophouses and tower blocks, road ribbons and greenery from a real OpenStreetMap extract of Tiong Bahru, with the route animating along the streets from the green start pin to the home marker.",
+        caption: "STUDY — THE ROUTE DRAWS ITSELF",
+        w: 1600,
+        h: 906,
+      },
+      {
+        src: "/work/spatialrehab/life-size.webp",
+        alt: "The same estate at life size in passthrough at dusk: the person stands on the road with the cyan route ribbon running ahead between the shophouses, and a panel to the right prompting them to pinch and hold to move.",
+        caption: "STEP INSIDE — THE SAME ROUTE, LIFE SIZE",
+        w: 1600,
+        h: 901,
+      },
+      {
+        src: "/work/spatialrehab/kopi.webp",
+        alt: "The kopi-making exercise on a real tabletop: a kettle, coffee tin, sugar, condensed milk, mug and teaspoon laid out with glowing labels, under the prompt 'Look at the table — follow the glowing tags and make your kopi, one step at a time', with the 'Who am I?' identity card one tap away.",
+        caption: "MAKING KOPI — TASK SEQUENCING, HAND TRACKED",
+        w: 1280,
+        h: 661,
+      },
+      {
+        src: "/work/spatialrehab/mahjong.webp",
+        alt: "A four-seat Singapore mahjong table rendered in a living room, the player's fourteen tiles laid out in front of them and three computer opponents around the table mid-hand.",
+        caption: "MAHJONG — BY THE REAL RULES",
+        w: 1280,
+        h: 825,
+      },
+      {
+        src: "/work/spatialrehab/dashboard.webp",
+        alt: "The caregiver progress dashboard floating in a living room: six sessions recorded, with separate Swift Charts trend lines for word memory, digit span and pattern matching climbing across five weeks, and a Raw Data button in the corner.",
+        caption: "CAREGIVER DASHBOARD — TRENDS, NOT GRADES",
+        w: 1100,
+        h: 1031,
+      },
+      {
+        src: "/work/spatialrehab/demo-day.webp",
+        alt: "The five-person team presenting SpatialRehab at the Apple Developer Center in Singapore, standing either side of a table holding an Apple Vision Pro and two laptops, one showing the project site.",
+        caption: "DEMO DAY — APPLE DEVELOPER CENTER, SINGAPORE",
+        w: 1600,
+        h: 1200,
+      },
+    ],
+  },
+  {
+    id: "P-02",
     title: "AIRLOCK",
     blurb:
       "A safety gate that stands in front of every package an AI agent installs. Each candidate is detonated in a throwaway Daytona sandbox seeded with honeytoken credentials, read line-by-line by a code model on a rented GPU, and reputation-checked against the live web — then a judge weighs all of it and blocks or passes, in plain language the agent understands.",
@@ -162,7 +239,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-02",
+    id: "P-03",
     title: "BIOHACKK JOURNEY APP",
     blurb:
       "A full-stack mobile health platform: Singpass and Google OAuth, realtime bidirectional sync across four-plus biometric sources — Apple HealthKit, Omron, smart scales and Visbody body scans — and a phase-aware daily protocol with food, sleep, mood and vitals journaling on top. The Supabase and GCP pipelines behind it ingest 10,000+ readings a day; reworking the schemas and query paths took API responses from 3s to 500ms.",
@@ -231,7 +308,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-03",
+    id: "P-04",
     title: "PORTFOLIO RISK ANALYTICS",
     blurb:
       "A quant notebook that runs AMZN's 29-year return series through the full risk battery against SPY — Sharpe and Sortino, drawdown curves, beta and alpha, a monthly-return heatmap and a 1,000-path Monte Carlo on the trailing year. A 30% CAGR reads very differently once you plot the drawdown underneath it.",
@@ -276,7 +353,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-04",
+    id: "P-05",
     title: "HDB RESALE PRICE MODEL",
     blurb:
       "A linear regression over 287,196 Singapore HDB resale transactions, built as an honest end-to-end scikit-learn pipeline: correlation and multicollinearity screening, leakage checks, imputation kept inside the pipeline, and a held-out test set measured against a mean-predictor baseline rather than against itself.",
@@ -328,7 +405,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-05",
+    id: "P-06",
     title: "MNIST DIGIT CNN",
     blurb:
       "A convolutional net built from the layer definitions up in PyTorch — two conv blocks with dropout into a 50-unit head, 21,840 parameters total — trained for ten epochs on a CPU across all 60,000 MNIST digits and scored against the 10,000-image held-out set after every one. 92% after the first epoch, 97.46% by the tenth, with a loss curve that floors at 1.46 for a reason worth explaining.",
@@ -380,7 +457,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-06",
+    id: "P-07",
     title: "ETL PIPELINE",
     blurb:
       "In build. A scheduled extract–transform–load pipeline: pull from source APIs, land the raw payloads untouched, then parse, validate and reshape them into warehouse tables a query can trust. Reruns are the design constraint — the same window replayed twice should land the same rows once. Numbers, source and captures go up when it ships.",
@@ -410,7 +487,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-07",
+    id: "P-08",
     title: "SUB-MS VECTOR SEARCH ENGINE",
     blurb:
       "A from-scratch ANN engine with an HNSW index, SIMD distance kernels, and a lock-free query path. Serves nearest-neighbour lookups over 50M embeddings without breaking a millisecond at p99.",
@@ -425,7 +502,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-08",
+    id: "P-09",
     title: "DISTRIBUTED RAG ORCHESTRATOR",
     blurb:
       "A DAG-based orchestration layer for retrieval-augmented agents: typed tool calls, speculative retrieval, automatic eval gating, and full request tracing across every hop.",
@@ -440,7 +517,7 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "P-09",
+    id: "P-10",
     title: "CONNECTION-POOL AUTOPILOT",
     blurb:
       "An adaptive pooler that models pool saturation as a queueing system and resizes itself from live telemetry — killing tail latency spikes during traffic surges.",
@@ -454,7 +531,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-10",
+    id: "P-11",
     title: "STREAMING FEATURE STORE",
     blurb:
       "Exactly-once feature pipelines feeding online inference, with point-in-time correctness and a columnar hot cache that keeps reads in single-digit microseconds.",
@@ -468,7 +545,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-11",
+    id: "P-12",
     title: "LLM EVAL HARNESS",
     blurb:
       "A reproducible eval framework with statistical significance gating — every model/prompt change ships with a confidence interval, not a vibe.",
@@ -482,7 +559,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "P-12",
+    id: "P-13",
     title: "QUERY PLAN VISUALISER",
     blurb:
       "An interactive tool that turns Postgres EXPLAIN ANALYZE output into a navigable cost graph, surfacing the one missing index hiding behind a sequential scan.",

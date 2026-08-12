@@ -99,6 +99,35 @@ export default async function ProjectPage({ params }: Params) {
           <Blocks blocks={body} />
         </div>
 
+        {/* the project's own slide deck, embedded and openable full-screen */}
+        {p.deck && (
+          <section className="mt-14">
+            <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+              <div className="label">/ SLIDE DECK</div>
+              <a
+                href={p.deck.src}
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="hover"
+                className="label transition-colors hover:text-[var(--color-accent-ink)]"
+              >
+                OPEN FULL SCREEN ↗
+              </a>
+            </div>
+            <div className="border border-[var(--color-line-bright)] p-4 md:p-6">
+              <iframe
+                src={p.deck.src}
+                title={p.deck.title}
+                loading="lazy"
+                className="aspect-[16/10] min-h-[420px] w-full border border-[var(--color-line)] bg-[var(--color-muted)]"
+              />
+              {p.deck.note && (
+                <p className="label mt-3 text-[10px]">{p.deck.note}</p>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* stack */}
         <div className="mt-14 border-t border-[var(--color-line)] pt-8">
           <div className="label mb-4">/ STACK</div>
