@@ -203,7 +203,7 @@ export const projects: Project[] = [
     metrics: [
       { label: "SANDBOX SPIN-UP", value: "0.7s" },
       { label: "VERDICT SIGNALS", value: "4" },
-      { label: "HACKSPRINT", value: "1ST PLACE" },
+      { label: "HACKSPRINT", value: "1ST / 284" },
     ],
     repo: "https://github.com/basil-boh/airlock",
     featured: true,
@@ -777,7 +777,7 @@ export const hackathons: Hackathon[] = [
     id: "H-02",
     event: "DAYTONA HACKSPRINT",
     project: "Airlock",
-    result: "1ST PLACE",
+    result: "1ST / 284",
     isWin: true,
     date: "JUL 2026",
     location: "Singapore",

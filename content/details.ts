@@ -87,7 +87,7 @@ export const projectBodies: Record<string, Block[]> = {
     { t: "h", text: "Results" },
     {
       t: "p",
-      text: "A typosquatted python-pillow is caught, blocked and explained in plain language the agent can act on, while safe packages pass through with no noise at all. Built at the Daytona HackSprint in Singapore and took the overall grand prize.",
+      text: "A typosquatted python-pillow is caught, blocked and explained in plain language the agent can act on, while safe packages pass through with no noise at all. Built at the Daytona HackSprint in Singapore and took the overall grand prize, first of 284 participants.",
     },
   ],
 
