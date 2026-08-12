@@ -201,9 +201,9 @@ export const projects: Project[] = [
     role: "Backend / Security",
     stack: ["Python", "Daytona", "Qwen 3.5", "Nosana GPU", "Doubleword", "Oxylabs"],
     metrics: [
+      { label: "HACKSPRINT", value: "1ST / 284" },
       { label: "SANDBOX SPIN-UP", value: "0.7s" },
       { label: "VERDICT SIGNALS", value: "4" },
-      { label: "HACKSPRINT", value: "1ST / 284" },
     ],
     repo: "https://github.com/basil-boh/airlock",
     featured: true,
